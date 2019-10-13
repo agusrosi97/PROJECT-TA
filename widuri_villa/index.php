@@ -1,0 +1,336 @@
+<?php
+  session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Widuri Villa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/images/logo-w.png">
+
+    <link rel="stylesheet" href="assets/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="assets/css/lightgallery.min.css">
+    <link rel="stylesheet" href="assets/css/lg-transitions.css">
+
+    <link rel="stylesheet" href="assets/css/aos.css">
+
+    <link rel="stylesheet" href="assets/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="assets/css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/icomoon.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome-free-5.10.2-web/css/all.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <script type="text/javascript">
+      function jmlHari(){
+        var tgl_masuk = new Date(document.getElementById("TM").value);
+        var tgl_keluar = new Date(document.getElementById("TK").value);
+        return parseInt((tgl_keluar - tgl_masuk) / (24 * 3600 * 1000));
+      }
+      function hitungHari(){
+        if(document.getElementById("TK")){
+          document.getElementById("jumlahHari").value=jmlHari();
+        } 
+      }
+    </script>
+  </head>
+  <body>
+    
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid">
+	      <a class="navbar-brand" href="index.php"><img src="assets/images/logo.png" alt="widuri" width="79.5px" height="50px"></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+        
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+	          <li class="nav-item"><a href="#gallery" class="nav-link">Gallery</a></li>
+	          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+	        </ul>
+          <?php
+            if (!empty($_SESSION["loggedin"]))
+              {
+                $id = $_SESSION["loggedin"]["id_tamu"];
+                $foto = $_SESSION["loggedin"]["foto_tamu"];
+
+                echo
+                "
+                <div class='dropdown tamu-user'>
+                  <div class='wrapper-avatar--2 dropdown-toggle' data-toggle='dropdown' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <img src='assets/foto_tamu/".$foto."' alt=''>
+                  </div>
+                  <div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
+                    <a href='tamu/user_ubah.php?id=".$id."' class='dropdown-item'><i class='fas fa-cog'></i> Ubah akun</a>
+                    <a href='tamu/user_ubah_password.php?id=".$id."' class='dropdown-item'><i class='fas fa-key'></i> Ganti password</a>
+                    <a href='tamu/logout.php' class='dropdown-item'><i class='fas fa-sign-out-alt'></i> Logout</a>
+                  </div>
+                </div>
+                ";
+              }
+            else
+              {
+              echo 
+                "<div class='d-flex align-items-center justify-content-center logis'>
+                  <a href='tamu/login.php'><h6 class='mb-0 btn btn-primary'>Login</h6></a>
+                  <a href='tamu/register.php'><h6 class='mb-0 btn btn-primary' style='padding-left: 10px;'>Register</h6></a>
+                </div>"
+              ;
+            } 
+          ?>
+          
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+    <!-- home -->
+    <div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home">
+      <div class="overlay"></div>
+      <div class="container-fluid">
+        <div class="row no-gutters slider-text justify-content-center align-items-center">
+          <div class="col-lg-12 col-md-12 ftco-animate d-flex align-items-center justify-content-center">
+          	<div class="text text-center">              
+	            <h1 class="mb-4">WIDURI VILLA</h1>
+	            <p style="font-size: 18px; text-shadow: 4px 3px 5px #000000ba">Jalan Raya Kerobokan Kelod - No 101 - Br. Taman - Kuta Utara - Badung - Bali - Indonesia</p>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#form-ca">Reservasi Sekarang</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /home -->
+    <!-- about -->
+    <section class="page-section ftco-section bg-light pb-5" id="about">
+      <div class="container-fluid heading-section text-center">
+        <span class="subheading heading-section-about-mobile">About Widuri Villa</span>
+        <h2 class="mb-4 heading-section-about-mobile">About Us</h2> <!-- PR -->
+        <div class="row no-gutters">
+          <!-- carousel -->
+          <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center carousel slide carousel-fade" id="carouselExampleIndicators" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="assets/images/20180930_164334.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="assets/images/20180926_163714.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="assets/images/IMG-20180918-WA0014.jpg" class="d-block w-100" alt="...">
+              </div>
+            </div>
+          </div>
+          <!-- /carousel -->
+          <div class="col-md-6 wrap-about py-md-5 d-flex justify-content-center align-items-center ftco-animate">
+            <div class="heading-section">
+              <h2 class="mb-4 text-left heading-section-about">About Us</h2>
+              <p class="text-left">Villa Widuri berdiri pada tahun 2010 dan proses pembangunan memerlukan waktu 1 tahun. Villa dengan suasana yang nyaman, fasilitas yang disediakan cukup memadai serta beberapa penawaran yang ditawarkan untuk Anda menjadi nilai tambah bagi Kami untuk memberikan yang terbaik bagi Anda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /about -->
+
+    <!-- Fasility -->
+    <section class="page-section ftco-section" id="features">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-md-7 text-center heading-section ftco-animate">
+            <span class="subheading">Facility</span>
+            <h2 class="mb-3">Our Facility</h2>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-4 ftco-animate">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h4 class="card-title border-bottom">Tipe Satu</h4>
+                <ol>
+                  <li>Setiap villa dengan luas lahan 200m<sup>2</sup></li>
+                  <li>Bangunan dengan luas 100m<sup>2</sup></li>
+                  <li>Kolam renang pribadi</li>
+                  <li>Dua kamar</li>
+                  <li>Satu dapur</li>
+                  <li>Dua kamar mandi</li>
+                  <li>Wifi</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 ftco-animate">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h4 class="card-title border-bottom">Tipe Dua</h4>
+                <ol>
+                  <li>Satu kamar</li>
+                  <li>Satu kamar mandi</li>
+                  <li>Dapur</li>
+                  <li>Kolam renang</li>
+                  <li>Wifi</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /Fasility -->
+
+    <!-- Gallery -->
+    <section class="page-section ftco-section ftco-no-pb" id="gallery">
+    	<div class="container">
+    		<div class="row justify-content-center">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Gallery</span>
+            <h2 class="mb-2">Our Gallery</h2>
+          </div>
+        </div>
+        <div class="row" id="my-gallery">
+        	<div class="col-md-4">
+        		<div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+        			<a href="assets/images/gallery2.jpg" class="img" style="background-image: url(assets/images/gallery2.jpg);" data-src="assets/images/gallery2.jpg"></a>
+        		</div>
+        	</div>
+          <div class="col-md-4">
+            <div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+              <a href="assets/images/gallery1.jpg" class="img" style="background-image: url(assets/images/gallery1.jpg);" data-src="assets/images/gallery1.jpg"></a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+              <a href="assets/images/gallery3.jpg" class="img" style="background-image: url(assets/images/gallery3.jpg);" data-src="assets/images/gallery3.jpg"></a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+              <a href="assets/images/gallery4.jpg" class="img" style="background-image: url(assets/images/gallery4.jpg);" data-src="assets/images/gallery4.jpg"></a>
+            </div>
+          </div>
+        	<div class="col-md-4">
+            <div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+              <a href="assets/images/gallery5.jpg" class="img" style="background-image: url(assets/images/gallery5.jpg);" data-src="assets/images/gallery5.jpg"></a>
+            </div>
+          </div>
+        	<div class="col-md-4">
+            <div class="property-wrap ftco-animate img-hover-zoom img-hover-zoom--colorize">
+              <a href="assets/images/gallery6.jpg" class="img" style="background-image: url(assets/images/gallery6.jpg);" data-src="assets/images/gallery6.jpg"></a>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+    <!-- /Gallery -->
+    
+    <!-- Contact -->
+    <footer class="page-section ftco-footer ftco-section ftco-no-pb" id="contact">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+            <span class="subheading">Contact</span>
+            <h2 class="mb-2">Hubungi kami</h2>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 d-flex flex-column justify-content-center align-items-center">
+              <a href="index.php">
+                <img src="assets/images/logo-title.png" alt="widuri" width="99.5px" height="70px">
+              </a>
+              <h3>Widuri Villa</h3>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Support By</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Colorlib</a></li>
+                <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Bootstrap</a></li>
+                <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>FontAwesome</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget foo-index mb-4">
+              <h2 class="ftco-heading-2">Looking back</h2>
+              <ul class="list-unstyled">
+                <li><a href="#about"><span class="icon-long-arrow-right mr-2"></span>About Us</a></li>
+                <li><a href="#features"><span class="icon-long-arrow-right mr-2"></span>Features</a></li>
+                <li><a href="#gallery"><span class="icon-long-arrow-right mr-2"></span>Gallery</a></li>
+                <li><a href="#contact"><span class="icon-long-arrow-right mr-2"></span>Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Contact info</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Jalan Raya Kerobokan Kelod, No:. 101, Br.Taman, Kuta Utara, Badung - Bali</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+62 8179 719 692</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope pr-4"></span><span class="text">widuri@gmail.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a><span> | Redesign by Agus Rosi Adi Purwibawa</span>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- scroll -->
+    <bottom id="scroll-ca" data-toggle="modal" data-target="#form-ca" class="btn btn-primary btn-lg scroll-ca animated pulse infinite shadow-sm">PESAN SEKARANG</bottom>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+    
+    <?php include 'tamu/popup_check_availability.php'; ?>
+    
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/parallax.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/jquery.stellar.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="assets/vendor/fontawesome-free-5.10.2-web/js/all.js"></script>
+    <script src="assets/js/lightgallery-all.min.js"></script>
+    <script src="assets/js/aos.js"></script>
+    <script src="assets/js/jquery.animateNumber.min.js"></script>
+    <script src="assets/js/bootstrap-datepicker.js"></script>
+    <script src="assets/js/jquery.timepicker.min.js"></script>
+    <script src="assets/js/scrollax.min.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> -->
+    <!-- <script src="assets/js/google-map.js"></script> -->
+    <script src="assets/js/main.js"></script>
+    
+  </body>
+</html>
