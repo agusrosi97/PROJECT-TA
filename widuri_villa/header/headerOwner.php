@@ -25,7 +25,11 @@
                       <div class="d-flex justify-content-center flex-column position-relative">
                         <div class="d-flex justify-content-center mb-2">
                           <div class="wrapper-avatar-pengguna shadow">
-                            <?php if ($fotonya == '') : ?><img src="../assets/images/add-icon.png" alt=""><?php else : ?><img src="../assets/foto_pengguna/<?php echo $fotonya ?>" alt=""><?php endif ?>
+                            <?php if ($fotonya ===""): ?>
+                              <img src="../assets/images/user.png">
+                              <?php else: ?>
+                              <img src="../assets/foto_pengguna/<?php echo $fotonya ?>" />
+                            <?php endif; ?>
                           </div>
                         </div>
                         <p class="card-text text-center word-wrap mb-4"><?php if ($namanya == true) { echo $namanya; } else {echo "Login dulu lah!";} ?></p>

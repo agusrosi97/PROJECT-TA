@@ -2,15 +2,15 @@
   session_start();
 
   if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "owner") ) {
-    header('location: ../owner/indexowner.php');
+    header('location: ../owner/index.php');
     exit;
   }
   elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
-    header('location: ../admin/indexadmin.php');
+    header('location: ../admin/index.php');
     exit;
   }
   elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "staf") ) {
-    header('location: ../staf/indexstaf.php');
+    header('location: ../staf/index.php');
     exit;
   }
 ?>
@@ -59,103 +59,120 @@
 
       $row = mysqli_fetch_assoc($result);
 
-      $id = $row["id_pengguna"];
-      $level_pengguna = $row["hak_akses_pengguna"];
-      $email = $row["email_pengguna"];
-      $nama_pengguna = $row["username_pengguna"];
-      $tgl_lahir_pengguna = $row["tgl_lahir_pengguna"];
-      $no_telp_pengguna = $row["no_telp_pengguna"];
-      $jk = $row["jk_pengguna"];
-      $alamat_pengguna = $row["alamat_pengguna"];
-      $foto_pengguna = $row["foto_pengguna"];
+      if ($row["status_pengguna"] === 'Aktif') {
 
-      if( password_verify($password_pengguna, $row["password_pengguna"]) ) {
+        $id = $row["id_pengguna"];
+        $level_pengguna = $row["hak_akses_pengguna"];
+        $email = $row["email_pengguna"];
+        $nama_pengguna = $row["username_pengguna"];
+        $tgl_lahir_pengguna = $row["tgl_lahir_pengguna"];
+        $no_telp_pengguna = $row["no_telp_pengguna"];
+        $jk = $row["jk_pengguna"];
+        $alamat_pengguna = $row["alamat_pengguna"];
+        $foto_pengguna = $row["foto_pengguna"];
 
-        if($row['hak_akses_pengguna'] == "owner"){
- 
-          $_SESSION["loggedin_pengguna"] = array();
-          $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
-          $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
-          $_SESSION["loggedin_pengguna"]["email"] = $email;
-          $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
-          $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
-          $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
-          $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
-          $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
-          $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
+        if( password_verify($password_pengguna, $row["password_pengguna"]) ) {
 
+          if($row['hak_akses_pengguna'] == "owner"){
+   
+            $_SESSION["loggedin_pengguna"] = array();
+            $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
+            $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
+            $_SESSION["loggedin_pengguna"]["email"] = $email;
+            $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
+            $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
+            $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
+            $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
+            $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
+            $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
+
+            echo "
+              <script>
+                Swal.fire({
+                  type: 'success',
+                  title: 'Selamat Datang!',
+                  showConfirmButton: false,
+                  timer: 2000
+                }).then(function() {
+                  window.location.href = '../owner/index.php';
+                })
+              </script>
+            ";
+         
+          }else if($row['hak_akses_pengguna'] == "admin"){
+
+            $_SESSION["loggedin_pengguna"] = array();
+            $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
+            $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
+            $_SESSION["loggedin_pengguna"]["email"] = $email;
+            $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
+            $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
+            $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
+            $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
+            $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
+            $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
+
+            echo "
+              <script>
+                Swal.fire({
+                  type: 'success',
+                  title: 'Selamat Datang!',
+                  showConfirmButton: false,
+                  timer: 2000
+                }).then(function() {
+                  window.location.href = '../admin/index.php';
+                })
+              </script>
+            ";
+         
+          }else if($row['hak_akses_pengguna'] == "staf"){
+
+            $_SESSION["loggedin_pengguna"] = array();
+            $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
+            $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
+            $_SESSION["loggedin_pengguna"]["email"] = $email;
+            $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
+            $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
+            $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
+            $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
+            $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
+            $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
+
+            echo "
+              <script>
+                Swal.fire({
+                  type: 'success',
+                  title: 'Selamat Datang!',
+                  showConfirmButton: false,
+                  timer: 2000
+                }).then(function() {
+                  window.location.href = '../staf/index.php';
+                })
+              </script>
+            ";
+         
+          }
+        }else{
           echo "
             <script>
               Swal.fire({
-                type: 'success',
-                title: 'Selamat Datang!',
+                type: 'error',
+                title: 'Email atau kata sandi Anda salah!',
                 showConfirmButton: false,
-                timer: 2000
+                timer : 2000
               }).then(function() {
-                window.location.href = '../owner/indexowner.php';
+                window.location.href = '../login/login.php';
               })
             </script>
           ";
-       
-        }else if($row['hak_akses_pengguna'] == "admin"){
-
-          $_SESSION["loggedin_pengguna"] = array();
-          $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
-          $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
-          $_SESSION["loggedin_pengguna"]["email"] = $email;
-          $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
-          $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
-          $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
-          $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
-          $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
-          $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
-
-          echo "
-            <script>
-              Swal.fire({
-                type: 'success',
-                title: 'Selamat Datang!',
-                showConfirmButton: false,
-                timer: 2000
-              }).then(function() {
-                window.location.href = '../admin/indexadmin.php';
-              })
-            </script>
-          ";
-       
-        }else if($row['hak_akses_pengguna'] == "staf"){
-
-          $_SESSION["loggedin_pengguna"] = array();
-          $_SESSION["loggedin_pengguna"]["id_pengguna"] = $id;
-          $_SESSION["loggedin_pengguna"]["level_pengguna"] = $level_pengguna;
-          $_SESSION["loggedin_pengguna"]["email"] = $email;
-          $_SESSION["loggedin_pengguna"]["foto_pengguna"] = $foto_pengguna;
-          $_SESSION["loggedin_pengguna"]["nama_pengguna"] = $nama_pengguna;
-          $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"] = $tgl_lahir_pengguna;
-          $_SESSION["loggedin_pengguna"]["no_telp_pengguna"] = $no_telp_pengguna;
-          $_SESSION["loggedin_pengguna"]["jk_pengguna"] = $jk;
-          $_SESSION["loggedin_pengguna"]["alamat_pengguna"] = $alamat_pengguna;
-
-          echo "
-            <script>
-              Swal.fire({
-                type: 'success',
-                title: 'Selamat Datang!',
-                showConfirmButton: false,
-                timer: 2000
-              }).then(function() {
-                window.location.href = '../staf/indexstaf.php';
-              })
-            </script>
-          ";
-       
         }
       }else{
         echo "
           <script>
             Swal.fire({
               type: 'error',
-              title: 'Email atau kata sandi Anda salah!',
+              title: 'Mohon maaf ☹',
+              html: 'Akun Anda sudah <b class=text-danger>tidak Aktif</b> !',
               showConfirmButton: false,
               timer : 2000
             }).then(function() {

@@ -1,5 +1,34 @@
 <?php
   session_start();
+
+  require 'koneksi/function_global.php';
+
+  if (isset($_POST['inputReservasi'])) :
+
+    $ci = $_POST['ci'];
+    $co = $_POST['co'];
+    $jml = $_POST['jml_hari'];
+    $adt = $_POST['adlt'];
+    $cld = $_POST['child'];
+
+    $_SESSION["pilihanKamar"] = array();
+    $_SESSION["pilihanKamar"]["tglCheckin"] = $ci;
+    $_SESSION["pilihanKamar"]["tglCheckout"] = $co;
+    $_SESSION["pilihanKamar"]["jml_hari"] = $jml;
+    $_SESSION["pilihanKamar"]["adt"] = $adt;
+    $_SESSION["pilihanKamar"]["cld"] = $cld;
+
+    header("location:tamu/kamar_pilihan_BARU2.php");
+  endif;
+
+  if (!empty($_SESSION["loggedin"])) :
+    $id = $_SESSION["loggedin"]["id_tamu"];
+    $cekTamu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE id_tamu = '$id'");
+    if (mysqli_num_rows($cekTamu) === 1 ) {
+      $rowT = mysqli_fetch_assoc($cekTamu);
+      $fotoT = $rowT["foto_tamu"];
+    }
+  endif;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,30 +36,20 @@
     <title>Widuri Villa</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/logo-w.png">
-
     <link rel="stylesheet" href="assets/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/animate.css">
-    
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="assets/css/lightgallery.min.css">
     <link rel="stylesheet" href="assets/css/lg-transitions.css">
-
     <link rel="stylesheet" href="assets/css/aos.css">
-
-    <link rel="stylesheet" href="assets/css/ionicons.min.css">
-
-    <link rel="stylesheet" href="assets/css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="assets/css/jquery.timepicker.css">
-
-    
+    <link rel="stylesheet" href="assets/css/ionicons.min.css">    
     <link rel="stylesheet" href="assets/css/flaticon.css">
     <link rel="stylesheet" href="assets/css/icomoon.css">
     <link rel="stylesheet" href="assets/vendor/fontawesome-free-5.10.2-web/css/all.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets-2/bootstrap_4.3.1/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/style.css">
     
     <script type="text/javascript">
@@ -64,36 +83,24 @@
 	          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
 	        </ul>
           <?php
-            if (!empty($_SESSION["loggedin"]))
-              {
-                $id = $_SESSION["loggedin"]["id_tamu"];
-                $foto = $_SESSION["loggedin"]["foto_tamu"];
-
-                echo
-                "
-                <div class='dropdown tamu-user'>
-                  <div class='wrapper-avatar--2 dropdown-toggle' data-toggle='dropdown' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                    <img src='assets/foto_tamu/".$foto."' alt=''>
-                  </div>
-                  <div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
-                    <a href='tamu/user_ubah.php?id=".$id."' class='dropdown-item'><i class='fas fa-cog'></i> Ubah akun</a>
-                    <a href='tamu/user_ubah_password.php?id=".$id."' class='dropdown-item'><i class='fas fa-key'></i> Ganti password</a>
-                    <a href='tamu/logout.php' class='dropdown-item'><i class='fas fa-sign-out-alt'></i> Logout</a>
-                  </div>
+            if(empty($_SESSION["loggedin"])) : ?>
+              <div class='d-flex align-items-center justify-content-center logis'>
+                <a href='tamu/login.php'><h6 class='mb-0 btn btn-primary'>Login</h6></a>
+                <a href='tamu/register.php'><h6 class='mb-0 btn btn-primary' style='padding-left: 10px;'>Register</h6></a>
+              </div>
+              <?php else :  ?>
+              <div class='dropdown tamu-user'>
+                <div class='wrapper-avatar--2 dropdown-toggle' data-toggle='dropdown' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                  <?php if($fotoT === "") : ?><img src='assets/images/user.png' alt=''><?php else : ?><img src='assets/foto_tamu/<?= $fotoT; ?>' alt=''><?php endif; ?>
                 </div>
-                ";
-              }
-            else
-              {
-              echo 
-                "<div class='d-flex align-items-center justify-content-center logis'>
-                  <a href='tamu/login.php'><h6 class='mb-0 btn btn-primary'>Login</h6></a>
-                  <a href='tamu/register.php'><h6 class='mb-0 btn btn-primary' style='padding-left: 10px;'>Register</h6></a>
-                </div>"
-              ;
-            } 
+                <div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
+                  <a href='tamu/user_ubah.php?id=<?=$id?>' class='dropdown-item'><i class='fas fa-cog'></i> Ubah akun</a>
+                  <a href='tamu/user_ubah_password.php?id=<?=$id?>' class='dropdown-item'><i class='fas fa-key'></i> Ganti password</a>
+                  <a href='tamu/logout.php' class='dropdown-item'><i class='fas fa-sign-out-alt'></i> Logout</a>
+                </div>
+              </div>
+            <?php endif;
           ?>
-          
 	      </div>
 	    </div>
 	  </nav>
@@ -135,7 +142,7 @@
             </div>
           </div>
           <!-- /carousel -->
-          <div class="col-md-6 wrap-about py-md-5 d-flex justify-content-center align-items-center ftco-animate">
+          <div class="col-md-6 wrap-about py-md-5 d-flex justify-content-center align-items-center ftco-animate" style="z-index: 9">
             <div class="heading-section">
               <h2 class="mb-4 text-left heading-section-about">About Us</h2>
               <p class="text-left">Villa Widuri berdiri pada tahun 2010 dan proses pembangunan memerlukan waktu 1 tahun. Villa dengan suasana yang nyaman, fasilitas yang disediakan cukup memadai serta beberapa penawaran yang ditawarkan untuk Anda menjadi nilai tambah bagi Kami untuk memberikan yang terbaik bagi Anda.</p>
@@ -295,7 +302,6 @@
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-	
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a><span> | Redesign by Agus Rosi Adi Purwibawa</span>
               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -315,7 +321,7 @@
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
     <script type="text/javascript" src="assets/js/parallax.js"></script>
     <script src="assets/js/jquery.waypoints.min.js"></script>
     <script src="assets/js/jquery.stellar.min.js"></script>
@@ -324,13 +330,8 @@
     <script src="assets/js/lightgallery-all.min.js"></script>
     <script src="assets/js/aos.js"></script>
     <script src="assets/js/jquery.animateNumber.min.js"></script>
-    <script src="assets/js/bootstrap-datepicker.js"></script>
-    <script src="assets/js/jquery.timepicker.min.js"></script>
     <script src="assets/js/scrollax.min.js"></script>
     <script src="assets/js/jquery.easing.min.js"></script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> -->
-    <!-- <script src="assets/js/google-map.js"></script> -->
     <script src="assets/js/main.js"></script>
-    
   </body>
 </html>

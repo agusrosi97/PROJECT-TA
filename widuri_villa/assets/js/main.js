@@ -295,12 +295,6 @@
     mode: 'lg-zoom-out-in'
   }); 
 
-	$('#book_pick_date,#book_off_date').datepicker({
-	  'format': 'm/d/yyyy',
-	  'autoclose': true
-	});
-	$('#time_pick').timepicker();
-
 	var goHere = function() {
 
 		$('.mouse-icon').on('click', function(event){

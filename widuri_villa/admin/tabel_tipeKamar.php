@@ -4,22 +4,21 @@
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "staf") ) {
-    header('location: ../staf/indexstaf.php');
+    header('location: ../staf/index.php');
     exit;
   }
 
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-  // $namanya = $_SESSION["loggedin_pengguna"]["nama_pengguna"];
-  // $fotonya = $_SESSION["loggedin_pengguna"]["foto_pengguna"];
 
   require '../koneksi/function_global.php';
 
-  $TableData_tipeKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar DESC");
+  $TableData_tipeKamar = query("SELECT * FROM tbl_tipe_kamar");
   $AdaOwner = query("SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna = 'owner'");
 
   include '../query/queryDataDiri_pengguna.php';
+
 ?>
 
 <!doctype html>
@@ -43,7 +42,6 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
 
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <!-- <link rel="stylesheet" href="../vendors/font-awesome/css/font-awesome.min.css"> -->
   <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
   <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
   <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
@@ -71,14 +69,14 @@
               <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
             </li>
             <li>
-              <a href="indexadmin.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
             </li>
-            <h3 class="menu-title">MASTER DATA</h3>
+            <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
-              <a href="tabel_pengguna.php"> <i class="menu-icon fas fa-user"></i>Data Pengguna</a>
+              <a href="tabel_pengguna.php"> <i class="menu-icon fas fa-users"></i>Data Pengguna</a>
             </li>
             <li class="active">
-              <a href=""> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
             </li>
           </ul>
         </div>
@@ -94,7 +92,7 @@
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
-              <h1>Data Pengguna</h1>
+              <h1>Data Tipe Kamar</h1>
             </div>
           </div>
         </div>
@@ -102,8 +100,8 @@
           <div class="page-header float-right">
             <div class="page-title">
                 <ol class="breadcrumb text-right">
-                  <li><a href="indexadmin.php">Dashboard</a></li>
-                  <li class="active">Data Pengguna</li>
+                  <li><a href="index.php">Dashboard</a></li>
+                  <li class="active">Tipe Kamar</li>
                 </ol>
             </div>
           </div>
@@ -114,52 +112,48 @@
 
         <div class="p-2 bg-light border rounded mb-5 shadow-sm">
 
-          <button class="btn btn-success rounded mb-3 shadow" data-toggle="modal" data-target="#popup_tambah_pengguna">Tambah</button>
-
-          <table id="OwnerTabelPengguna" class="table table-striped rounded table-responsive" width="100%">
+          <div class="d-flex">
+            <button class="btn btn-primary rounded mb-3 shadow-sm" id="aa">Tambah</button>
+          </div>
+          <table id="TableTipeKamar" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
               <tr class="text-nowrap">
-                <th style="display: none;"></th>
+                <th class="d-none"></th>
                 <th>Aksi</th>
-                <th>Id</th>
                 <th>Foto</th>
-                <th>Nama Pengguna</th>
-                <th>Akses</th>
-                <th>Email</th>
-                <th>Tgl Lahir</th>
-                <th>No Telp</th>
-                <th>JK</th>
-                <th>Alamat</th>
+                <th>Nama Kamar</th>
+                <th>Jumlah Kamar</th>
+                <th>Harga Kamar</th>
+                <th>Fasilitas</th>
               </tr>
             </thead>
             <tbody>
+              <?php $i = 3; ?>
               <?php foreach( $TableData_tipeKamar as $row ) : ?>
-              <tr class="text-nowrap">
-                <td style="display: none;"></td>
-                <td>
-                  <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_pengguna_<?php echo $row["id_pengguna"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
-                </td>
-                <td><?php echo $row["id_pengguna"]; ?></td>
-                <td class="py-2 pl-2"><div class="data_foto"><img src="../assets/foto_pengguna/<?php echo $row["foto_pengguna"] ?>" alt=""></div></td>
-                <td><?= $row["username_pengguna"]; ?></td>
-                <td><?= $row["hak_akses_pengguna"]; ?></td>
-                <td><?= $row["email_pengguna"]; ?></td>
-                <td><?= date_format(new Datetime($row["tgl_lahir_pengguna"]), "d F Y"); ?></td>
-                <td><?= $row["no_telp_pengguna"]; ?></td>
-                <td><?= $row["jk_pengguna"]; ?></td>
-                <td><?= $row["alamat_pengguna"]; ?></td>
-              </tr>
-              <?php include 'modal_ubah_pengguna.php'; ?>
-              <?php endforeach;
-              ?>
+              <?php $centangArray = explode(", ",$row['fasilitas']); ?>
+                <tr>
+                  <td class="d-none"></td>
+                  <td>
+                    <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_Ubah_TipeKam_<?=$row["id_tipe_kamar"];?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
+                  </td>
+                  <td><div class="data_foto"><img src="../assets/foto_tipe_kamar/<?php echo $row["foto_tipe_kamar"] ?>" alt=""></div></td>
+                  <td class="text-nowrap"><?= $row["nama_tipe_kamar"]; ?></td>
+                  <td><?= $row["jumlah_kamar"]; ?></td>
+                  <td class="text-nowrap"><?= "Rp. ".number_format($row["harga_kamar"], 2, ",", ".").",-"; ?></td>
+                  <td><?= $row["fasilitas"]; ?></td>
+                  
+                </tr>
+                <?php include 'modal_ubah_tipeKamar.php'; ?>
+              <?php $i++; ?>
+              <?php endforeach;?>
             </tbody> 
           </table>
         </div>    
       </div>
-
+      
       <?php include '../footer/footer.html'; ?>
       <?php include 'modal_ubah_password.php'; ?>
-      <?php include 'modal_tambah_pengguna.php'; ?>
+      <?php include 'modal_tambah_tipeKamar.php'; ?>
       <?php include 'modalUbah_DataDiriAdmin.php'; ?>
     <!-- /#right-panel -->
     </div>
@@ -175,34 +169,42 @@
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
-
   <script>
+    $('#aa').on('click', function() {
+      Swal.fire({
+        type: 'question',
+        title: 'Ada kamar baru?',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak'
+      }).then(result => {
+      if (result.value) {
+        $('#popup_tambah_TipeKam').modal('show');
+      }
+      })
+    });
+
     (function($) {
       $('.custom-select1').click(function() {
         $('.custom-select1').addClass('black');
       });
-
-      $('#OwnerTabelPengguna').DataTable({
+      $('#TableTipeKamar').DataTable({
         'language': {
-          'emptyTable': 'Tidak ada data Penggua :('
+          'emptyTable': 'Belum ada data Tipe Kamar ☹'
         },
         'columns': [
           null,
           { 'orderable': false },
+          { 'orderable': false },
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
+          { 'orderable': false }
         ]
       });
     } )(jQuery);
   </script>
-
   <script type="text/javascript">
     (function($) {
       $('#menuToggle').click(function() {
@@ -210,12 +212,10 @@
       });
     } )(jQuery);
   </script>
-
-
-  <!-- /////// BTN UBAH TAMBAH /////// -->
+  <!-- TAMBAH TIPE KAMAR -->
   <?php 
-    if( isset($_POST["submit"]) ) {
-      if( OwnerTambahPengguna($_POST) > 0 ) {
+    if( isset($_POST["submit_tambahTPKamar"]) ) {
+      if( PenggunaTambahTipeKamar($_POST) > 0 ) {
         echo "
           <script>
             Swal.fire({
@@ -224,7 +224,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
@@ -237,16 +237,15 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
       }
     }
-
-    // EDIT FORM
-    if( isset($_POST["submit_ubah"]) ) {  
-      if( AdminUbahPengguna($_POST) > 0 ) {
+    // EDIT TIPE KAMAR
+    if( isset($_POST["submit_ubahTPKamar"]) ) {  
+      if( PenggunaUbahTipeKamar($_POST) >= 0 ) {
         echo "
           <script>
             Swal.fire({
@@ -255,7 +254,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
@@ -268,13 +267,12 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
       }
     }
-
     // BTN UBAH PASSWORD
     if( isset($_POST["submit_ubah_password"]) ) {
       if( ubah_pass_pengguna($_POST) > 0 ) {
@@ -286,13 +284,12 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../owner/indexowner.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
       }
     }
-
     // Ubah Profile
     if ( isset($_POST["submitUbahDataDiri_Pengguna"]) ) {
       if(UbahDataDiri_Pengguna($_POST) > 0){
@@ -304,7 +301,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
@@ -317,15 +314,12 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../owner/tabel_pengguna.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
       }
     }
-
   ?>
-
 </body>
-
 </html>

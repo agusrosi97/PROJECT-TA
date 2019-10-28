@@ -2,7 +2,7 @@
   session_start();
 
   if ( !empty($_SESSION['loggedin']) ) {
-    header('location: ../index.php');
+    echo "<script>javascript:history.go(-1);</script>";
     exit;
   }
 ?>
@@ -75,19 +75,20 @@
         $_SESSION["loggedin"]["alamat_tamu"] = $alamat_tamu;
         $_SESSION["loggedin"]["jk_tamu"] = $jk_tamu;
         $_SESSION["loggedin"]["foto_tamu"] = $foto_tamu;
-
+        
         echo "
           <script>
             Swal.fire({
               type: 'success',
-              title: 'Selamat Datang!',
+              title: '<h2>Selamat datang</h2>',
               showConfirmButton: false,
-              timer: 2000
+              timer : 2000
             }).then(function() {
-              window.location.href = '../index.php';
+              javascript:history.go(-2);
             })
           </script>
         ";
+
       }else{
         echo "
           <script>
@@ -119,11 +120,13 @@
   }
   ?>
   <div class="wrapper-login">
+
     <div class="wrapper-img-login">
       <img src="../assets/images/20190502_091550_Richtone(HDR).jpg" alt="" class="img-login">
-    </div>     
+    </div>
     <div class="login-form px-5">
-      <div class="text-center pb-4 mb-md-5 mb-lg-5">
+      <div class="text-center pb-4 mb-md-5 mb-lg-5 position-relative">
+        <button onclick="window.history.go(-1); return false;" type="button" class="btn btn-light position-absolute col-3 p-2 rounded shadow-sm text-secondary" style="z-index: 1; top: -20px; left: -30px"><i class="fas fa-chevron-left"></i> Back</button>
         <a href="index.html">
           <img class="align-content" src="../assets/images/logo-title.png" alt="" width="119.5" height="80">
         </a>
@@ -147,8 +150,8 @@
           <div class="text-center">
             <button type="submit" name="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30">Sign in</button>
           </div>
-          <div class="register-link mt-lg-4 text-center">
-            <p>Don't have account ? <a href="../tamu/register.php"> Sign Up Here</a></p>
+          <div class="register-link mt-4 text-center">
+            <p>Don't have account ? <a href="../tamu/register.php" class="text-primary"> Sign Up Here</a></p>
           </div>
         </form>
       </div>

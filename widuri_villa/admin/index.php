@@ -5,7 +5,7 @@
     header('location: ../login/login.php');
   }  
   if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "staf") ) {
-    header('location: ../staf/indexstaf.php');
+    header('location: ../staf/index.php');
     exit;
   }
 
@@ -115,7 +115,8 @@
                 <h4 class="mb-0">
                   <span class="count"><?php echo $HasilDataPengguna; ?></span>
                 </h4>
-                <p class="text-light">Anggota</p>
+                <p class="text-light">Penguna</p>
+                <i class="fas fa-users" style="position: absolute; font-size: 70px; opacity: .7; right: 20px; top: 40px"></i>
 
                 <div class="chart-wrapper px-0" style="height:70px;" height="70">
                     
@@ -123,45 +124,6 @@
 
               </div>
 
-            </div>
-          </div>
-          <!--/.col-->
-
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-2">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                  <i class="fa fa-cog"></i>                            
-                </div>
-                <h4 class="mb-0">
-                  <span class="count">Rp. 5.680.000</span>
-                </h4>
-                <p class="text-light">Jumlah Transaksi</p>
-
-                <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                    
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--/.col-->
-
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-3">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                 <i class="fa fa-cog"></i>
-                </div>
-                <h4 class="mb-0">
-                  <span class="count">25</span>
-                </h4>
-                <p class="text-light">Jumlah reservasi</p>
-
-              </div>
-
-              <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                  
-              </div>
             </div>
           </div>
         </div><!--/.col-->
@@ -307,7 +269,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../owner/indexowner.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";
@@ -316,7 +278,7 @@
 
     // UBAH PROFILE
     if ( isset($_POST["submitUbahDataDiri_Pengguna"]) ) {
-      if(UbahDataDiri_Pengguna($_POST) > 0){
+      if(UbahDataDiri_Pengguna($_POST) >= 0){
         echo "
           <script>
             Swal.fire({
@@ -325,7 +287,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";
@@ -338,7 +300,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";

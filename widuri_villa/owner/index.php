@@ -4,11 +4,11 @@
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }  
-  if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "owner") ) {
-    header('location: ../owner/indexowner.php');
+  if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "staf") ) {
+    header('location: ../staf/index.php');
     exit;
   }elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
-    header('location: ../admin/indexadmin.php');
+    header('location: ../admin/index.php');
     exit;
   }
 
@@ -19,6 +19,7 @@
   require '../koneksi/function_global.php';
 
   include '../query/queryDataDiri_pengguna.php';
+
 ?>
 
 <!doctype html>
@@ -32,15 +33,21 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Welcome <?php echo $namanya; ?></title>
+  <title>Welcome Owner</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" href="../vendors-2/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
+  <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
+  <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
   <link rel="stylesheet" href="../assets-2/css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
+    
 </head>
 <body>
   <div class="bungkus">
@@ -59,18 +66,15 @@
             <li class="active">
               <a href=""> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
             </li>
-            <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
+            <h3 class="menu-title">LAPORAN</h3>
             <li>
-              <a href="../staf/tabel_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Data Tamu</a>
+              <a href="#"> <i class="menu-icon fas fa-address-card"></i>Laporan Data Tamu</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="#"> <i class="menu-icon fas fa-luggage-cart"></i>Laporan Reservasi</a>
             </li>
             <li>
-              <a href="../staf/tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
-            </li>
-            <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Laporan Transaksi</a>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -78,9 +82,8 @@
     </aside><!-- /#left-panel -->
 
     <div id="right-panel" class="right-panel">
-
       <!-- HEADER -->
-      <?php include '../header/headerStaf.php'; ?>
+      <?php include '../header/headerOwner.php'; ?>
       <!-- /HEADER -->
 
       <div class="breadcrumbs">
@@ -116,7 +119,7 @@
                 <p class="text-light">Jumlah pengunjung</p>
 
                 <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                      
+                    
                 </div>
 
               </div>
@@ -142,16 +145,16 @@
               </div>
             </div>
           </div>
-            <!--/.col-->
+          <!--/.col-->
 
           <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-flat-color-3">
               <div class="card-body pb-0">
                 <div class="dropdown float-right">
-                   <i class="fa fa-cog"></i>
+                 <i class="fa fa-cog"></i>
                 </div>
                 <h4 class="mb-0">
-                    <span class="count">25</span>
+                  <span class="count">25</span>
                 </h4>
                 <p class="text-light">Jumlah reservasi</p>
 
@@ -191,65 +194,68 @@
       
       <!-- footer -->
       <?php include 'modal_ubah_password.php'; ?>
-      <?php include 'modalUbah_DataDiriStaf.php'; ?>
       <?php include '../footer/footer.html'; ?>
+      <?php include 'modalUbah_DataDiriOwner.php'; ?>
     </div><!-- /#right-panel -->
   <!-- Right Panel -->
   </div>
-    
-  <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
-  <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
+  
+
+  <script src="../vendors-2/jquery/dist/jquery.min.js"></script>
+  <script src="../vendors-2/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../vendors-2/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="../assets-2/js/main.js"></script>
 
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="../assets-2/js/dashboard.js"></script>
   <script src="../assets-2/js/Chart.js"></script>
+  <script src="../vendors-2/jqvmap/dist/jquery.vmap.min.js"></script>
+  <script src="../vendors-2/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+  <script src="../vendors-2/jqvmap/dist/maps/jquery.vmap.world.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-
   <?php include 'confirmLogout.php'; ?>
 
   <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 23, 2, 3],
-              backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
+        type: 'bar',
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 23, 2, 3],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
     });
   </script>
-  <!--  -->
+<!--  -->
   <script>
     var ctx = document.getElementById("testchart").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -289,7 +295,7 @@
         }
     });
   </script>
-  
+
   <?php 
   // BTN UBAH PASSWORD
     if( isset($_POST["submit_ubah_password"]) ) {
@@ -302,7 +308,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/indexstaf.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";
@@ -311,7 +317,7 @@
 
     // UBAH PROFILE
     if ( isset($_POST["submitUbahDataDiri_Pengguna"]) ) {
-      if(UbahDataDiri_Pengguna($_POST) > 0){
+      if(UbahDataDiri_Pengguna($_POST) >= 0){
         echo "
           <script>
             Swal.fire({
@@ -320,7 +326,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/indexstaf.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";
@@ -333,7 +339,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/indexstaf.php';             
+              window.location.href = 'index.php';             
             });
           </script>
         ";

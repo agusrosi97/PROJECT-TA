@@ -1,19 +1,19 @@
 		<!-- modal gellery -->
-		<div class="modal fade and carousel slide" id="lightbox-modal" data-ride="carousel">
+		<div class="modal fade and carousel slide" id="lightbox-modal--1">
 	    <div class="modal-dialog modal-dialog-centered modal-lg">
-	      <div class="modal-content">
+	      <div class="modal-content shadow">
 	        <div class="modal-body p-1 rounded">
 	          <ol class="carousel-indicators">
-					    <li data-target="#lightbox-modal" data-slide-to="0" class="active"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="1"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="2"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="3"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="4"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="5"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="6"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="7"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="8"></li>
-					    <li data-target="#lightbox-modal" data-slide-to="9"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="0" class="active"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="1"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="2"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="3"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="4"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="5"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="6"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="7"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="8"></li>
+					    <li data-target="#lightbox-modal--1" data-slide-to="9"></li>
 					  </ol>
 					  <div class="carousel-inner" id="my-gallery">
 					    <div class="carousel-item active">
@@ -48,11 +48,11 @@
 					    </div>
 	          </div>
 	          <!-- /.carousel-inner -->
-	          <a class="carousel-control-prev" href="#lightbox-modal" role="button" data-slide="prev">
+	          <a class="carousel-control-prev" href="#lightbox-modal--1" role="button" data-slide="prev">
 					    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 					    <span class="sr-only">Previous</span>
 					  </a>
-					  <a class="carousel-control-next" href="#lightbox-modal" role="button" data-slide="next">
+					  <a class="carousel-control-next" href="#lightbox-modal--1" role="button" data-slide="next">
 					    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 					    <span class="sr-only">Next</span>
 					  </a>
@@ -64,7 +64,7 @@
 
 	  <div class="modal fade and carousel slide" id="lightbox-modal--2">
 	    <div class="modal-dialog modal-dialog-centered modal-lg">
-	      <div class="modal-content">
+	      <div class="modal-content shadow">
 	        <div class="modal-body p-1 rounded">
 	          <ol class="carousel-indicators">
 					    <li data-target="#lightbox-modal--2" data-slide-to="0" class="active"></li>

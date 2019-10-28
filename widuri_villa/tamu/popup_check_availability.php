@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <form action="tamu/kamar_pilihan.php" method="POST">
+        <form action="" method="POST">
 
           <!-- nampung hari -->
           <input type="hidden" id="jumlahHari" name="jml_hari">
@@ -29,17 +29,12 @@
                 <div class="row">
                   <div class="form-tamu-inpt col-md-8 pr-0">
                     <select id="adlt" class="form-control" name="adlt" required>
-                      <option>Adult</option>
+                      <option value="">Adult</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
-                      <!-- <option value="3">3</option>
+                      <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option> -->
                     </select>
                   </div>
                   <div class="col-md-3 d-flex align-items-center">
@@ -59,14 +54,9 @@
                       <option value="0">Children</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
-                      <!-- <option value="3">3</option>
+                      <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option> -->
                     </select>
                   </div>
                   <div class="col-md-3 d-flex align-items-center">

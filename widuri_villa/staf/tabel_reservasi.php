@@ -3,8 +3,9 @@ session_start();
 
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
-  }if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
-    header('location: ../admin/indexadmin.php');
+  }
+  elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
+    header('location: ../admin/index.php');
     exit;
   }
 
@@ -64,14 +65,14 @@ session_start();
               <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
             </li>
             <li>
-              <a href="indexstaf.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
               <a href="tabel_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Data Tamu</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
             </li>
             <li class="active">
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
@@ -102,7 +103,7 @@ session_start();
           <div class="page-header float-right">
             <div class="page-title">
                 <ol class="breadcrumb text-right">
-                  <li><a href="indexstaf.php">Dashboard</a></li>
+                  <li><a href="index.php">Dashboard</a></li>
                   <li class="active">Reservasi</li>
                 </ol>
             </div>
@@ -118,9 +119,8 @@ session_start();
             <thead>
               <tr class="text-nowrap">
                 <th>No</th>
-                <th>Id Reservasi</th>
+                <th>Id</th>
                 <th>Nama Tamu</th>
-                <th>Pmbyrn Kamar</th>
                 <th>Nama Staf</th>
                 <th>Checkin</th>
                 <th>Checkout</th>
@@ -133,30 +133,35 @@ session_start();
             </thead>
             <tbody>
               <?php
-                $sql = "
-                  SELECT tbl_reservasi.*, tbl_transaksi_pembayaran.*, tbl_tamu.*, tbl_pengguna.*
-                  FROM tbl_reservasi
-                  LEFT JOIN tbl_transaksi_pembayaran ON tbl_reservasi.id_transaksi = tbl_transaksi_pembayaran.id_transaksi
-                  LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu
-                  LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
-                  ";
+                $sql = query("SELECT tbl_reservasi.*, tbl_tamu.*, tbl_pengguna.*
+                        FROM tbl_reservasi
+                        LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
+                        LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu
+                ");
                 $no=1;
-                  foreach ($conn->query($sql) as $row) {
+                  foreach ($sql as $row) {
                   ?>
-                  <tr>
+                  <tr class="text-nowrap">
                     <td>#<?php echo $no; ?></td>
                     <td>RSV-0<?php echo $row['id_reservasi']; ?></td>
                     <td><?php echo $row['nama_tamu']; ?></td>
-                    <td><?php echo $row['total_pembayaran_kamar']; ?></td>
                     <td><?php echo $row['username_pengguna']; ?></td>
                     <td class="text-nowrap"><?php echo $row['tgl_checkin']; ?></td>
                     <td class="text-nowrap"><?php echo $row['tgl_checkout']; ?></td>
                     <td><?php echo $row['jumlah_hari']; ?></td>
-                    <td><?php echo $row['jumlah_orang_dewasa']; ?></td>
+                    <td><?php echo $row['jumlah_orang']; ?></td>
                     <td><?php echo $row['jumlah_anak']; ?></td>
-                    <td><?php echo $row['status']; ?></td>
+                    <td>
+                      <?php $cekstatus = mysqli_query($conn, "SELECT status FROM tbl_transaksi_pembayaran WHERE id_tamu ='$row[id_tamu]'");
+                        if (mysqli_num_rows($cekstatus) === 1) {
+                          $baris = mysqli_fetch_assoc($cekstatus);
+                          $statusRes = $baris["status"];
+                          if ($statusRes === 'VALID') : ?><div class="btn btn-success py-0 px-1 rounded-circle"><i class="fas fa-check"></i></div><?php elseif ($statusRes == null) : ?>Menunggu<?php endif;
+                        }else{echo "GAK VALID";}
+                      ?>
+                     </td>
                     <td class="text-nowrap" align="center">
-                      <a href='' class='btn btn-primary rounded' data-toggle='modal' data-target='#popup_ubah' style="padding: 2px 4px 2px 4px;"><i class='fas fa-edit'></i></a>
+                      <button class='btn btn-primary rounded' data-toggle='modal' data-target='#popup_ubah' style="padding: 2px 4px 2px 4px;"><i class='fas fa-edit'></i></button>
                     </td>
                   </tr>
                   <?php
@@ -200,9 +205,11 @@ session_start();
 
       $('#StafTablesReservasi').DataTable({
         'language': {
-          'emptyTable': 'Tidak ada data Reservasi :('
+          'emptyTable': 'Tidak ada data Reservasi ☹'
         },
         'columns': [
+          null,
+          null,
           null,
           null,
           null,
@@ -237,7 +244,7 @@ session_start();
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_reservasi.php';             
+              window.location.href = 'tabel_reservasi.php';             
             });
           </script>
         ";
@@ -255,7 +262,7 @@ session_start();
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_reservasi.php';             
+              window.location.href = 'tabel_reservasi.php';             
             });
           </script>
         ";
@@ -268,7 +275,7 @@ session_start();
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_reservasi.php';             
+              window.location.href = 'tabel_reservasi.php';             
             });
           </script>
         ";

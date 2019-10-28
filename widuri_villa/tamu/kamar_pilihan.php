@@ -1,13 +1,31 @@
 <?php
-session_start();
+  session_start();
+  if (empty($_SESSION["pilihanKamar"])) :
+    header("location:../index.php");
+  endif;
 
-if (isset($_POST['inputReservasi'])) {
-	$ci = $_POST['ci'];
-	$co = $_POST['co'];
-	$jml = $_POST['jml_hari'];
-	$adt = $_POST['adlt'];
-	$cld = $_POST['child'];
-}
+  $tglCI = $_SESSION["pilihanKamar"]["tglCheckin"];
+  $tglCO =  $_SESSION["pilihanKamar"]["tglCheckout"];
+  $jmlHari = $_SESSION["pilihanKamar"]["jml_hari"];
+  $adlt = $_SESSION["pilihanKamar"]["adt"];
+  $cild = $_SESSION["pilihanKamar"]["cld"];
+
+  require '../koneksi/function_global.php';
+
+  $queryhargaKamar_1 = mysqli_query($conn, "SELECT harga_kamar FROM tbl_tipe_kamar WHERE id_tipe_kamar ='1'");
+  if(mysqli_num_rows($queryhargaKamar_1) === 1) :
+    $row = mysqli_fetch_assoc($queryhargaKamar_1);
+    $hargaKamar_tipe1 = $row["harga_kamar"];
+  else :
+    $hargaKamar_tipe1 = "0";
+  endif;
+  $queryhargaKamar_2 = mysqli_query($conn, "SELECT harga_kamar FROM tbl_tipe_kamar WHERE id_tipe_kamar ='2'");
+  if (mysqli_num_rows($queryhargaKamar_2) === 1) :
+    $row = mysqli_fetch_assoc($queryhargaKamar_2);
+    $hargaKamar_tipe2 = $row["harga_kamar"];
+  else :
+    $hargaKamar_tipe2 = "0";
+  endif;
 ?>
 
 <!DOCTYPE html>
@@ -15,33 +33,24 @@ if (isset($_POST['inputReservasi'])) {
   <head>
     <title>Widuri Villa</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">   
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="../assets/images/logo-w.png">
-
     <link rel="stylesheet" href="../assets/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/animate.css">
-    
     <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="../assets/css/lightgallery.min.css">
     <link rel="stylesheet" href="../assets/css/lg-transitions.css">
-
     <link rel="stylesheet" href="../assets/css/aos.css">
-
     <link rel="stylesheet" href="../assets/css/ionicons.min.css">
-
     <link rel="stylesheet" href="../assets/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="../assets/css/jquery.timepicker.css">
-
-    
     <link rel="stylesheet" href="../assets/css/flaticon.css">
     <link rel="stylesheet" href="../assets/css/icomoon.css">
     <link rel="stylesheet" href="../assets/vendor/fontawesome-free-5.10.2-web/css/all.css">
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    
+    <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/css/style.css">  
 		<script type="text/javascript">
       function jmlHari(){
         var tgl_masuk = new Date(document.getElementById("TM").value);
@@ -55,15 +64,13 @@ if (isset($_POST['inputReservasi'])) {
       }
     </script>
   </head>
-  <body>
-    
+  <body>  
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container-fluid">
 	      <a class="navbar-brand" href="index.php"><img src="../assets/images/logo.png" alt="widuri" width="79.5px" height="50px"></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
-
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="../index.php#home" class="nav-link">Home</a></li>
@@ -108,7 +115,7 @@ if (isset($_POST['inputReservasi'])) {
 	  </nav>
     <!-- END nav -->
     <!-- home -->
-    <div class="parallax-window hero-wrap--2 ftco-degree-bg" data-parallax="scroll" data-image-src="../assets/images/20180819_134434.jpg">
+    <!-- <div class="parallax-window hero-wrap--2 ftco-degree-bg" data-parallax="scroll" data-image-src="../assets/images/20180819_134434.jpg"> -->
       <div class="overlay"></div>
       <div class="container-fluid">
         <div class="row no-gutters slider-text--2 justify-content-center align-items-center">
@@ -132,52 +139,44 @@ if (isset($_POST['inputReservasi'])) {
         </div>
 
         <div class="row">
-          <div class="col-md-8 ftco-animate mb-3">
+          <div class="col-lg-8 ftco-animate mb-3">
 	          <div class="card border rounded shadow-sm p-3">
 
 							<!-- row image -->
 							<div class="row">
-	            	<div class="col-md-7 position-relative">
-	            		<div id="carouselExampleIndicators--2" class="carousel slide carousel-fade gambar-kamar" data-ride="carousel" data-target="#lightbox-modal--2" data-toggle="modal">
-									  <ol class="carousel-indicators">
-									    <li data-target="#carouselExampleIndicators--2" data-slide-to="0" class="active"></li>
-									    <li data-target="#carouselExampleIndicators--2" data-slide-to="1"></li>
-									    <li data-target="#carouselExampleIndicators--2" data-slide-to="2"></li>
-									    <li data-target="#carouselExampleIndicators--2" data-slide-to="3"></li>
-									    <li data-target="#carouselExampleIndicators--2" data-slide-to="4"></li>
-									  </ol>
-									  <div class="carousel-inner" id="my-gallery">
-									    <div class="carousel-item active">
-									      <img class="img-fluid" src="../assets/images/gallery8.jpg" alt="First slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery9.jpg" alt="Second slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery10.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery11.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery12.jpg" alt="Third slide">
-									    </div>
-									  </div>
-									</div>
-	            	</div>
+	            	<!-- SLIDER -->
+                <?php include 'sliderKamar_tipe1.php'; ?>
+                <!-- /SLIDER -->
 								<div class="col-md-5 position-relative daftar-fasilitas border-left">
 									<div class="border-bottom d-flex justify-content-between align-items-center">
 										<h4 class="">Tipe Satu</h4>
-										<h6 class="">Rp. 400.000,-/Hari</h6>
+										<?php if($hargaKamar_tipe1 === "0") : ?><h6>Dalam Pembaruan</h6><?php else : ?><h6 class=""><?= "Rp. ".number_format($hargaKamar_tipe1, 2, ",", ".").",-"; ?> /Hari</h6><?php endif; ?>
 									</div>
-									<ol>
-										<li>Satu kamar tidur</li>
-										<li>Kamar mandi</li>
-										<li>Kolam renag</li>
-										<li>Dapur</li>
-										<li>Wifi</li>
-									</ol>
-									<button class="btn btn-primary" style="width: 100%">PILIH</button>
+    							<div class="row">
+                    <div class="col-7">
+                      <ol>
+                        <li>Satu kamar tidur</li>
+                        <li>Kamar mandi</li>
+                        <li>Kolam renag</li>
+                        <li>Dapur</li>
+                        <li>Wifi</li>
+                      </ol>        
+                    </div>
+                    <div class="col-5 pl-0">
+                      <div class="form-row pt-sm-3 pr-1">
+                        <label class="pt-1 col-md-4">Qty</label> 
+                        <select name="" id="Kamar1" class="form-control inputangka col-md-8" disabled="true">
+                          <option>0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>                   
+                      </div>
+                    </div>       
+                  </div>
+									<button type="button" class="btn btn-primary" id="btnKamar_1" style="width: 100%">PILIH</button>
 								</div>
 	            </div>
 							<!-- /row images -->
@@ -186,68 +185,40 @@ if (isset($_POST['inputReservasi'])) {
 							
 							<!-- row images -->
 	            <div class="row">
-	            	<div class="col-md-7">
-	            		<div id="carouselExampleIndicators" class="carousel slide carousel-fade gambar-kamar" data-ride="carousel" data-target="#lightbox-modal" data-toggle="modal">
-									  <ol class="carousel-indicators">
-									    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="7"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="8"></li>
-									    <li data-target="#carouselExampleIndicators" data-slide-to="9"></li>
-									  </ol>
-									  <div class="carousel-inner" id="my-gallery">
-									    <div class="carousel-item active">
-									      <img class="img-fluid" src="../assets/images/gallery7.jpg" alt="First slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery3.jpg" alt="Second slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery1.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery2.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery4.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery13.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery14.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery15.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery16.jpg" alt="Third slide">
-									    </div>
-									    <div class="carousel-item">
-									      <img class="img-fluid" src="../assets/images/gallery17.jpg" alt="Third slide">
-									    </div>
-									  </div>
-									</div>
-	            	</div>
+                <!-- SLIDER -->
+	            	<?php include 'sliderKamar_tipe2.php'; ?>
+                <!-- /SLIDER -->
 								<div class="col-md-5 position-relative daftar-fasilitas border-left">
 									<div class="border-bottom d-flex justify-content-between align-items-center">
 										<h4 class="">Tipe Dua</h4>
-										<h6 class="">Rp. 800.000/Hari</h6>
+										<?php if($hargaKamar_tipe2 === "0") : ?><h6>Dalam Pembaruan</h6><?php else : ?><h6 class=""><?= "Rp. ".number_format($hargaKamar_tipe2, 2, ",", ".").",-"; ?> /Hari</h6><?php endif; ?>
 									</div>
-									<ol>
-										<li>Dua kamar tidur</li>
-										<li>Dua kamar mandi</li>
-										<li>Satu kolam renag</li>
-										<li>Dapur</li>
-										<li>Gazebo</li>
-										<li>Wifi</li>
-									</ol>
-									<button type="submit" name="submit" class="btn btn-primary" style="width: 100%" form="form_reservasi">PILIH</button>
+                  <div class="row">
+                    <div class="col-7">
+                      <ol>
+                        <li>Dua kamar tidur</li>
+                        <li>Dua kamar mandi</li>
+                        <li>Satu kolam renag</li>
+                        <li>Dapur</li>
+                        <li>Gazebo</li>
+                        <li>Wifi</li>
+                      </ol>
+                    </div>
+                    <div class="col-5 pl-0">
+                      <div class="form-row pt-sm-3 pr-1">
+                        <label class="pt-1 col-md-4">Qty</label> 
+                        <select name="" id="Kamar2" class="form-control inputangka col-md-8" disabled>
+                          <option>0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>                   
+                      </div>
+                    </div>       
+                  </div>
+									<button type="button" class="btn btn-primary" id="btnKamar_2" style="width: 100%">PILIH</button>
 								</div>
 	            </div>
 	            <!-- /row image -->
@@ -340,7 +311,7 @@ if (isset($_POST['inputReservasi'])) {
 	  <script src="../assets/js/jquery.min.js"></script>
 	  <script src="../assets/js/jquery-migrate-3.0.1.min.js"></script>
 	  <script src="../assets/js/popper.min.js"></script>
-	  <script src="../assets/js/bootstrap.min.js"></script>
+	  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
 	  <script type="text/javascript" src="../assets/js/parallax.js"></script>
 	  <script src="../assets/js/jquery.waypoints.min.js"></script>
 	  <script src="../assets/js/jquery.stellar.min.js"></script>
@@ -348,14 +319,40 @@ if (isset($_POST['inputReservasi'])) {
 	  <script type="text/javascript" src="../assets/vendor/fontawesome-free-5.10.2-web/js/all.js"></script>
 	  <script src="../assets/js/lightgallery-all.min.js"></script>
 	  <script src="../assets/js/aos.js"></script>
-	  <script src="../assets/js/jquery.animateNumber.min.js"></script>
 	  <script src="../assets/js/bootstrap-datepicker.js"></script>
 	  <script src="../assets/js/jquery.timepicker.min.js"></script>
 	  <script src="../assets/js/scrollax.min.js"></script>
 	  <script src="../assets/js/jquery.easing.min.js"></script>
-	  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> -->
-	  <!-- <script src="assets/js/google-map.js"></script> -->
 	  <script src="../assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      $('.inputangka').on('change',function(){
+        var JmlKamar1  = Number($('#Kamar1').val());
+        var JmlKamar2  = Number($('#Kamar2').val());
+        var JmlHari = Number($('#jumlahHari').val());
+        var hargaKamar_tipe1 = "<?php echo $hargaKamar_tipe1 ?>";
+        var hargaKamar_tipe2 = "<?php echo $hargaKamar_tipe2 ?>";
+        var TotHarga1 = JmlKamar1 * JmlHari * hargaKamar_tipe1;
+        var TotHarga2 = JmlKamar2 * JmlHari * hargaKamar_tipe2;
+        document.getElementById('total_harga').value = TotHarga1 + TotHarga2;
+        if ($('#total_harga').val() > "0") {
+          if ($('#btnPesan_reservasi').prop('disabled', true)){
+            $('#btnPesan_reservasi').prop('disabled', false);
+          }
+        }
+      });
+      $('#btnKamar_1').on('click', function(){
+        if($('#Kamar1').prop('disabled', true)){
+          $('#Kamar1').prop('disabled', false);
+        }
+      });
+      $('#btnKamar_2').on('click', function(){
+        if($('#Kamar2').prop('disabled', true)){
+          $('#Kamar2').prop('disabled', false);
+        }
+      });
+    </script>
     
   </body>
 </html>
+

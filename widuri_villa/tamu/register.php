@@ -40,16 +40,19 @@
     <div class="register-form px-5">
       <div class="position-relative form-tamu-register">
         <form method="POST" action="" enctype="multipart/form-data">
+          <button onclick="window.history.go(-1); return false;" type="button" class="btn btn-light position-absolute col-3 p-2 rounded shadow-sm text-secondary" style="z-index: 1; top: -20px; left: -30px;"><i class="fas fa-chevron-left"></i> Back</button>
           
+          <input type="hidden" name="tanpaFoto" value="">
+
           <div class="col-md-12 d-flex justify-content-center align-items-center">
-            <label for="imgInp" class="custom-file-upload">
+            <label for="img1" class="custom-file-upload">
               <div class="wrapper-avatar shadow">
                 <i class="fas fa-user-plus"></i>
-                <img id="blah" src="#" alt="" />
+                <img id="preview-img1" />
                 <span class="hover--img"></span>
               </div>
             </label>
-            <input id="imgInp" type="file" name="inp_foto_tamu">
+            <input type="file" id="img1" class="FotoUpload" name="inp_foto_tamu">
           </div>
 
           <div class="form-row">
@@ -89,7 +92,13 @@
 
           <div class="form-row">
 
-            <div class="form-group position-relative wrapper-inp-register col-md-6">
+            <div class="form-group position-relative wrapper-inp-register col-md-12">
+              <label>Address <sup class="harus-isi">*</sup></label>
+              <textarea class="form-control register-inp" placeholder="Your address" name="inp_alamat_tamu" required></textarea>
+              <span class="inp-focus"></span>
+            </div>
+
+            <div class="form-group position-relative wrapper-inp-register col-md-6 pt-3">
               <label>Password <sup class="harus-isi">*</sup></label>
               <input type="password" class="form-control register-inp" placeholder="Password" id="inp-pass--2" required>
               <span class="inp-focus"></span>
@@ -98,7 +107,7 @@
               </div>
             </div>
 
-            <div class="form-group position-relative wrapper-inp-register col-md-6">
+            <div class="form-group position-relative wrapper-inp-register col-md-6 pt-3">
               <label>Confirm Password <sup class="harus-isi">*</sup></label>
               <input type="password" class="form-control register-inp" placeholder="Password" id="inp-pass--3" name="inp_pass_tamu" required>
               <span class="inp-focus"></span>
@@ -108,20 +117,14 @@
               <span id="pesan" class="pesan_check"><i class="fas fa-check"></i></span>
             </div>
             
-            <div class="form-group position-relative wrapper-inp-register col-md-12">
-              <label>Address <sup class="harus-isi">*</sup></label>
-              <textarea class="form-control register-inp" placeholder="Your address" name="inp_alamat_tamu" required></textarea>
-              <span class="inp-focus"></span>
-            </div>
-
           </div>
 
-          <div class="text-center">
+          <div class="text-center pt-3">
             <button type="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30" id="btn-register" name="submit">REGISTER</button>
           </div>
   
-          <div class="register-link mt-lg-4 text-center">
-            <p>Login <a href="../tamu/login.php">Here !</a></p>
+          <div class="register-link mt-4 text-center">
+            <p>Login <a href="../tamu/login.php" class="text-primary">Here !</a></p>
           </div>
 
         </form>
@@ -154,8 +157,8 @@
             showConfirmButton: false,
             timer: 2000
           }).then(function() {
-            window.location.href = '../tamu/login.php';
-          })
+            javascript:history.go(-2);
+          });
         </script>
       ";
     } else {

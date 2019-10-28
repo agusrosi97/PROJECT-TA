@@ -98,7 +98,15 @@ h1, h2, h3, h4, h5,
   top: 20px;
   left: 0;
   right: 0;
-  z-index: 3; }
+  z-index: 10; }
+.ftco-navbar-light.pembayaran-header {
+  background: rgb(38, 38, 38) !important;
+  position: absolute;
+  top: 0px !important;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
   @media (max-width: 991.98px) {
     .ftco-navbar-light {
       background: #000000d9 !important;
@@ -2049,10 +2057,11 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endCo
   }
 
 .scroll-ca {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    display: none;
+  z-index: 9;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: none;
 }
 
 @media (max-width: 500px) {
@@ -2090,7 +2099,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endCo
     content: "";
 }
 #carouselExampleIndicators{
-  transition: all .30s;
+  transition: all .30s !important;
 }
 #carouselExampleIndicators:hover.gambar-kamar::after, #carouselExampleIndicators--2:hover.gambar-kamar::after{
   content: '';
@@ -2103,13 +2112,15 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endCo
   opacity: .5;
   z-index: 1;
   cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all .25s;
 }
 .gambar-kamar::before, .gambar-kamar::after {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
   -ms-transition: all 0.3s ease-out;
   -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
+  transition: all 0.25s ease-out;
   
 }
 #carouselExampleIndicators:hover.gambar-kamar::before, #carouselExampleIndicators--2:hover.gambar-kamar::before {
@@ -2333,9 +2344,9 @@ footer a:hover, footer a:focus { color: #fff; border-bottom: 1px dotted #fff; }
   
 }
 
-@media (max-width: 415px) {
+@media (max-width: 715px) {
   
-  h1, h2 { font-size: 32px; }
+  h1, h2 { font-size: 32px !important; }
 
 }
 
@@ -2384,5 +2395,22 @@ footer a:hover, footer a:focus { color: #fff; border-bottom: 1px dotted #fff; }
   }
   .wrapper-avatar--2 {
     margin-left: auto !important;
+  }
+}
+
+hr.liner:last-child {
+  display: none !important;
+}
+
+.dropdown-menu.dropdown-menu-right.shadow {
+  top: 37px;
+}
+
+.left-border {
+  border-left: 1px solid #dee2e6;
+}
+@media (max-width: 767px) {
+  .col-md-5.position-relative.daftar-fasilitas.left-border{
+    border-left: none !important;
   }
 }

@@ -16,7 +16,7 @@
 
   require '../koneksi/function_global.php';
 
-  $TableData_pengguna = query("SELECT * FROM tbl_pengguna ORDER BY id_pengguna DESC");
+  $TableData_tipeKamar = query("SELECT * FROM tbl_tipe_kamar");
   $AdaOwner = query("SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna = 'owner'");
 
   include '../query/queryDataDiri_pengguna.php';
@@ -33,7 +33,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Data Pengguna</title>
+  <title>Data Tipe Kamar</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -73,12 +73,12 @@
             <li>
               <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
             </li>
-            <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
-            <li class="active">
-              <a href=""> <i class="menu-icon fas fa-users"></i>Data Pengguna</a>
-            </li>
+            <h3 class="menu-title">MASTER DATA</h3>
             <li>
-              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_pengguna.php"> <i class="menu-icon fas fa-users"></i>Data Pengguna</a>
+            </li>
+            <li class="active">
+              <a href=""> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
             </li>
           </ul>
         </div>
@@ -94,7 +94,7 @@
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
-              <h1>Data Pengguna</h1>
+              <h1>Data Tipe Kamar</h1>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
             <div class="page-title">
                 <ol class="breadcrumb text-right">
                   <li><a href="index.php">Dashboard</a></li>
-                  <li class="active">Data Pengguna</li>
+                  <li class="active">Tipe Kamar</li>
                 </ol>
             </div>
           </div>
@@ -114,46 +114,31 @@
 
         <div class="p-2 bg-light border rounded mb-5 shadow-sm">
 
-          <button class="btn btn-primary rounded mb-3 shadow-sm" data-toggle="modal" data-target="#popup_tambah_pengguna">Tambah</button>
+          <button class="btn btn-success rounded mb-3 shadow" data-toggle="modal" data-target="#popup_tambah_TipeKam">Tambah</button>
 
-          <table id="OwnerTabelPengguna" class="table table-striped rounded table-responsive" width="100%">
+          <table id="OwnerTabelPengguna" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
               <tr class="text-nowrap">
-                <th style="display: none;"></th>
+                <th class="d-none"></th>
                 <th>Aksi</th>
                 <th>Id</th>
-                <th>Foto</th>
-                <th>Nama Pengguna</th>
-                <th>Akses</th>
-                <th>Email</th>
-                <th>Tgl Lahir</th>
-                <th>No Telp</th>
-                <th>JK</th>
-                <th>Alamat</th>
-                <th>Status</th>
+                <th>Jumlah Kamar</th>
+                <th>Harga Kamar</th>
               </tr>
             </thead>
             <tbody>
-              <?php $i = 1; ?>
-              <?php foreach( $TableData_pengguna as $row ) : ?>
+              <?php foreach( $TableData_tipeKamar as $row ) : ?>
+
               <tr class="text-nowrap">
-                <td style="display: none;"></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna" style="border-left: 1px solid rgba(255,99,132,1) !important;"<?php else : ?><?php endif; ?>>
-                  <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_pengguna_<?php echo $row["id_pengguna"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
+                <td class="d-none"></td>
+                <td>
+                  <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_TipeKam_<?php echo $row["id_tipe_kamar"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
                 </td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>>P-<?php echo $row["id_pengguna"]; ?></td>
-                <td class="py-2 pl-2 <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>statusPengguna<?php else : ?><?php endif; ?>"><div class="data_foto"><img src="../assets/foto_pengguna/<?php echo $row["foto_pengguna"] ?>" alt=""></div></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["username_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["hak_akses_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["email_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= date_format(new Datetime($row["tgl_lahir_pengguna"]), "d F Y"); ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["no_telp_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["jk_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["alamat_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna" style="border-right: 1px solid rgba(255,99,132,1) !important; color: rgba(255,99,132,1);"<?php else : ?><?php endif; ?>><?= $row["status_pengguna"]; ?></td>
+                <td><?= $row["id_tipe_kamar"]; ?></td>
+                <td><?= $row["jumlah_kamar"]; ?></td>
+                <td><?= "Rp. ".number_format($row["harga_kamar"], 2, ",", ".").",-"; ?></td>
               </tr>
-              <?php include 'modal_ubah_pengguna.php'; ?>
-              <?php $i++; ?>
+              <?php include 'modal_ubah_tipeKamar.php'; ?>
               <?php endforeach;
               ?>
             </tbody> 
@@ -163,7 +148,7 @@
 
       <?php include '../footer/footer.html'; ?>
       <?php include 'modal_ubah_password.php'; ?>
-      <?php include 'modal_tambah_pengguna.php'; ?>
+      <?php include 'modal_tambah_tipeKamar.php'; ?>
       <?php include 'modalUbah_DataDiriAdmin.php'; ?>
     <!-- /#right-panel -->
     </div>
@@ -179,27 +164,18 @@
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
-
   <script>
     (function($) {
       $('.custom-select1').click(function() {
         $('.custom-select1').addClass('black');
       });
-
       $('#OwnerTabelPengguna').DataTable({
         'language': {
-          'emptyTable': 'Tidak ada data Penggua :('
+          'emptyTable': 'Belum ada data tipe kamar! ☹'
         },
         'columns': [
           null,
           { 'orderable': false },
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           null
@@ -207,7 +183,6 @@
       });
     } )(jQuery);
   </script>
-
   <script type="text/javascript">
     (function($) {
       $('#menuToggle').click(function() {
@@ -215,12 +190,10 @@
       });
     } )(jQuery);
   </script>
-
-
-  <!-- /////// BTN UBAH TAMBAH /////// -->
+  <!-- TAMBAH TIPE KAMAR -->
   <?php 
-    if( isset($_POST["submit"]) ) {
-      if( AdminTambahPengguna($_POST) > 0 ) {
+    if( isset($_POST["submit_tambahTPKamar"]) ) {
+      if( AdminTambahTipeKamar($_POST) > 0 ) {
         echo "
           <script>
             Swal.fire({
@@ -229,7 +202,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = 'tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
@@ -242,16 +215,15 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = 'tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
       }
     }
-
-    // EDIT FORM
-    if( isset($_POST["submit_ubah"]) ) {  
-      if( AdminUbahPengguna($_POST) >= 0 ) {
+    // EDIT TIPE KAMAR
+    if( isset($_POST["submit_ubahTPKamar"]) ) {  
+      if( AdminUbahTipeKamar($_POST) > 0 ) {
         echo "
           <script>
             Swal.fire({
@@ -260,7 +232,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = 'tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
@@ -273,13 +245,12 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = 'tabel_pengguna.php';
+              window.location.href = 'tabel_tipeKamar.php';
             });
           </script>
         ";
       }
     }
-
     // BTN UBAH PASSWORD
     if( isset($_POST["submit_ubah_password"]) ) {
       if( ubah_pass_pengguna($_POST) > 0 ) {
@@ -291,16 +262,15 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = 'tabel_pengguna.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
       }
     }
-
     // Ubah Profile
     if ( isset($_POST["submitUbahDataDiri_Pengguna"]) ) {
-      if(UbahDataDiri_Pengguna($_POST) >= 0){
+      if(UbahDataDiri_Pengguna($_POST) > 0){
         echo "
           <script>
             Swal.fire({
@@ -309,7 +279,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = 'tabel_pengguna.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
@@ -322,15 +292,12 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = 'tabel_pengguna.php';             
+              window.location.href = 'tabel_tipeKamar.php';             
             });
           </script>
         ";
       }
     }
-
   ?>
-
 </body>
-
 </html>

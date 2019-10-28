@@ -3,28 +3,19 @@
 
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
-  }  
-  if ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "owner") ) {
-    header('location: ../owner/indexowner.php');
-    exit;
-  }elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
-    header('location: ../admin/indexadmin.php');
+  }
+  elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admin") ) {
+    header('location: ../admin/index.php');
     exit;
   }
 
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-  // $namanya = $_SESSION["loggedin_pengguna"]["nama_pengguna"];
-  // $tglLahirnya = $_SESSION["loggedin_pengguna"]["tgl_lahir_pengguna"];
-  // $noTelpnya = $_SESSION["loggedin_pengguna"]["no_telp_pengguna"];
-  // $jknya = $_SESSION["loggedin_pengguna"]["jk_pengguna"];
-  // $alamatnya = $_SESSION["loggedin_pengguna"]["alamat_pengguna"];
-  // $fotonya = $_SESSION["loggedin_pengguna"]["foto_pengguna"];
 
   require '../koneksi/function_global.php';
 
-  $data_tamu = query("SELECT * FROM tbl_tamu ORDER BY id_tamu DESC");
+  $data_tamu = mysqli_query($conn, "SELECT * FROM tbl_tamu ORDER BY id_tamu DESC");
   
   include '../query/queryDataDiri_pengguna.php';
 ?>
@@ -72,14 +63,14 @@
               <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
             </li>
             <li>
-              <a href="indexstaf.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li class="active">
               <a href=""> <i class="menu-icon far fa-address-card"></i>Data Tamu</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
             </li>
             <li >
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
@@ -109,7 +100,7 @@
           <div class="page-header float-right">
             <div class="page-title">
               <ol class="breadcrumb text-right">
-                <li><a href="indexstaf.php">Dashboard</a></li>
+                <li><a href="index.php">Dashboard</a></li>
                 <li class="active">Data Tamu</li>
               </ol>
             </div>
@@ -123,10 +114,10 @@
 
           <button class="btn btn-success rounded mb-3 shadow" data-toggle="modal" data-target="#popup_tambah_tamu">Tambah</button>
 
-          <table id="StafTablesTamu" class="table table-striped rounded table-responsive" width="100%">
+          <table id="StafTablesTamu" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
               <tr class="text-nowrap">
-                <td style="display: none;"></td>
+                <td class="d-none"></td>
                 <th class="text-center">Aksi</th>
                 <th>#</th>
                 <th>Foto</th>
@@ -139,9 +130,10 @@
               </tr>
             </thead>
             <tbody>
-                <?php foreach( $data_tamu as $row ) : ?>
+              <?php $i = 1; ?>
+              <?php foreach( $data_tamu as $row ) : ?>
                 <tr class="text-nowrap">
-                  <td style="display: none;"></td>
+                  <td class="d-none"></td>
                   <td>
                     <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_tamu_<?php echo $row["id_tamu"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
                   </td>
@@ -155,9 +147,8 @@
                   <td><?= $row["alamat_tamu"]; ?></td>
                 </tr>
                 <?php include 'modal_ubah_tamu.php'; ?>
-                <?php endforeach;
-              ?>
-
+                <?php $i++; ?>
+              <?php endforeach; ?>
             </tbody> 
           </table>
         </div>    
@@ -187,41 +178,38 @@
   <?php include 'confirmLogout.php'; ?>
 
   <script>
-    (function($) {
-      $('.custom-select1').click(function() {
-        $('.custom-select1').addClass('black');
-      });
+    $('.custom-select1').click(function() {
+      $('.custom-select1').addClass('black');
+    });
 
-      $('#StafTablesTamu').DataTable({
-        'language': {
-          'emptyTable': 'Tidak ada data Tamu :('
-        },
-        'columns': [
-        
-          null,
-          { "orderable": false },
-          null,
-          { "orderable": false },
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      });
-    } )(jQuery);
+    $('#StafTablesTamu').DataTable({
+      'language': {
+        'emptyTable': 'Tidak ada data Tamu ☹'
+      },
+      'columns': [
+        null,
+        { "orderable": false },
+        null,
+        { "orderable": false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    });
+
+    $('#menuToggle').click(function() {
+      $('.menu-admin').toggleClass('hide');
+    });
+
+    <?php if(mysqli_num_rows($data_tamu) >= 1) : ?>
+      $('#StafTablesTamu').addClass('table-responsive');
+    <?php endif; ?>
   </script>
 
-  <script type="text/javascript">
-    (function($) {
-      $('#menuToggle').click(function() {
-        $('.menu-admin').toggleClass('hide');
-      });
-    } )(jQuery);
-  </script>
-
-  <!-- /////// BTN UBAH TAMBAH /////// -->
+  <!-- /////// BTN UBAH - TAMBAH /////// -->
   <?php 
     if( isset($_POST["submit"]) ) {
       if( stafTambahTamu($_POST) > 0 ) {
@@ -233,7 +221,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';
+              window.location.href = 'tabel_tamu.php';
             });
           </script>
         ";
@@ -246,7 +234,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';
+              window.location.href = 'tabel_tamu.php';
             });
           </script>
         ";
@@ -264,7 +252,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';
+              window.location.href = 'tabel_tamu.php';
             });
           </script>
         ";
@@ -277,7 +265,7 @@
               showConfirmButton: false,
               timer: 2000
             }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';
+              window.location.href = 'tabel_tamu.php';
             });
           </script>
         ";
@@ -295,7 +283,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';             
+              window.location.href = 'tabel_tamu.php';             
             });
           </script>
         ";
@@ -313,7 +301,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';             
+              window.location.href = 'tabel_tamu.php';             
             });
           </script>
         ";
@@ -326,7 +314,7 @@
               showConfirmButton: false,
               timer: 2000
               }).then(function() {
-              window.location.href = '../staf/tabel_tamu.php';             
+              window.location.href = 'tabel_tamu.php';             
             });
           </script>
         ";
