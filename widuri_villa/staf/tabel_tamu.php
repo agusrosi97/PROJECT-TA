@@ -76,7 +76,7 @@
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
             </li>
           </ul>
         </div>
@@ -88,7 +88,7 @@
       <?php include '../header/headerStaf.php'; ?>
       <!-- /HEADER -->
 
-      <div class="breadcrumbs">
+      <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
@@ -108,11 +108,11 @@
         </div>
       </div>
 
-      <div class="col-sm-12 mb-2" >
+      <div class="col-sm-12 mb-2">
 
-        <div class="p-2 bg-light border rounded mb-5 shadow-sm">
+        <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
 
-          <button class="btn btn-success rounded mb-3 shadow" data-toggle="modal" data-target="#popup_tambah_tamu">Tambah</button>
+          <button type="button" class="btn btn-primary mb-3 shadow-sm px-1 py-0 btn-tmbh" data-toggle="modal" data-target="#popup_tambah_tamu" style="font-size: 20px"><i class="fas fa-plus"></i></button>
 
           <table id="StafTablesTamu" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
@@ -171,17 +171,11 @@
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <!-- PENTING PENTING PENTING PENTING PENTING PENTING PENTING PENTING -->
-
-
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
 
   <script>
-    $('.custom-select1').click(function() {
-      $('.custom-select1').addClass('black');
-    });
-
     $('#StafTablesTamu').DataTable({
       'language': {
         'emptyTable': 'Tidak ada data Tamu ☹'
@@ -203,10 +197,6 @@
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
     });
-
-    <?php if(mysqli_num_rows($data_tamu) >= 1) : ?>
-      $('#StafTablesTamu').addClass('table-responsive');
-    <?php endif; ?>
   </script>
 
   <!-- /////// BTN UBAH - TAMBAH /////// -->

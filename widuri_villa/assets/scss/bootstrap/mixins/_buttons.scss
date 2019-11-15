@@ -31,6 +31,7 @@
     color: color-yiq($background);
     background-color: $background;
     border-color: $border;
+    cursor: no-drop;
     // Remove CSS gradients if they're enabled
     @if $enable-gradients {
       background-image: none;

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Datepicker - Select a Date Range</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  
+</head>
+<body>
+ 
+<input class='fromdate' />
+<input class='todate' />
+<input class='calculated' />   //Result will be here
+<input class='minim' />
+ 
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript">
+$('.fromdate').datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true,
+});
+$('.todate').datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true,
+});
+$('.fromdate').datepicker().bind("change", function () {
+    var minValue = $(this).val();
+    minValue = $.datepicker.parseDate("dd/mm/yy", minValue);
+    $('.todate').datepicker("option", "minDate", minValue);
+    calculate();
+});
+$('.todate').datepicker().bind("change", function () {
+    var maxValue = $(this).val();
+    maxValue = $.datepicker.parseDate("dd/mm/yy", maxValue);
+    $('.fromdate').datepicker("option", "maxDate", maxValue);
+    calculate();
+});
+var dateToday = new Date();
+var dates = $(".fromdate, .todate").datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    minDate: dateToday,
+    onSelect: function(selectedDate) {
+        var option = this.class == "fromdate" ? "minDate" : "maxDate",
+            instance = $(this).data("datepicker"),
+            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+        dates.not(this).datepicker("option", option, date);
+    }
+});
+
+function calculate() {
+    var d1 = $('.fromdate').datepicker('getDate');
+    var d2 = $('.todate').datepicker('getDate');
+    var oneDay = 24*60*60*1000;
+    var diff = 0;
+    if (d1 && d2) {
+  
+      diff = Math.round(Math.abs((d2.getTime() - d1.getTime())/(oneDay)));
+    }
+    $('.calculated').val(diff);
+    $('.minim').val(d1)
+}
+</script>
+</body>
+</html>

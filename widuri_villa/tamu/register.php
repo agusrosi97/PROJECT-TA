@@ -153,7 +153,7 @@
         <script>
           Swal.fire({
             type: 'success',
-            title: 'Terimakasih sudah bergabung bersama kami.',
+            title: 'Terimakasih telah bergabung bersama kami. 🙂',
             showConfirmButton: false,
             timer: 2000
           }).then(function() {

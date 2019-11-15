@@ -38,7 +38,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">Rp</span>
                   </div>
-                  <input id="rp" class="form-control" type="number" min="1" name="inp_hargaKamar" placeholder="Rp">
+                  <input id="rp" class="form-control" type="number" min="1" name="inp_hargaKamar" placeholder="Rp" required>
                 </div>
               </div>
             </div>

@@ -38,7 +38,6 @@
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/js/bootstrap.js"></script>
-  <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
 
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>

@@ -1,4 +1,4 @@
-<div class="modal fade" id="popup_ubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+<div class="modal fade" id="popup_ubah_<?=$row["id_reservasi"]?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,7 +11,7 @@
         <!-- asdasd -->
           <div class="container-contact100">
           <div class="wrap-contact100">
-            <form class="contact100-form validate-form" method="" action="">
+            <form class="contact100-form validate-form" method="POST" action="">
 
               <label class="label-input100" for="name">Nama Tamu</label>
               <div class="wrap-input100 validate-input">
@@ -65,7 +65,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" style="border-radius: 2px;" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="submit" style="border-radius: 2px;" class="btn btn-primary">Simpan</button>
+        <button type="submit" style="border-radius: 2px;" class="btn btn-primary" name="ubah_reservasi">Simpan</button>
       </div>
       </form>
     </div>

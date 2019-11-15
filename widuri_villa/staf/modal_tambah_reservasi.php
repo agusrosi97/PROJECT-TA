@@ -1,5 +1,5 @@
 <div class="modal fade" id="popup_tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalScrollableTitle">Tambah Data Reservasi</h5>
@@ -11,7 +11,7 @@
         <!-- asdasd -->
           <div class="container-contact100">
           <div class="wrap-contact100">
-            <form class="contact100-form validate-form" method="POST" action="proses_tambah_reservasi.php">
+            <form class="contact100-form validate-form" method="POST" action="">
               <label class="label-input100" for="name">Nama Tamu</label>
               <a href=""></a>
               <div class="wrap-input100 validate-input">
@@ -64,7 +64,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" style="border-radius: 2px;" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="submit" style="border-radius: 2px;" class="btn btn-primary">Simpan</button>
+        <button type="submit" style="border-radius: 2px;" class="btn btn-primary" name="simpan_reservasi">Simpan</button>
       </div>
       </form>
     </div>

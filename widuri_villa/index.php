@@ -1,33 +1,50 @@
 <?php
   session_start();
-
   require 'koneksi/function_global.php';
-
+  $cekKET = mysqli_query($conn, "SELECT SUM(jumlah_kamar) AS kettKamar FROM tbl_tipe_kamar");
+  $bar = mysqli_fetch_assoc($cekKET);
+  $SUMKettKam = $bar["kettKamar"];
   if (isset($_POST['inputReservasi'])) :
-
-    $ci = $_POST['ci'];
-    $co = $_POST['co'];
-    $jml = $_POST['jml_hari'];
-    $adt = $_POST['adlt'];
-    $cld = $_POST['child'];
-
-    $_SESSION["pilihanKamar"] = array();
-    $_SESSION["pilihanKamar"]["tglCheckin"] = $ci;
-    $_SESSION["pilihanKamar"]["tglCheckout"] = $co;
-    $_SESSION["pilihanKamar"]["jml_hari"] = $jml;
-    $_SESSION["pilihanKamar"]["adt"] = $adt;
-    $_SESSION["pilihanKamar"]["cld"] = $cld;
-
-    header("location:tamu/kamar_pilihan_BARU2.php");
+    if ($SUMKettKam <= 0 OR empty($_POST['ci'] AND $_POST['co'])) :
+      echo "
+        <script type='text/javascript' src='assets-2/js/jquery-3.3.1.js'></script>
+        <link rel='stylesheet' href='assets/css/sweetalert2.min.css'>
+        <script type='text/javascript' src='assets/js/sweetalert2.min.js'></script>
+        <script>
+          $( document ).ready(function() {
+            Swal.fire({
+              type: 'error',
+              title: 'Maaf, kamar saat ini tidak tersedia!',
+              showConfirmButton: false,
+              timer: 2000  
+            }).then(function() {
+              window.location.href = 'index.php';
+            })
+          });
+        </script>
+      ";
+    else :
+      $ci = $_POST['ci'];
+      $co = $_POST['co'];
+      $jml = $_POST['jml_hari'];
+      $adt = $_POST['adlt'];
+      $cld = $_POST['child'];
+      $_SESSION["pilihanKamar"] = array();
+      $_SESSION["pilihanKamar"]["tglCheckin"] = $ci;
+      $_SESSION["pilihanKamar"]["tglCheckout"] = $co;
+      $_SESSION["pilihanKamar"]["jml_hari"] = $jml;
+      $_SESSION["pilihanKamar"]["adt"] = $adt;
+      $_SESSION["pilihanKamar"]["cld"] = $cld;
+      header("location:tamu/kamar_pilihan_BARU3.php");
+    endif;
   endif;
-
   if (!empty($_SESSION["loggedin"])) :
     $id = $_SESSION["loggedin"]["id_tamu"];
     $cekTamu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE id_tamu = '$id'");
-    if (mysqli_num_rows($cekTamu) === 1 ) {
+    if (mysqli_num_rows($cekTamu) === 1 ) :
       $rowT = mysqli_fetch_assoc($cekTamu);
       $fotoT = $rowT["foto_tamu"];
-    }
+    endif;
   endif;
 ?>
 <!DOCTYPE html>
@@ -51,19 +68,8 @@
     <link rel="stylesheet" href="assets/vendor/fontawesome-free-5.10.2-web/css/all.css">
     <link rel="stylesheet" href="assets-2/bootstrap_4.3.1/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    
-    <script type="text/javascript">
-      function jmlHari(){
-        var tgl_masuk = new Date(document.getElementById("TM").value);
-        var tgl_keluar = new Date(document.getElementById("TK").value);
-        return parseInt((tgl_keluar - tgl_masuk) / (24 * 3600 * 1000));
-      }
-      function hitungHari(){
-        if(document.getElementById("TK")){
-          document.getElementById("jumlahHari").value=jmlHari();
-        } 
-      }
-    </script>
+    <link rel='stylesheet' href='assets/css/sweetalert2.min.css'>
+    <link rel='stylesheet' href='assets/css/jquery-ui.min.css'>
   </head>
   <body>
     
@@ -106,7 +112,7 @@
 	  </nav>
     <!-- END nav -->
     <!-- home -->
-    <div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home">
+    <!-- <div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home"> -->
       <div class="overlay"></div>
       <div class="container-fluid">
         <div class="row no-gutters slider-text justify-content-center align-items-center">
@@ -244,7 +250,7 @@
     <!-- /Gallery -->
     
     <!-- Contact -->
-    <footer class="page-section ftco-footer ftco-section ftco-no-pb" id="contact">
+    <footer class="page-section ftco-footer ftco-section" id="contact">
       <div class="container-fluid">
         <div class="row justify-content-center">
           <div class="col-md-12 heading-section text-center ftco-animate mb-5">
@@ -321,6 +327,7 @@
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
     <script type="text/javascript" src="assets/js/parallax.js"></script>
     <script src="assets/js/jquery.waypoints.min.js"></script>
@@ -333,5 +340,52 @@
     <script src="assets/js/scrollax.min.js"></script>
     <script src="assets/js/jquery.easing.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script type='text/javascript' src='assets/js/sweetalert2.min.js'></script>
+    <script>
+      function clikb() {
+        Swal.fire({
+          type: 'error',
+          title: 'Kamar tidak tersedia!',
+          showConfirmButton: false
+          }).then(function() {
+          window.location.href = 'tabel_reservasi.php';             
+        })
+      };
+      $('#TM').datepicker({
+        minDate : 0,
+        dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true,
+      });
+      $('#TK').datepicker({
+        minDate : 0,
+        dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true,
+      });
+      $('#TM').datepicker().bind("change", function () {
+        var minValue = $(this).val();
+        minValue = $.datepicker.parseDate("dd-mm-yy", minValue);
+        $('#TK').datepicker("option", "minDate", minValue);
+        calculate();
+      });
+      $('#TK').datepicker().bind("change", function () {
+        var maxValue = $(this).val();
+        maxValue = $.datepicker.parseDate("dd-mm-yy", maxValue);
+        $('#TM').datepicker("option", "maxDate", maxValue);
+        calculate();
+      });
+      function calculate() {
+        var d1 = $('#TM').datepicker('getDate');
+        var d2 = $('#TK').datepicker('getDate');
+        var oneDay = 24*60*60*1000;
+        var diff = 0;
+        if (d1 && d2) {
+          diff = Math.round(Math.abs((d2.getTime() - d1.getTime())/(oneDay)));
+        }
+        $('#jumlahHari').val(diff);
+      }; 
+      
+    </script>
   </body>
 </html>

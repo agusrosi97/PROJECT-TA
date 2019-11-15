@@ -1,5 +1,5 @@
 <?php
-session_start();
+  session_start();
 
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
@@ -41,6 +41,7 @@ session_start();
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
   <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
   <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="../assets/css/animate.css">
   <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
   <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
@@ -78,7 +79,7 @@ session_start();
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -91,7 +92,7 @@ session_start();
       <?php include '../header/headerStaf.php'; ?>
       <!-- /HEADER -->
 
-      <div class="breadcrumbs">
+      <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
@@ -111,15 +112,15 @@ session_start();
         </div>
       </div>
 
-      <div class="col-sm-12" >
+      <div class="col-sm-12 mb-3">
 
-        <div class="p-2 bg-light border rounded mb-5">
-          <button class="btn btn-success rounded mb-3" data-toggle="modal" data-target="#popup_tambah">Tambah</button>
-          <table id="StafTablesReservasi" class="table table-striped table-responsive" width="100%">
-            <thead>
-              <tr class="text-nowrap">
-                <th>No</th>
-                <th>Id</th>
+        <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
+          <button class="btn btn-primary mb-3 shadow-sm btn-tmbh" data-toggle="modal" data-target="#popup_tambah"><i class="fas fa-plus"></i></button>
+          <table id="StafTablesReservasi" class="table table-hover table-responsive" width="100%">
+            <thead class="thead-dark">
+              <tr class="text-nowrap text-center">
+                <th class="d-none"></th>
+                <th>Id Res</th>
                 <th>Nama Tamu</th>
                 <th>Nama Staf</th>
                 <th>Checkin</th>
@@ -134,15 +135,16 @@ session_start();
             <tbody>
               <?php
                 $sql = query("SELECT tbl_reservasi.*, tbl_tamu.*, tbl_pengguna.*
-                        FROM tbl_reservasi
-                        LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
-                        LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu
+                      FROM tbl_reservasi
+                      LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
+                      LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu 
+                      ORDER BY id_reservasi DESC
                 ");
                 $no=1;
                   foreach ($sql as $row) {
                   ?>
-                  <tr class="text-nowrap">
-                    <td>#<?php echo $no; ?></td>
+                  <tr class="text-nowrap text-center">
+                    <td class="d-none"></td>
                     <td>RSV-0<?php echo $row['id_reservasi']; ?></td>
                     <td><?php echo $row['nama_tamu']; ?></td>
                     <td><?php echo $row['username_pengguna']; ?></td>
@@ -151,17 +153,33 @@ session_start();
                     <td><?php echo $row['jumlah_hari']; ?></td>
                     <td><?php echo $row['jumlah_orang']; ?></td>
                     <td><?php echo $row['jumlah_anak']; ?></td>
-                    <td>
-                      <?php $cekstatus = mysqli_query($conn, "SELECT status FROM tbl_transaksi_pembayaran WHERE id_tamu ='$row[id_tamu]'");
-                        if (mysqli_num_rows($cekstatus) === 1) {
-                          $baris = mysqli_fetch_assoc($cekstatus);
-                          $statusRes = $baris["status"];
-                          if ($statusRes === 'VALID') : ?><div class="btn btn-success py-0 px-1 rounded-circle"><i class="fas fa-check"></i></div><?php elseif ($statusRes == null) : ?>Menunggu<?php endif;
-                        }else{echo "GAK VALID";}
+                    <td class="text-center">
+                      <?php
+                        $cekstatus = mysqli_query($conn, "SELECT * FROM tbl_transaksi_pembayaran WHERE id_transaksi = $row[id_reservasi]");
+                        $baris = mysqli_fetch_assoc($cekstatus);
+                        $statusRes = $baris["status"];
+                        if ($statusRes === "VALID") : ?>
+                          <div class="btn btn-success py-0 px-1 rounded" title="Status transaksi valid" data-toggle="tooltip" style="cursor: help;">
+                            <i class="fas fa-check"></i> Diterima
+                          </div>
+                        <?php elseif ($statusRes === null) : ?>
+                          <div class="btn btn-secondary py-0 px-1 rounded" title="Status transaksi Belum divalidasi" onclick="window.location.href='tabel_transaksi.php'" data-toggle="tooltip">
+                            <i class="far fa-clock"></i> Menunggu
+                          </div>
+                        <?php else : ?>
+                          <div class="btn btn-danger py-0 px-1 rounded" title="Status transaksi tidak valid" style="cursor: help;" data-toggle="tooltip">
+                            <i class="fas fa-times"></i> Ditolak
+                          </div>
+                        <?php endif;
                       ?>
-                     </td>
+                    </td>
                     <td class="text-nowrap" align="center">
-                      <button class='btn btn-primary rounded' data-toggle='modal' data-target='#popup_ubah' style="padding: 2px 4px 2px 4px;"><i class='fas fa-edit'></i></button>
+                      <?php if($statusRes === "VALID" || "GAK VALID") : ?>
+                      <?php endif; ?>
+                      <?php if($statusRes === null) : ?>
+                        <button class='btn btn-primary px-2 py-1 rounded' data-toggle='modal' data-target='#popup_ubah_<?=$row["id_reservasi"]?>'><span data-toggle="tooltip" title="Ubah data reservasi"><i class='fas fa-edit'></i></span>
+                        </button>
+                      <?php endif; ?>
                     </td>
                   </tr>
                   <?php
@@ -183,22 +201,18 @@ session_start();
   <!-- Right Panel -->
   </div>
 
-  <!-- PENTING PENTING PENTING PENTING PENTING PENTING PENTING PENTING -->
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/js/jquery.waypoints.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-  <!-- PENTING PENTING PENTING PENTING PENTING PENTING PENTING PENTING -->
-
-
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
 
   <script>
-    (function($) {
       $('.custom-select1').click(function() {
         $('.custom-select1').addClass('black');
       });
@@ -218,18 +232,14 @@ session_start();
           null,
           null,
           null,
+          // null,
           { 'orderable': false }
         ]
       });
-    } )(jQuery);
-  </script>
-  <script type="text/javascript">
-    (function($) {
       $('#menuToggle').click(function() {
         $('.menu-admin').toggleClass('hide');
       });
 
-    } )(jQuery);
   </script>
 
   <?php 
@@ -280,6 +290,38 @@ session_start();
           </script>
         ";
       }
+    }
+    if( isset($_POST["simpan_reservasi"]) ) {
+      // if( ubah_pass_pengguna($_POST) >= 0 ) {
+        echo "
+          <script>
+            Swal.fire({
+              type: 'success',
+              title: 'Data berhasil ditambahkan!',
+              showConfirmButton: false,
+              timer: 2000
+              }).then(function() {
+              window.location.href = 'tabel_reservasi.php';             
+            });
+          </script>
+        ";
+      // }
+    }
+    if( isset($_POST["ubah_reservasi"]) ) {
+      // if( ubah_pass_pengguna($_POST) >= 0 ) {
+        echo "
+          <script>
+            Swal.fire({
+              type: 'success',
+              title: 'Data berhasil diubah!',
+              showConfirmButton: false,
+              timer: 2000
+              }).then(function() {
+              window.location.href = 'tabel_reservasi.php';             
+            });
+          </script>
+        ";
+      // }
     }
   ?>
 

@@ -16,6 +16,18 @@
   require '../koneksi/function_global.php';
 
   include '../query/queryDataDiri_pengguna.php';
+
+  $hitungJmlTamu = mysqli_query($conn, "SELECT * FROM tbl_tamu");
+  $OutputTamu = mysqli_num_rows($hitungJmlTamu);
+
+  $hitungJmlKamar = mysqli_query($conn, "SELECT sum(jumlah_kamar) AS sisaKamar FROM tbl_tipe_kamar");
+  $jmlKamar = mysqli_fetch_assoc($hitungJmlKamar);
+  $OutputKamar = $jmlKamar["sisaKamar"];
+
+  $hitungJmlReservasi = mysqli_query($conn, "SELECT * FROM tbl_reservasi");
+  $Outputreservasi = mysqli_num_rows($hitungJmlReservasi);
+
+  $hitung
 ?>
 
 <!doctype html>
@@ -37,6 +49,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
   <link rel="stylesheet" href="../assets-2/css/style.css">
+  <link rel="stylesheet" href="../assets-2/css/Chart.min.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -67,7 +80,7 @@
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -80,7 +93,7 @@
       <?php include '../header/headerStaf.php'; ?>
       <!-- /HEADER -->
 
-      <div class="breadcrumbs">
+      <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
@@ -91,201 +104,103 @@
         <div class="col-sm-8">
           <div class="page-header float-right">
             <div class="page-title">
-                <ol class="breadcrumb text-right">
-                  <li class="active">Dashboard</li>
-                </ol>
+              <ol class="breadcrumb text-right">
+                <li class="active">Dashboard</li>
+              </ol>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="content mt-3">
-        <div class="row">
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-1">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                  <i class="fa fa-cog"></i>
+      <div class="content mt-1">
+        <div class="col-sm-12 mb-4 px-0">
+          <div class="card-group">
+            <div class="card col-md-6 no-padding bg-flat-color-10 mr-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tamu.php'">
+              <div class="card-body">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fa fa-users"></i>
                 </div>
-                <h4 class="mb-0">
-                  <span class="count">25</span>
-                </h4>
-                <p class="text-light">Jumlah pengunjung</p>
-
-                <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                      
+                <div class="h4 mb-0 text-light">
+                  <span class="count"><?=$OutputTamu;?></span>
                 </div>
-
-              </div>
-
-            </div>
-          </div>
-          <!--/.col-->
-
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-2">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                  <i class="fa fa-cog"></i>                            
-                </div>
-                <h4 class="mb-0">
-                  <span class="count">Rp. 5.680.000</span>
-                </h4>
-                <p class="text-light">Jumlah Transaksi</p>
-
-                <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                    
-                </div>
+                <small class="text-light text-uppercase font-weight-bold">Pengunjung</small>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
             </div>
-          </div>
-            <!--/.col-->
-
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-3">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                   <i class="fa fa-cog"></i>
+            <div class="card col-md-6 no-padding bg-flat-color-8 mx-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
+              <div class="card-body">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fas fa-home"></i>
                 </div>
-                <h4 class="mb-0">
-                    <span class="count">25</span>
-                </h4>
-                <p class="text-light">Jumlah reservasi</p>
-
+                <div class="h4 mb-0 text-light">
+                  <span class="count"><?=$OutputKamar;?></span>
+                </div>
+                <small class="text-light text-uppercase font-weight-bold">Jumlah kamar terkini</small>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
-
-              <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                  
+            </div>
+            <div class="card col-md-6 no-padding bg-flat-color-9 mx-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_reservasi.php'">
+              <div class="card-body">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fas fa-luggage-cart"></i>
+                </div>
+                <div class="h4 mb-0 text-light">
+                  <span class="count"><?=$Outputreservasi;?></span>
+                </div>
+                <small class="text-light text-uppercase font-weight-bold">Total reservasi</small>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
+              </div>
+            </div>
+            <div class="card col-md-6 no-padding bg-flat-color-7 ml-lg-1 rounded shadow-sm dash-card">
+              <div class="card-body">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="h4 mb-0 text-light">5:34:11</div>
+                <small class="text-light text-uppercase font-weight-bold">Avg. Time</small>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
             </div>
           </div>
-        </div><!--/.col-->
+        </div>
 
         <!--/.col-->
         <div class="row mb-5">
-          <div class="col-md-6">
+          <div class="col-md-6 pr-xl-1">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body shadow-sm">
                 <div class="row">
-                  <canvas id="myChart"></canvas>
+                  <canvas id="chartResrvasi"></canvas>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 pl-xl-1">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body shadow-sm">
                 <div class="row">
-                  <canvas id="testchart"></canvas>
+                  <canvas id="chartTransaksi"></canvas>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div> <!-- .content -->
-
-      <!-- footer -->
-      
-      <!-- footer -->
       <?php include 'modal_ubah_password.php'; ?>
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
       <?php include '../footer/footer.html'; ?>
-    </div><!-- /#right-panel -->
-  <!-- Right Panel -->
+    </div>
   </div>
     
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
   <script src="../assets-2/js/main.js"></script>
-
-  <script src="../assets-2/js/dashboard.js"></script>
-  <script src="../assets-2/js/Chart.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
+  <script type="text/javascript" src="../assets-2/js/Chart.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-
   <?php include 'confirmLogout.php'; ?>
-
-  <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 23, 2, 3],
-              backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-    });
-  </script>
-  <!--  -->
-  <script>
-    var ctx2 = document.getElementById("testchart").getContext('2d');
-    var myChart = new Chart(ctx2, {
-        type: 'line',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 23, 2, 3],
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
-    });
-  </script>
-  
+  <?php include 'chartJs/chart.php'; ?>
   <?php 
   // BTN UBAH PASSWORD
     if( isset($_POST["submit_ubah_password"]) ) {

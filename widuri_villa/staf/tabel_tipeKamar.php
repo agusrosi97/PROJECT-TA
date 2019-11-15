@@ -82,7 +82,7 @@
               <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
             </li>
           </ul>
         </div>
@@ -94,7 +94,7 @@
       <?php include '../header/headerStaf.php'; ?>
       <!-- /HEADER -->
 
-      <div class="breadcrumbs">
+      <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
@@ -114,16 +114,12 @@
         </div>
       </div>
 
-      <div class="col-sm-12 mb-2" >
+      <div class="col-sm-12 mb-5">
 
-        <div class="p-2 bg-light border rounded mb-5 shadow-sm">
-
-          <div class="d-flex">
-            <button class="btn btn-primary rounded mb-3 shadow-sm" id="aa">Tambah</button>
-          </div>
+        <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
           <table id="TableTipeKamar" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
-              <tr class="text-nowrap">
+              <tr class="text-nowrap text-center">
                 <th class="d-none"></th>
                 <th>Aksi</th>
                 <th>Foto</th>
@@ -137,7 +133,7 @@
               <?php $i = 3; ?>
               <?php foreach( $TableData_tipeKamar as $row ) : ?>
               <?php $centangArray = explode(", ",$row['fasilitas']); ?>
-                <tr>
+                <tr class="text-center text-nowrap">
                   <td class="d-none"></td>
                   <td>
                     <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_Ubah_TipeKam_<?=$row["id_tipe_kamar"];?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
@@ -176,47 +172,23 @@
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
   <script>
-    $('#aa').on('click', function() {
-      Swal.fire({
-        type: 'question',
-        title: 'Ada kamar baru?',
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Tidak'
-      }).then(result => {
-      if (result.value) {
-        $('#popup_tambah_TipeKam').modal('show');
-      }
-      })
+    $('#TableTipeKamar').DataTable({
+      'language': {
+        'emptyTable': 'Belum ada data Tipe Kamar ☹'
+      },
+      'columns': [
+        null,
+        { 'orderable': false },
+        { 'orderable': false },
+        null,
+        null,
+        null,
+        { 'orderable': false }
+      ]
     });
-
-    (function($) {
-      $('.custom-select1').click(function() {
-        $('.custom-select1').addClass('black');
-      });
-      $('#TableTipeKamar').DataTable({
-        'language': {
-          'emptyTable': 'Belum ada data Tipe Kamar ☹'
-        },
-        'columns': [
-          null,
-          { 'orderable': false },
-          { 'orderable': false },
-          null,
-          null,
-          null,
-          { 'orderable': false }
-        ]
-      });
-    } )(jQuery);
-  </script>
-  <script type="text/javascript">
-    (function($) {
-      $('#menuToggle').click(function() {
-        $('.menu-admin').toggleClass('hide');
-      });
-    } )(jQuery);
+    $('#menuToggle').click(function() {
+      $('.menu-admin').toggleClass('hide');
+    });
   </script>
   <!-- TAMBAH TIPE KAMAR -->
   <?php 

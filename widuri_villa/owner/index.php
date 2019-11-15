@@ -20,6 +20,7 @@
 
   include '../query/queryDataDiri_pengguna.php';
 
+  $queryJmlTransaksi = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) FROM tbl_transaksi_pembayaran");
 ?>
 
 <!doctype html>
@@ -68,13 +69,13 @@
             </li>
             <h3 class="menu-title">LAPORAN</h3>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-address-card"></i>Laporan Data Tamu</a>
+              <a href="laporan_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Laporan Data Tamu</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-luggage-cart"></i>Laporan Reservasi</a>
+              <a href="laporan_Reservasi.php"> <i class="menu-icon fas fa-luggage-cart"></i>Laporan Reservasi</a>
             </li>
             <li>
-              <a href="#"> <i class="menu-icon fas fa-credit-card"></i>Laporan Transaksi</a>
+              <a href="laporan_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Laporan Transaksi</a>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -135,9 +136,15 @@
                   <i class="fa fa-cog"></i>                            
                 </div>
                 <h4 class="mb-0">
-                  <span class="count">Rp. 5.680.000</span>
+                  <span class="count">
+                    <?php 
+                      while ($rows1 = mysqli_fetch_array($queryJmlTransaksi)){
+                        echo "Rp.".number_format($rows1["sum(total_pembayaran_kamar)"],2,',','.').",-";
+                      }
+                    ?>
+                  </span>
                 </h4>
-                <p class="text-light">Jumlah Transaksi</p>
+                <p class="text-light">Jumlah Pendapatan</p>
 
                 <div class="chart-wrapper px-0" style="height:70px;" height="70">
                     
@@ -168,21 +175,36 @@
         </div><!--/.col-->
 
         <!--/.col-->
+        <!-- <div class="row">
+          <div class="col-md-6 px-0">
+            <form action="" method="POST">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <input type="date" class="form-control" name="tgl_awal">
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <input type="date" class="form-control" name="tgl_akhir">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary rounded shadow-sm">CARI</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div> -->
+
+
+
         <div class="row mb-5">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="card">
               <div class="card-body">
                 <div class="row">
                   <canvas id="myChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <canvas id="testchart"></canvas>
                 </div>
               </div>
             </div>
@@ -196,8 +218,7 @@
       <?php include 'modal_ubah_password.php'; ?>
       <?php include '../footer/footer.html'; ?>
       <?php include 'modalUbah_DataDiriOwner.php'; ?>
-    </div><!-- /#right-panel -->
-  <!-- Right Panel -->
+    </div>
   </div>
   
 
@@ -207,11 +228,7 @@
   <script src="../assets-2/js/main.js"></script>
 
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-  <script src="../assets-2/js/dashboard.js"></script>
-  <script src="../assets-2/js/Chart.js"></script>
-  <script src="../vendors-2/jqvmap/dist/jquery.vmap.min.js"></script>
-  <script src="../vendors-2/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-  <script src="../vendors-2/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script type="text/javascript" src="../assets-2/js/Chart.min.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <?php include 'confirmLogout.php'; ?>
@@ -221,49 +238,9 @@
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober","Nopember","Desember"],
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 23, 2, 3],
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
-    });
-  </script>
-<!--  -->
-  <script>
-    var ctx = document.getElementById("testchart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
+                label: 'Reservasi',
                 data: [12, 19, 3, 23, 2, 3],
                 backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

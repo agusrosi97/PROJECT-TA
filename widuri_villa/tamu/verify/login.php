@@ -1,7 +1,7 @@
 <?php 
   session_start();
   if ( !empty($_SESSION['loggedin']) ) :
-    header('location:../pembayaran.php');
+    header('location:../pesanan.php');
     exit;
   endif;
   require '../../koneksi/function_global.php';
@@ -53,7 +53,7 @@
             <button type="submit" name="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30">Sign in</button>
           </div>
           <div class="register-link mt-4 text-center">
-            <p>Don't have account ? <a href="../../tamu/register.php" class="text-primary"> Sign Up Here</a></p>
+            <p>Don't have account ? <a href="register.php" class="text-primary"> Sign Up Here</a></p>
           </div>
         </form>
       </div>
@@ -64,7 +64,6 @@
   <script type="text/javascript" src="../../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../../assets-2/js/bootstrap.js"></script>
-  <script type="text/javascript" src="../../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../../assets/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="../../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script src="../../assets-2/js/main.js"></script>
@@ -107,7 +106,7 @@
                 showConfirmButton: false,
                 timer : 2000
               }).then(function() {
-                window.location.href = '../pembayaran.php';
+                window.location.href = '../metodePembayaran.php';
               })
             </script>
           ";

@@ -6,7 +6,6 @@
 
 jQuery('.selectpicker').selectpicker;
 
-
 $('#menuToggle').on('click', function(event) {
 	$('body').toggleClass('open');
 	$('.f-copyright').toggleClass('open-footer');
@@ -31,17 +30,23 @@ $('.search-close').on('click', function(event) {
 	$('.search-trigger').parent('.header-left').removeClass('open');
 });
 
-// resize table
+// resize window to addClass tb-responsive
 $(window).width(function(){
   var win = $(this);
-  if (win.width() <= 700) {
-    $('#StafTablesTamu').addClass('table-responsive text-nowrap');
-    $('#TableTipeKamar').addClass('table-responsive text-nowrap');
+  if (win.width() <= 1306) {
+    $('#TableTipeKamar').addClass('table-responsive');
 	}
 	else{
-    // $('#StafTablesTamu').removeClass('table-responsive');
-    $('#TableTipeKamar').removeClass('table-responsive text-nowrap');
-  };
+    $('#TableTipeKamar').removeClass('table-responsive');
+  }
+});
+$(window).width(function(){
+  var win = $(this);
+  if (win.width() <= 1320) {
+    $('#StafTablesTamu').addClass('table-responsive text-nowrap');
+  }else{
+    $('#StafTablesTamu').removeClass('table-responsive text-nowrap');
+  }
 });
 
 // resize
@@ -51,7 +56,7 @@ $(window).on('load', function(){
     $('.coba').addClass('mb-5');
 	}else{
     $('.coba').removeClass('mb-5');
-  };
+  }
 } );
 
 
@@ -226,22 +231,6 @@ $('#inp-pass-baru, #inp-pass-confirm-tamu').on('keyup', function () {
 	}
 });
 
-// realtime show images after input
-// function readURL(input) {
-//   if (input.files && input.files[0]) {
-//      var reader = new FileReader();
-
-//      reader.onload = function (e) {
-//        $('#blah').attr('src', e.target.result);
-//      }
-
-//      reader.readAsDataURL(input.files[0]);
-//   }
-// }
-// $("#imgInp").change(function(){
-//   readURL(this);
-// });
-
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -258,7 +247,6 @@ $("input[type='file'].FotoUpload").change(function(){
   readURL(this);
 });
 
-
 // loader
 var loader = function() {
 	setTimeout(function() { 
@@ -269,3 +257,19 @@ var loader = function() {
 };
 loader();
 
+// Counter Number
+$('.count').each(function () {
+  $(this).prop('Counter',0).animate({
+    Counter: $(this).text()
+  }, {
+    duration: 3000,
+    easing: 'swing',
+    step: function (now) {
+      $(this).text(Math.ceil(now));
+    }
+  });
+});
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});

@@ -73,11 +73,8 @@ body {
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
-  transition: .3s all ease;
-  color: #e86ed0; }
+  transition: .3s all ease; }
   a:hover, a:focus {
-    text-decoration: none;
-    color: #e86ed0;
     outline: none !important; }
 
 h1, h2, h3, h4, h5,
@@ -88,9 +85,8 @@ h1, h2, h3, h4, h5,
 
 .container {
   max-width: 1250px; }
-
-.text-primary {
-  color: #e86ed0 !important; }
+.container.container-pembayaran {
+  max-width: 1050px; }
 
 .ftco-navbar-light {
   background: transparent !important;
@@ -2412,5 +2408,115 @@ hr.liner:last-child {
 @media (max-width: 767px) {
   .col-md-5.position-relative.daftar-fasilitas.left-border{
     border-left: none !important;
+  }
+  .pesananClass.left-border {
+    border-left: none !important;
+  }
+}
+.form-control[readonly].pem {
+  background-color: white !important;
+}
+
+@media (max-width: 400px) {
+  h4.total_harga {
+    font-size: 17px;
+  }
+}
+
+.uploadGambar {
+  overflow: hidden;
+}
+.uploadGambar img {
+  height: 100%;
+  width: auto;
+}
+
+.b-top-content {
+  border-top: 2.5px solid rgba(52, 58, 64, 0.65) !important;
+}
+
+.shadow-content {
+  transition: all 0.30s;
+  box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2) !important;
+}
+
+#TM:read-only, #TK:read-only {
+  background-color: white;
+}
+
+.checkbox-custom label{
+  cursor: pointer;
+
+}
+.checkbox-custom label:hover span:first-child{
+  color: #232323;
+  transition: all .30s;
+}
+
+.checkbox-custom label:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.checkbox-custom .cr {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-left: .5em;
+  transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.checkbox-custom label input[type="checkbox"]:checked + .cr {
+  color: #fff;
+  border-color: #007bff;
+  background-color: #007bff;
+}
+.checkbox-custom label input[type="checkbox"]:focus + .cr {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.checkbox-custom .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  left: 20%;
+}
+
+.checkbox-custom label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-custom label input[type="checkbox"] + .cr > .cr-icon {
+  transform: scale(3) rotateZ(-20deg);
+  opacity: 0;
+  transition: all .3s ease-in;
+}
+
+.checkbox-custom label input[type="checkbox"]:checked + .cr > .cr-icon {
+  transform: scale(1) rotateZ(0deg);
+  opacity: 1;
+}
+
+.checkbox-custom label input[type="checkbox"]:disabled + .cr {
+  opacity: .5;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  cursor: not-allowed;
+}
+@media (max-width: 500px){
+  table tr td h4, table tr th h4 {
+    font-size: 18px;
   }
 }

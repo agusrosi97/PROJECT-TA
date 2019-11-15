@@ -24,31 +24,20 @@
 ?>
 
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
 <html class="no-js" lang="en">
-<!--<![endif]-->
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Welcome Admin</title>
+  <title>Welcome <?php echo $namanya; ?></title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../vendors-2/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
-  <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
-  <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
-  <link rel="stylesheet" href="../assets-2/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-    
+  <link rel="stylesheet" href="../assets-2/css/style.css">
+  <link rel="stylesheet" href="../assets-2/css/Chart.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <div class="bungkus">
@@ -117,6 +106,22 @@
                 </h4>
                 <p class="text-light">Penguna</p>
                 <i class="fas fa-users" style="position: absolute; font-size: 70px; opacity: .7; right: 20px; top: 40px"></i>
+                <div class="chart-wrapper px-0" style="height:70px;" height="70"> 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-flat-color-1">
+              <div class="card-body pb-0">
+                <div class="dropdown float-right">
+                  <i class="fa fa-cog"></i>
+                </div>
+                <h4 class="mb-0">
+                  <span class="count">25</span>
+                </h4>
+                <p class="text-light">Jumlah Pengunjung</p>
+                <!-- <i class="fas fa-users" style="position: absolute; font-size: 70px; opacity: .7; right: 20px; top: 40px"></i> -->
 
                 <div class="chart-wrapper px-0" style="height:70px;" height="70">
                     
@@ -128,133 +133,150 @@
           </div>
         </div><!--/.col-->
 
-        <!--/.col-->
         <div class="row mb-5">
-          <div class="col-md-6">
+          <div class="col-md-6 pr-xl-1">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body shadow-sm">
                 <div class="row">
-                  <canvas id="myChart"></canvas>
+                  <canvas id="chartResrvasi"></canvas>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 pl-xl-1">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body shadow-sm">
                 <div class="row">
-                  <canvas id="testchart"></canvas>
+                  <canvas id="chartTransaksi"></canvas>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div> <!-- .content -->
-
-      <!-- footer -->
-      
-      <!-- footer -->
+      </div>
       <?php include 'modal_ubah_password.php'; ?>
       <?php include '../footer/footer.html'; ?>
       <?php include 'modalUbah_DataDiriAdmin.php'; ?>
-    </div><!-- /#right-panel -->
-  <!-- Right Panel -->
+    </div>
   </div>
-  
-
-  <script src="../vendors-2/jquery/dist/jquery.min.js"></script>
-  <script src="../vendors-2/popper.js/dist/umd/popper.min.js"></script>
-  <script src="../vendors-2/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
   <script src="../assets-2/js/main.js"></script>
-
-  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-  <script src="../assets-2/js/dashboard.js"></script>
-  <script src="../assets-2/js/Chart.js"></script>
-  <script src="../vendors-2/jqvmap/dist/jquery.vmap.min.js"></script>
-  <script src="../vendors-2/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-  <script src="../vendors-2/jqvmap/dist/maps/jquery.vmap.world.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
-  <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
+  <script type="text/javascript" src="../assets-2/js/Chart.min.js"></script>
+  <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
   <?php include 'confirmLogout.php'; ?>
-
   <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 23, 2, 3],
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
+    //chart Transaksi
+  var ctx = document.getElementById("chartResrvasi").getContext('2d');
+  ctx.height = 150;
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
+      datasets: [{
+        label: "Transaksi valid (<?php echo date('Y') ?>)",
+        data: [ 
+          <?php 
+            $data =  grafikValid(date('Y'));
+            for ($i=0; $i <count($data) ; ++$i) { 
+              echo  $data[$i].',';
             }
+          ?>
+        ],
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: "1",
+        backgroundColor: "rgba(54, 162, 235, 0.2)" }, {
+          label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
+          data: [ 
+            <?php 
+              $data =  grafikGakValid(date('Y'));
+              for ($i=0; $i <count($data) ; ++$i) { 
+                echo  $data[$i].',';
+              }
+            ?>
+          ],
+          borderColor: "rgba(255,99,132,1)",
+          borderWidth: "1",
+          backgroundColor: "rgba(255, 99, 132, 0.2)"
         }
-    });
-  </script>
-<!--  -->
-  <script>
-    var ctx = document.getElementById("testchart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 23, 2, 3],
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
+      ]
+    },
+    options: {
+      responsive: true,
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function(value) {if (value % 1 === 0) {return value;}}
+          }
+        }]
+      }
+    }
+  });
+    var ctx = document.getElementById("chartTransaksi").getContext('2d');
+  ctx.height = 150;
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
+      datasets: [{
+        label: "Transaksi valid (<?php echo date('Y') ?>)",
+        data: [ 
+          <?php 
+            $data =  grafikValid(date('Y'));
+            for ($i=0; $i <count($data) ; ++$i) { 
+              echo  $data[$i].',';
             }
+          ?>
+        ],
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: "1",
+        backgroundColor: "rgba(54, 162, 235, 0.2)" }, {
+          label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
+          data: [ 
+            <?php 
+              $data =  grafikGakValid(date('Y'));
+              for ($i=0; $i <count($data) ; ++$i) { 
+                echo  $data[$i].',';
+              }
+            ?>
+          ],
+          borderColor: "rgba(255,99,132,1)",
+          borderWidth: "1",
+          backgroundColor: "rgba(255, 99, 132, 0.2)"
         }
-    });
+      ]
+    },
+    options: {
+      responsive: true,
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function(value) {if (value % 1 === 0) {return value;}}
+          }
+        }]
+      }
+    }
+  });
   </script>
 
   <?php 
