@@ -1,5 +1,6 @@
 <?php
   session_start();
+  unset($_SESSION['LAST_ACTIVITY']);
   require 'koneksi/function_global.php';
   $cekKET = mysqli_query($conn, "SELECT SUM(jumlah_kamar) AS kettKamar FROM tbl_tipe_kamar");
   $bar = mysqli_fetch_assoc($cekKET);

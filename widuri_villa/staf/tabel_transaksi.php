@@ -73,13 +73,13 @@
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
+              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
+            </li>
+            <li>
               <a href="tabel_tamu.php"> <i class="menu-icon far fa-address-card"></i>Data Tamu</a>
             </li>
             <li>
               <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
-            </li>
-            <li >
-              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li class="active">
               <a href=""> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
@@ -118,7 +118,7 @@
 
         <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
 
-          <table id="StafTablesTamu" class="table rounded table-responsive table-hover" width="100%">
+          <table id="StafTablesTransaksi" class="table rounded table-responsive table-hover" width="100%">
             <thead class="thead-dark">
               <tr class="text-nowrap text-center">
                 <th class="d-none"></th>
@@ -128,6 +128,7 @@
                 <th>Nama Tamu</th>
                 <th>CheckIn</th>
                 <th>Checkout</th>
+                <th>Kamar</th>
                 <th>Total Bayar</th>
                 <th>Tanggal Transaksi</th>
                 <th>Jam</th>
@@ -163,10 +164,10 @@
                       <img src="../assets/foto_transaksi/<?php echo $row["foto_bukti_transaksi"] ?>" alt="" data-toggle="modal" data-target="#modalFoto_<?=$row["id_transaksi"];?>">
                     </div>
                   </td>
-
                   <td><?= $row["nama_tamu"]; ?></td>
                   <td><?= date_format(new Datetime($row["tgl_checkin"]), "d M Y"); ?></td>
                   <td><?= date_format(new Datetime($row["tgl_checkout"]), "d M Y"); ?></td>
+                  <td><?php if($row["tipe_kamar"] == '1') :?>Tipe Satu <?php elseif($row["tipe_kamar"] == '2'): ?>Tipe Dua <?php else :?><?=$row["tipe_kamar"]; ?><?php endif; ?></td>
                   <td>Rp.<?= number_format($row["total_pembayaran_kamar"],2,',','.'); ?>,-</td>
                   <td><?= date_format(new Datetime($date), "d M, Y"); ?></td>
                   <td><?= $time; ?></td>
@@ -181,9 +182,7 @@
           </table>
         </div>    
       </div>
-
       <div id="notif"></div>
-
       <?php include 'modal_ubah_password.php'; ?>
       <?php include '../footer/footer.html'; ?>
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
@@ -202,7 +201,8 @@
   <?php include 'confirmLogout.php'; ?>
 
   <script>
-    $('#StafTablesTamu').DataTable({
+    $('#StafTablesTransaksi').DataTable({
+      "pagingType": "full_numbers",
       'language': {
         'emptyTable': 'Tidak ada data Transaksi ☹'
       },
@@ -217,18 +217,19 @@
         null,
         null,
         null,
+        null,
         null
       ]
     });
 
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
+      $('#StafTablesTransaksi').toggleClass('table-responsive');
     });
-
-    <?php if(mysqli_num_rows($data_transaksi) >= 1) : ?>
-      $('#StafTablesTamu').addClass('table-responsive');
+    <?php if(mysqli_num_rows($data_transaksi) >= 0) : ?>
+      $('#StafTablesTransaksi').addClass('table-responsive');
     <?php else : ?>
-      $('#StafTablesTamu').removeClass('table-responsive');
+      $('#StafTablesTransaksi').removeClass('table-responsive');
     <?php endif; ?>
   </script>
 

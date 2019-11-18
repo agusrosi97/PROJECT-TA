@@ -27,6 +27,9 @@
   else:
     header('location:verify/login.php');
   endif;
+  if(!empty($_SESSION["lastID_Transaksi"])):
+    $lastIDTrans = $_SESSION["lastID_Transaksi"];
+  endif;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,10 +116,6 @@
                     <h4 class="total_harga"><b>Rp.<?php echo number_format($total_harga,2,',','.')?>,-</b></h4>
                   </div>
                   <h6>Pilih Rekening tujuan</h6>
-
-
-
-
                   <form action="" method="POST" id="formMetodePembayaran">
                     <!-- PENTING -->
                     <input type="hidden" value="<?php echo $id ?>" name="id_tamu">
@@ -252,7 +251,11 @@
           </div>
           <div class="modal-footer d-flex justify-content-center">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            <button type="submit" name="submitMetode" class="btn btn-primary px-4" form="formMetodePembayaran">Iya</button>
+            <?php if (!empty($lastIDTrans)): ?>
+              <button type="submit" name="submitUbahReservasiTamu" class="btn btn-primary px-4" form="formMetodePembayaran">Iya</button>
+            <?php else : ?>
+              <button type="submit" name="submitMetode" class="btn btn-primary px-4" form="formMetodePembayaran">Iya</button>
+            <?php endif ?>
           </div>
         </div>
       </div>
@@ -320,7 +323,12 @@
     </script>
     <?php 
       if( isset($_POST["submitMetode"]) ) {
-        if( PesananReservasiSementara($_POST) >= 0 ) {
+        if( PesananReservasiSementara($_POST) > 0 ) {
+          header('Location:pesanan2.php');
+        }
+      }
+      if ( isset($_POST["submitUbahReservasiTamu"]) ) {
+        if( UpdateReservasiSementara($_POST) > 0 ) {
           header('Location:pesanan2.php');
         }
       }

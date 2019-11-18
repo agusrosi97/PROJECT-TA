@@ -71,13 +71,13 @@
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
+              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
+            </li>
+            <li>
               <a href="tabel_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Data Tamu</a>
             </li>
             <li>
               <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
-            </li>
-            <li>
-              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
             </li>
             <li>
               <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
@@ -135,7 +135,7 @@
                 <div class="h4 mb-0 text-light">
                   <span class="count"><?=$OutputKamar;?></span>
                 </div>
-                <small class="text-light text-uppercase font-weight-bold">Jumlah kamar terkini</small>
+                <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
                 <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
             </div>

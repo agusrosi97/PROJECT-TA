@@ -4,12 +4,12 @@ $_SESSION["loggedin"] = '';
 $_SESSION["pilihanKamar"] = '';
 $_SESSION["privasi"] = '';
 $_SESSION["bank"]["pilih"] = '';
-session_unset($_SESSION["loggedin"], $_SESSION["pilihanKamar"], $_SESSION["privasi"], $_SESSION["bank"]["pilih"]);
-session_destroy($_SESSION["loggedin"], $_SESSION["pilihanKamar"], $_SESSION["privasi"], $_SESSION["bank"]["pilih"]);
-
-// setcookie('id', '', time() - 3600);
-// setcookie('key', '', time() - 3600);
-
+$_SESSION["lastID_Reservasi"] = '';
+$_SESSION["lastID_Transaksi"] = '';
+$_SESSION["confirmPesanan"] = '';
+$_SESSION['timeout'] = '';
+session_unset($_SESSION['timeout'], $_SESSION["loggedin"], $_SESSION["confirmPesanan"], $_SESSION["pilihanKamar"], $_SESSION["privasi"], $_SESSION["bank"]["pilih"], $_SESSION["lastID_Reservasi"], $_SESSION["lastID_Transaksi"]);
+session_destroy($_SESSION['timeout'], $_SESSION["loggedin"], $_SESSION["confirmPesanan"], $_SESSION["pilihanKamar"], $_SESSION["privasi"], $_SESSION["bank"]["pilih"], $_SESSION["lastID_Reservasi"], $_SESSION["lastID_Transaksi"]);
 header("Location: ../index.php");
 exit;
 ?>

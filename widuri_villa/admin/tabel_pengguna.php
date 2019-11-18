@@ -112,11 +112,11 @@
 
       <div class="col-sm-12 mb-2" >
 
-        <div class="p-2 bg-light border rounded mb-5 shadow-sm">
+        <div class="p-2 bg-white border rounded mb-5 shadow-sm">
 
           <button class="btn btn-primary rounded mb-3 shadow-sm" data-toggle="modal" data-target="#popup_tambah_pengguna">Tambah</button>
 
-          <table id="OwnerTabelPengguna" class="table table-striped rounded table-responsive" width="100%">
+          <table id="OwnerTabelPengguna" class="table table-hover rounded table-responsive" width="100%">
             <thead class="thead-dark">
               <tr class="text-nowrap">
                 <th style="display: none;"></th>
@@ -138,7 +138,7 @@
               <?php foreach( $TableData_pengguna as $row ) : ?>
               <tr class="text-nowrap">
                 <td style="display: none;"></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna" style="border-left: 1px solid rgba(255,99,132,1) !important;"<?php else : ?><?php endif; ?>>
+                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>>
                   <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_pengguna_<?php echo $row["id_pengguna"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
                 </td>
                 <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>>P-<?php echo $row["id_pengguna"]; ?></td>
@@ -150,7 +150,7 @@
                 <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["no_telp_pengguna"]; ?></td>
                 <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["jk_pengguna"]; ?></td>
                 <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna"<?php else : ?><?php endif; ?>><?= $row["alamat_pengguna"]; ?></td>
-                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna" style="border-right: 1px solid rgba(255,99,132,1) !important; color: rgba(255,99,132,1);"<?php else : ?><?php endif; ?>><?= $row["status_pengguna"]; ?></td>
+                <td <?php if($row["status_pengguna"] == 'Tidak Aktif') :?>class="statusPengguna" style="color: rgba(255,99,132,1);"<?php else : ?><?php endif; ?>><?= $row["status_pengguna"]; ?></td>
               </tr>
               <?php include 'modal_ubah_pengguna.php'; ?>
               <?php $i++; ?>

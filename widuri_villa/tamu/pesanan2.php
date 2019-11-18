@@ -1,17 +1,16 @@
 <?php
+  ob_start();
   session_start();
-  $inactive = 7200;
-  if( !isset($_SESSION['timeout']) )
-  $_SESSION['timeout'] = time() + $inactive; 
-  $session_life = time() - $_SESSION['timeout'];
-  if($session_life > $inactive)
-  {  session_destroy(); header("Location:../index.php"); }
-  $_SESSION['timeout']=time();
-
   require '../koneksi/function_global.php';
-
+  $id_kamar = $_SESSION["pilihanKamar"]["tipeKamarTerpilih"];
+  $JmlKamar = $_SESSION["pilihanKamar"]["jumlahKamarTerpilih"];
   $lastRes = $_SESSION["lastID_Reservasi"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
+  if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 7200)) {
+    KembalikanJumlahKamar();
+    unset($_SESSION["pilihanKamar"], $_SESSION["privasi"] ,$_SESSION["bank"]["pilih"], $_SESSION["lastID_Reservasi"], $_SESSION["lastID_Transaksi"], $_SESSION["confirmPesanan"]);
+  }
+  $_SESSION['LAST_ACTIVITY'] = time();
 
   if (empty($_SESSION["pilihanKamar"])) :
     header("location:../index.php");
@@ -19,8 +18,6 @@
   if (empty($_SESSION["privasi"] AND $_SESSION["bank"]["pilih"])) :
     header("Location:metodePembayaran.php");
   endif;
-  $id_kamar = $_SESSION["pilihanKamar"]["tipeKamarTerpilih"];
-  $JmlKamar = $_SESSION["pilihanKamar"]["jumlahKamarTerpilih"];
   $tglCI = $_SESSION["pilihanKamar"]["tglCheckin"];
   $tglCO =  $_SESSION["pilihanKamar"]["tglCheckout"];
   $jmlHari = $_SESSION["pilihanKamar"]["jml_hari"];
@@ -234,9 +231,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 px-0 mt-4 border-top d-flex align-self-center align-items-center flex-md-wrap">
+              <div class="col-md-12 px-0 mt-4 border-top d-flex align-self-center align-items-center flex-column justify-content-center flex-md-wrap">
                 <h3 class="mt-4">Sudah membayar?</h3>
-                <button type="button" id="BTN_PESANRESERVASI" name="BTN_PESANRESERVASI" class="btn btn-primary py-2 mt-4 font-weight-bold ml-md-3 shadow-sm">UPLOAD BUKTI TRANSAKSI</button>
+                <a href="uploadbuktitransaksi.php" id="btnUpload" class="btn btn-primary py-2 font-weight-bold ml-md-3 shadow-sm">UPLOAD BUKTI TRANSAKSI</a>
               </div>
             </div>
           </div>
@@ -257,7 +254,7 @@
             <h4 class="text-secondary">Yakin ingin mengubah data reservasi?</h4>
             <h5 class="text-danger"><i class="fas fa-exclamation-triangle text-warning"></i> Kamar yang Anda pilih sebelumnya mungkin akan berkurang atau hilang.</h5>
             <form action="" method="POST">
-              <input type="hidden" name="id_tamu" value="<?php echo $lastRes; ?>">
+              <input type="hidden" name="id_reservasi" value="<?php echo $lastRes; ?>">
               <input type="hidden" name="ketRes_Tamu" value="Online">
           </div>
           <div class="modal-footer d-flex justify-content-center">
@@ -297,59 +294,18 @@
           text: 'Anda akan kembali ke halaman Utama!',
           showConfirmButton: true
         }).then(function() {
-          window.location.href = '../index.php';
-        })
+          location.reload();
+        });
       };
-      function hideTitle() {
-        if($('#img1').val() == ""){
-          $('#titlePanduan').css('display', 'block');
-        }
-        else{
-          $('#titlePanduan').css('display', 'none');
-        }
-      };
-      function Eraser() {
-        $('#preview-img1').css('display','none');
-        document.getElementById('img1').value = "";
-        $('#titlePanduan').css('display', 'block');
-        $('#BTN_PESANRESERVASI').prop('disabled', true);
-        $('#UlangInputFotoBukti').css('display', 'none');
-        $('#BungkusFoto').tooltip("enable");
-      };
-      // function ConfirmEditReservasi() {
-      //   Swal.fire({
-      //     html: '<h3 class=text-secondary>Yakin ingin mengubah data pesanan Anda?</h3> <p class=text-danger>Kamar yang Anda pilih sebelumnya mungkin akan berkurang atau hilang.</p>',
-      //     type: 'warning',
-      //     showCancelButton: true,
-      //     focusConfirm: false,
-      //     confirmButtonText: 'Iya',
-      //     cancelButtonText: 'Batal'
-      //   }).then((result) => {
-      //     if (result.value) {
-      //       Swal.fire({
-      //         title:'Baik kami akan mengarahkan Anda!',
-      //         text: "Tunggu...",
-      //         imageUrl: "../assets/images/loading.svg",
-      //         imageSize: '800x800',
-      //         showConfirmButton: false,
-      //         timer: 2500
-      //       }).then(function() {
-      //         window.location.href = 'Kamar_pilihan_BARU3.php';
-      //       })
-      //     }
-      //   })
-      // };
-      function UnDisable() {
-        if (document.getElementById('img1').value !== "") {
-          document.getElementById('BTN_PESANRESERVASI').disabled = false;
-          $('#UlangInputFotoBukti').css('display', 'block');
-          $('#preview-img1').css('display','block');
-        }
-      };
-      $('#UlangInputFotoBukti').hover(function () {
-        $('#BungkusFoto').tooltip('disable');
-      });
     </script>
-    
+    <?php 
+      if( isset($_POST["submitEditReservasi"]) ) {
+        if( KembalikanJumlahKamar($_POST) > 0 ) {
+          unset($_SESSION['LAST_ACTIVITY']);
+          header('Location:kamar_pilihan_BARU3.php');
+        }
+      }
+    ?>
   </body>
 </html>
+<?php ob_end_flush(); ?>

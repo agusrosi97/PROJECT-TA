@@ -11,6 +11,15 @@ function query($query) {
 	return $rows;
 }
 
+function stringToInt($string){
+  $bar = (float) $string;
+  return $bar;
+};
+function hilangkanTitik($nilai) {
+  $a = str_replace(".", "", $nilai);
+  $a = stringToInt($a);
+  return $a;
+};
 ////////////////////////////////// ////////////////////////////////// 
 //                                TAMU                             //
 ////////////////////////////////// ////////////////////////////////// 
@@ -53,14 +62,8 @@ function register($data) {
 	} else {
 		$foto_tamu = upload();
 	}
-	
-
-	$query = "INSERT INTO tbl_tamu
-						VALUES
-					  (null, '$nama_tamu', '$tgl_lahir_tamu', '$email_tamu', '$password_enc', '$hp_tamu', '$almt_tamu', '$jk_tamu', '$foto_tamu')
-					";
+	$query = "INSERT INTO tbl_tamu VALUES (null, '$nama_tamu', '$tgl_lahir_tamu', '$email_tamu', '$password_enc', '$hp_tamu', '$almt_tamu', '$jk_tamu', '$foto_tamu')";
 	mysqli_query($conn, $query);
-	
 	$query_regis = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE email_tamu = '$email_tamu'");
 	if (mysqli_num_rows($query_regis) === 1) :
 		$row = mysqli_fetch_assoc($query_regis);
@@ -87,7 +90,6 @@ function upload() {
 		  </script>";
 		return false;
 	}
-
 	// cek apakah yang diupload adalah gambar
 	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
 	$ekstensiGambar = explode('.', $namaFile);
@@ -98,7 +100,6 @@ function upload() {
 		  </script>";
 		return false;
 	}
-
 	// cek jika ukurannya terlalu besar
 	if( $ukuranFile > 1000000 ) {
 		echo "<script>
@@ -106,7 +107,6 @@ function upload() {
 		  </script>";
 		return false;
 	}
-
 	// lolos pengecekan, gambar siap diupload
 	// generate nama gambar baru
 	$namaFileBaru = uniqid();
@@ -135,16 +135,7 @@ function ubah($data) {
 		$foto_tamu = upload();
 	}
 
-	$query = "UPDATE tbl_tamu SET
-				nama_tamu = '$nama_tamu',
-				tgl_lahir_tamu = '$tgl_lahir_tamu',
-				email_tamu = '$email_tamu',
-				no_telp_tamu = '$no_telp_tamu',
-				alamat_tamu = '$alamat_tamu',
-				jk_tamu = '$jk_tamu',
-				foto_tamu = '$foto_tamu'
-			  WHERE id_tamu = $id
-			";
+	$query = "UPDATE tbl_tamu SET nama_tamu = '$nama_tamu', tgl_lahir_tamu = '$tgl_lahir_tamu', email_tamu = '$email_tamu', no_telp_tamu = '$no_telp_tamu', alamat_tamu = '$alamat_tamu', jk_tamu = '$jk_tamu', foto_tamu = '$foto_tamu' WHERE id_tamu = $id";
 
 	mysqli_query($conn, $query);
 
@@ -153,28 +144,19 @@ function ubah($data) {
 
 function ubah_pass($data) {
 	global $conn;
-
 	$id = $data["inp_id_tamu"];
 	$password_tamu_lama = strtolower(htmlspecialchars($data["inp_pass_lama_tamu"]));
 	$password_tamu_baru = strtolower(htmlspecialchars($data["inp_pass_ubah_tamu"]));
-
 	$result = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE id_tamu = '$id'");
-
 	if( mysqli_num_rows($result) === 1 ) {
-
 		$row = mysqli_fetch_assoc($result);
-
 		if( password_verify($password_tamu_lama, $row["password_tamu"]) ) {
-
 			$password_tamu_terbaru_enc = password_hash($password_tamu_baru, PASSWORD_DEFAULT);
-
 			$query = "UPDATE tbl_tamu SET
 				password_tamu = '$password_tamu_terbaru_enc'
 			  WHERE id_tamu = $id
 			";
-
 			mysqli_query($conn, $query);
-
 			return mysqli_affected_rows($conn);	
 		}
 		else
@@ -259,6 +241,7 @@ function UpdateReservasiSementara($data) {
 	$updateJmlKamar = $_SESSION["pilihanKamar"]["jumlah_kamar"];
 	$updateJmlDewasa = $_SESSION["pilihanKamar"]["adt"];
 	$updateJmlAnak = $_SESSION["pilihanKamar"]["cld"];
+	$total_harga = hilangkanTitik($_SESSION["pilihanKamar"]["total_harga"]);
 	$lastRes = $_SESSION["lastID_Reservasi"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
 	$tipeKamarYangdiPilih = implode(", ", $_SESSION["pilihanKamar"]["tipeKamarTerpilih"]);
@@ -268,10 +251,10 @@ function UpdateReservasiSementara($data) {
 	$newDateCheckIn = date_format(new Datetime($updateCheckin), "Y-m-d");
 	$newDateCheckOut = date_format(new Datetime($updateCheckout), "Y-m-d");
 
-	$query = "UPDATE tbl_reservasi SET tgl_checkin = '$updateCheckin', tgl_checkout = '$updateCheckout', jumlah_hari = '$updatejmlHari', jumlah_kamar = '$updateJmlKamar', jumlah_orang = '$updateJmlDewasa', jumlah_anak = '$updateJmlAnak', jam_reservasi = '$jamSekarang' WHERE id_reservasi = '$lastRes'";
+	$query = "UPDATE tbl_reservasi SET tgl_checkin = '$newDateCheckIn', tgl_checkout = '$newDateCheckOut', jumlah_hari = '$updatejmlHari', jumlah_kamar = '$updateJmlKamar', jumlah_orang = '$updateJmlDewasa', jumlah_anak = '$updateJmlAnak', jam_reservasi = '$jamSekarang' WHERE id_reservasi = '$lastRes'";
 	if (mysqli_query($conn, $query)) :
-    $queryUpdtTrans = "INSERT INTO tbl_transaksi_pembayaran VALUES (null, '$id_tamu',null,'$last_id','$tipeKamarYangdiPilih','$total_harga','$jamSekarang',null,null,'$ketRes_Tamu')";
-  	if (mysqli_query($conn, $queryInpTrans)) :
+		$queryUpdtTrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '$tipeKamarYangdiPilih', total_pembayaran_kamar = '$total_harga', jam_transaksi = '$jamSekarang', ket_transaksi = '$ketRes_Tamu' WHERE id_transaksi = '$lastTrans'";
+  	if (mysqli_query($conn, $queryUpdtTrans)) :
   		foreach ($id_kamar as $key => $val) :
 				$queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
 				mysqli_query($conn, $queryUbahJMLKamar);
@@ -282,38 +265,40 @@ function UpdateReservasiSementara($data) {
 }
 
 // ========================================================================== //
-// ============================ PROSES RESERVASI ============================ //
+// ======================== KEMBALIKAN JUMLAH KAMAR ========================= //
 // ========================================================================== //
-function ProsesReservasi($data) {
+
+function KembalikanJumlahKamar() {
 	global $conn;
-	$id_tipe_kamar = $data["tipe_kamar"];
-	$id_tamu = $data["id_tamu"];
-	$total_harga = $data["inp_totalHarga"];
-	$checkIn = $data["inp_CekIn"];
-	$checkOut = $data["inp_CekOut"];
-	$dewasa = $data["inp_orgDewasa"];
-	$anak = $data["inp_Anak"];
-	$jumlah_kamar = $data["jumlah_kamar"];
-	$jumlahHari = $data["inp_totalTtanggal"];
-	$ketRes_Tamu = $data["ketRes_Tamu"];
-	$jamSekarang = date('Y-m-d H:i:s a', time());
+	$lastRes = $_SESSION["lastID_Reservasi"];
+  $lastTrans = $_SESSION["lastID_Transaksi"];
+	$id_kamar = $_SESSION["pilihanKamar"]["tipeKamarTerpilih"];
+	$TotKamarPerPilihan = $_SESSION["pilihanKamar"]["jumlahKamarTerpilih"];
+	$queryubahres = "UPDATE tbl_reservasi SET jumlah_kamar = '0' WHERE id_reservasi = '$lastRes'";
+	if (mysqli_query($conn, $queryubahres)) :
+		$queryubahtrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '-', total_pembayaran_kamar = '0' WHERE id_transaksi = '$lastTrans'";
+		if (mysqli_query($conn, $queryubahtrans)) :
+			foreach ($id_kamar as $key => $val) :
+				$queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+				mysqli_query($conn, $queryUbahJMLKamar);
+			endforeach;
+		endif;
+	endif;
+	return mysqli_affected_rows($conn);
+}
 
-	$newDateCheckIn = date_format(new Datetime($checkIn), "Y-m-d");
-	$newDateCheckOut = date_format(new Datetime($checkOut), "Y-m-d");
-
+// ========================================================================== //
+// ========================= PROSES UPLOAD BUKTI ============================ //
+// ========================================================================== //
+function TahapAkhirReservasi() {
+	global $conn;
+	$lastTrans = $_SESSION["lastID_Transaksi"];
 	$inpBuktiTransaksi = UploadFotoTransaksi();
 	if (!$inpBuktiTransaksi) {
 		return false;
 	}
-	$query = "INSERT INTO tbl_reservasi VALUES
-						(null, '$id_tamu',null,'$newDateCheckIn','$newDateCheckOut','$jumlahHari','$jumlah_kamar','$dewasa','$anak','$jamSekarang')
-				";
-	if (mysqli_query($conn, $query)) :
-    $last_id = mysqli_insert_id($conn);
-    $queryInpTrans = "INSERT INTO tbl_transaksi_pembayaran VALUES
-    				(null, '$id_tamu',null,'$last_id','$total_harga','$jamSekarang',null,'$inpBuktiTransaksi','$ketRes_Tamu')";
-  	mysqli_query($conn, $queryInpTrans);
-	endif;
+	$query = "UPDATE tbl_transaksi_pembayaran SET foto_bukti_transaksi = '$inpBuktiTransaksi' WHERE id_transaksi = '$lastTrans'";
+	mysqli_query($conn, $query);
 	return mysqli_affected_rows($conn);	
 }
 
@@ -354,6 +339,52 @@ function UploadFotoTransaksi(){
 ////////////////////////////////// ////////////////////////////////// 
 //                               STAF                              //
 ////////////////////////////////// //////////////////////////////////
+
+// ========================================================================== //
+// ========================= PROSES UPLOAD BUKTI ============================ //
+// ========================================================================== //
+
+function ReservasiTambah($data) {
+	global $conn;
+	date_default_timezone_set('Asia/Singapore');
+	$id_tamu = $data["id_tamu"];
+	$total_harga = $data["inp_totalHarga"];
+	$checkIn = $data["inp_CekIn"];
+	$checkOut = $data["inp_CekOut"];
+	$dewasa = $data["inp_orgDewasa"];
+	$anak = $data["inp_Anak"];
+	$jumlah_kamar = $data["jumlah_kamar"];
+	$jumlahHari = $data["inp_totalTtanggal"];
+	$jamSekarang = date('Y-m-d H:i:s a', time());
+	$ketRes_Tamu = $data["ketRes_Tamu"];
+	$pilihBank = $data["pilih_bank"];
+	$qq = 1;
+	$tipeKamarYangdiPilih = implode(", ", $_SESSION["pilihanKamar"]["tipeKamarTerpilih"]);
+	$id_kamar = $_SESSION["pilihanKamar"]["tipeKamarTerpilih"];
+	$TotKamarPerPilihan = $_SESSION["pilihanKamar"]["jumlahKamarTerpilih"];
+
+	$newDateCheckIn = date_format(new Datetime($checkIn), "Y-m-d");
+	$newDateCheckOut = date_format(new Datetime($checkOut), "Y-m-d");
+
+	$_SESSION["privasi"] = $qq;
+	$_SESSION["bank"]["pilih"] = $pilihBank;
+
+	$query = "INSERT INTO tbl_reservasi VALUES (null, '$id_tamu',null,'$newDateCheckIn','$newDateCheckOut','$jumlahHari','$jumlah_kamar','$dewasa','$anak','$jamSekarang')";
+	if (mysqli_query($conn, $query)) :
+    $last_id = mysqli_insert_id($conn);
+    $queryInpTrans = "INSERT INTO tbl_transaksi_pembayaran VALUES (null, '$id_tamu',null,'$last_id','$tipeKamarYangdiPilih','$total_harga','$jamSekarang',null,null,'$ketRes_Tamu')";
+    $_SESSION["lastID_Reservasi"] = $last_id;
+  	if (mysqli_query($conn, $queryInpTrans)) :
+  		$last_idTrans = mysqli_insert_id($conn);
+  		foreach ($id_kamar as $key => $val) :
+				$queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+				mysqli_query($conn, $queryUbahJMLKamar);
+			endforeach;
+			$_SESSION["lastID_Transaksi"] = $last_idTrans;
+  	endif;
+	endif;
+	return mysqli_affected_rows($conn);
+}
 
 function VerifikasiValid($data) {
 	global $conn;
@@ -911,15 +942,4 @@ function grafikReservasi($tahun){
  	];
  	return $data;
 }
-
-function stringToInt($string){
-  $bar = (float) $string;
-  return $bar;
-};
-function hilangkanTitik($nilai) {
-  $a = str_replace(".", "", $nilai);
-  $a = stringToInt($a);
-  return $a;
-};
-
 ?>

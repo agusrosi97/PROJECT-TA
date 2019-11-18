@@ -48,6 +48,14 @@ $(window).width(function(){
     $('#StafTablesTamu').removeClass('table-responsive text-nowrap');
   }
 });
+$(window).width(function(){
+  var win = $(this);
+  if (win.width() <= 1247) {
+    $('#StafTablesReservasi').addClass('table-responsive text-nowrap');
+  }else{
+    $('#StafTablesReservasi').removeClass('table-responsive text-nowrap');
+  }
+});
 
 // resize
 $(window).on('load', function(){
@@ -272,4 +280,9 @@ $('.count').each(function () {
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
+});
+$('[data-toggle="popover"]').popover({
+  html: true,
+  placement : 'top',
+  trigger: 'hover focus'
 });

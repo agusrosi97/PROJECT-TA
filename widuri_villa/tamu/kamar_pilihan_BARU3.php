@@ -174,7 +174,6 @@
                         </div>       
                       </div>
                       <div class="d-flex justify-content-end">
-                      
                         <div id="textPilih<?=$i;?>" class="checkbox-custom" data-toggle="tooltip" data-placement="top" title="klik untuk memilih" style="line-height: 1">
                           <label style="font-size: 1.5em;" class="d-flex justify-content-center align-items-center mb-0 forrup" onchange='hitung();'>
                             <span id="textTarget<?=$i;?>">Pilih Kamar?</span>
