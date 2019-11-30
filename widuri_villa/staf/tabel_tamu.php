@@ -1,6 +1,5 @@
 <?php 
   session_start();
-
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }
@@ -8,44 +7,29 @@
     header('location: ../admin/index.php');
     exit;
   }
-
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-
   require '../koneksi/function_global.php';
-
   $data_tamu = mysqli_query($conn, "SELECT * FROM tbl_tamu ORDER BY id_tamu DESC");
-  
   include '../query/queryDataDiri_pengguna.php';
 ?>
-
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Tamu</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-
   <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <!-- <link rel="stylesheet" href="../vendors/font-awesome/css/font-awesome.min.css"> -->
-  <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
-  <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
-  <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-
-
   <link rel="stylesheet" href="../assets-2/css/style.css">
-
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -60,34 +44,32 @@
         <div id="main-menu" class="main-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
+              <a href="../index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-globe"></i></div>Kunjungi website</a>
             </li>
             <li>
-              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div>Dashboard</a>
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
-              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
+              <a href="tabel_reservasi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-calendar-check"></i></div>Reservasi</a>
+            </li>
+            <li>
+              <a href="tabel_transaksi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-credit-card"></i></div>Transaski Pembayaran</a>
+            </li>
+            <li>
+              <a href="tabel_tipeKamar.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-home"></i></div>Data Tipe Kamar</a>
             </li>
             <li class="active">
-              <a href=""> <i class="menu-icon far fa-address-card"></i>Data Tamu</a>
-            </li>
-            <li>
-              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
-            </li>
-            <li>
-              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon far fa-address-card"></i></div>Data Tamu</a>
             </li>
           </ul>
         </div>
       </nav>
     </aside>
-
     <div id="right-panel" class="right-panel">
       <!-- HEADER -->
       <?php include '../header/headerStaf.php'; ?>
       <!-- /HEADER -->
-
       <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
@@ -107,83 +89,73 @@
           </div>
         </div>
       </div>
-
-      <div class="col-sm-12 mb-2">
-
+      <div class="col-sm-12 mb-2 mt-1">
         <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
-
-          <button type="button" class="btn btn-primary mb-3 shadow-sm px-1 py-0 btn-tmbh" data-toggle="modal" data-target="#popup_tambah_tamu" style="font-size: 20px"><i class="fas fa-plus"></i></button>
-
-          <table id="StafTablesTamu" class="table table-striped rounded" width="100%">
-            <thead class="thead-dark">
-              <tr class="text-nowrap">
-                <td class="d-none"></td>
-                <th class="text-center">Aksi</th>
-                <th>#</th>
-                <th>Foto</th>
-                <th>Nama Tamu</th>
-                <th>Tgl Lahir</th>
-                <th>Email</th>
-                <th>No Telp</th>
-                <th>JK</th>
-                <th>Alamat</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $i = 1; ?>
-              <?php foreach( $data_tamu as $row ) : ?>
+          <!-- <button type="button" class="btn btn-primary mb-3 shadow-sm px-1 py-0 btn-tmbh" data-toggle="modal" data-target="#popup_tambah_tamu" style="font-size: 20px"><i class="fas fa-plus"></i></button> -->
+          <div class="table-responsive pt-1 px-1">
+            <table id="StafTablesTamu" class="table rounded dt-responsive table-hover nowrap" width="100%">
+              <thead class="thead-dark">
                 <tr class="text-nowrap">
-                  <td class="d-none"></td>
-                  <td>
-                    <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_tamu_<?php echo $row["id_tamu"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
-                  </td>
-                  <td><?php echo $row["id_tamu"]; ?></td>
-                  <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
-                  <td><?= $row["nama_tamu"]; ?></td>
-                  <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
-                  <td><?= $row["email_tamu"]; ?></td>
-                  <td><?= $row["no_telp_tamu"]; ?></td>
-                  <td><?= $row["jk_tamu"]; ?></td>
-                  <td><?= $row["alamat_tamu"]; ?></td>
+                  <th>Aksi</th>
+                  <!-- <th>Id Tamu</th> -->
+                  <th>Foto</th>
+                  <th>Nama Tamu</th>
+                  <th>Tgl Lahir</th>
+                  <th>Email</th>
+                  <th>No Telp</th>
+                  <th>Alamat</th>
+                  <th>JK</th>
                 </tr>
-                <?php include 'modal_ubah_tamu.php'; ?>
-                <?php $i++; ?>
-              <?php endforeach; ?>
-            </tbody> 
-          </table>
+              </thead>
+              <tbody>
+                <?php $i = 1; ?>
+                <?php foreach( $data_tamu as $row ) : ?>
+                  <tr class="text-nowrap">
+                    <td>
+                      <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_tamu_<?php echo $row["id_tamu"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <!-- <td><?=$row["id_tamu"]; ?></td> -->
+                    <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
+                    <td><?= $row["nama_tamu"]; ?></td>
+                    <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
+                    <td><?= $row["email_tamu"]; ?></td>
+                    <td><?= $row["no_telp_tamu"]; ?></td>
+                    <td><?= $row["alamat_tamu"]; ?></td>
+                    <td><?= $row["jk_tamu"]; ?></td>
+                  </tr>
+                  <?php include 'modal_ubah_tamu.php'; ?>
+                  <?php $i++; ?>
+                <?php endforeach; ?>
+              </tbody> 
+            </table>
+          </div>
         </div>    
       </div>
-
       <?php include 'modal_ubah_password.php'; ?>
       <?php include '../footer/footer.html'; ?>
       <?php include 'modal_tambah_tamu.php'; ?>
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
-    <!-- /#right-panel -->
     </div>
-  <!-- Right Panel -->
   </div>
-
-  <!-- PENTING PENTING PENTING PENTING PENTING PENTING PENTING PENTING -->
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-  <!-- PENTING PENTING PENTING PENTING PENTING PENTING PENTING PENTING -->
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
-
   <script>
     $('#StafTablesTamu').DataTable({
       'language': {
         'emptyTable': 'Tidak ada data Tamu ☹'
       },
       'columns': [
-        null,
         { "orderable": false },
-        null,
         { "orderable": false },
         null,
         null,
@@ -191,45 +163,47 @@
         null,
         null,
         null
-      ]
+      ],
+      "processing": true,
+      "pagingType": "full_numbers",
+      "lengthMenu": [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+      responsive: true,
+      "order": []
     });
-
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
     });
   </script>
-
-  <!-- /////// BTN UBAH - TAMBAH /////// -->
   <?php 
-    if( isset($_POST["submit"]) ) {
-      if( stafTambahTamu($_POST) > 0 ) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'success',
-              title: 'Data telah ditambahkan.',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      } else {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Gagal menambah data!',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      }
-    }
+    // if( isset($_POST["submit"]) ) {
+    //   if( stafTambahTamu($_POST) > 0 ) {
+    //     echo "
+    //       <script>
+    //         Swal.fire({
+    //           type: 'success',
+    //           title: 'Data telah ditambahkan.',
+    //           showConfirmButton: false,
+    //           timer: 2000
+    //         }).then(function() {
+    //           window.location.href = 'tabel_tamu.php';
+    //         });
+    //       </script>
+    //     ";
+    //   } else {
+    //     echo "
+    //       <script>
+    //         Swal.fire({
+    //           type: 'error',
+    //           title: 'Gagal menambah data!',
+    //           showConfirmButton: false,
+    //           timer: 2000
+    //         }).then(function() {
+    //           window.location.href = 'tabel_tamu.php';
+    //         });
+    //       </script>
+    //     ";
+    //   }
+    // }
 
     // EDIT FORM
     if( isset($_POST["submit_ubah"]) ) {  
@@ -311,7 +285,5 @@
       }
     }
   ?>
-
 </body>
-
 </html>

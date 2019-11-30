@@ -30,33 +30,6 @@ $('.search-close').on('click', function(event) {
 	$('.search-trigger').parent('.header-left').removeClass('open');
 });
 
-// resize window to addClass tb-responsive
-$(window).width(function(){
-  var win = $(this);
-  if (win.width() <= 1306) {
-    $('#TableTipeKamar').addClass('table-responsive');
-	}
-	else{
-    $('#TableTipeKamar').removeClass('table-responsive');
-  }
-});
-$(window).width(function(){
-  var win = $(this);
-  if (win.width() <= 1320) {
-    $('#StafTablesTamu').addClass('table-responsive text-nowrap');
-  }else{
-    $('#StafTablesTamu').removeClass('table-responsive text-nowrap');
-  }
-});
-$(window).width(function(){
-  var win = $(this);
-  if (win.width() <= 1247) {
-    $('#StafTablesReservasi').addClass('table-responsive text-nowrap');
-  }else{
-    $('#StafTablesReservasi').removeClass('table-responsive text-nowrap');
-  }
-});
-
 // resize
 $(window).on('load', function(){
   var win = $(this);
@@ -260,8 +233,9 @@ var loader = function() {
 	setTimeout(function() { 
 		if($('#ftco-loader').length > 0) {
 			$('#ftco-loader').removeClass('show');
+      $('html', 'body').css('background', 'whitesmoke');
 		}
-	}, 1);
+	}, 1000);
 };
 loader();
 
@@ -279,10 +253,12 @@ $('.count').each(function () {
 });
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip({
+    trigger: 'hover'
+  })
 });
 $('[data-toggle="popover"]').popover({
   html: true,
-  placement : 'top',
-  trigger: 'hover focus'
+  // placement : 'top',
+  trigger: 'focus hover'
 });

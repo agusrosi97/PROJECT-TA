@@ -1,6 +1,5 @@
 <?php 
   session_start();
-
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }
@@ -8,50 +7,35 @@
     header('location: ../admin/index.php');
     exit;
   }
-
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-
   require '../koneksi/function_global.php';
-
   $data_transaksi = mysqli_query($conn,"
     SELECT tbl_transaksi_pembayaran.*, tbl_tamu.*, tbl_reservasi.*
     FROM tbl_transaksi_pembayaran
-    INNER JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
-    INNER JOIN tbl_reservasi ON tbl_transaksi_pembayaran.id_reservasi = tbl_reservasi.id_reservasi
+    LEFT JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
+    LEFT JOIN tbl_reservasi ON tbl_transaksi_pembayaran.id_reservasi = tbl_reservasi.id_reservasi
     ORDER BY id_transaksi DESC
   ");
-  
   include '../query/queryDataDiri_pengguna.php';
 ?>
-
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Transaksi Pembayaran</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <!-- <link rel="stylesheet" href="../vendors/font-awesome/css/font-awesome.min.css"> -->
-  <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
-  <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
-  <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-
-
   <link rel="stylesheet" href="../assets-2/css/style.css">
-
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -66,34 +50,30 @@
         <div id="main-menu" class="main-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
+              <a href="../index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-globe"></i></div> Kunjungi website</a>
             </li>
             <li>
-              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div> Dashboard</a>
             </li>
-            <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
+            <h3 class="menu-title">MASTER DATA</h3>
             <li>
-              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
-            </li>
-            <li>
-              <a href="tabel_tamu.php"> <i class="menu-icon far fa-address-card"></i>Data Tamu</a>
-            </li>
-            <li>
-              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_reservasi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-calendar-check"></i></div> Reservasi</a>
             </li>
             <li class="active">
-              <a href=""> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon fas fa-credit-card"></i></div> Transaski Pembayaran</a>
+            </li>
+            <li>
+              <a href="tabel_tipeKamar.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-home"></i></div> Data Tipe Kamar</a>
+            </li>
+            <li>
+              <a href="tabel_tamu.php"><div class="d-flex justify-content-center"><i class="menu-icon far fa-address-card"></i></div> Data Tamu</a>
             </li>
           </ul>
         </div>
       </nav>
     </aside>
-
     <div id="right-panel" class="right-panel">
-      <!-- HEADER -->
       <?php include '../header/headerStaf.php'; ?>
-      <!-- /HEADER -->
-
       <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
@@ -113,76 +93,79 @@
           </div>
         </div>
       </div>
-
-      <div class="col-sm-12 mb-2">
-
+      <div class="col-sm-12 mb-2 mt-1">
         <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
-
-          <table id="StafTablesTransaksi" class="table rounded table-responsive table-hover" width="100%">
-            <thead class="thead-dark">
-              <tr class="text-nowrap text-center">
-                <th class="d-none"></th>
-                <th>Status</th>
-                <th>ID Trans</th>
-                <th>Foto</th>
-                <th>Nama Tamu</th>
-                <th>CheckIn</th>
-                <th>Checkout</th>
-                <th>Kamar</th>
-                <th>Total Bayar</th>
-                <th>Tanggal Transaksi</th>
-                <th>Jam</th>
-                <th>Ket</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $i = 1; ?>
-              <?php foreach( $data_transaksi as $row ) : ?>
-              <?php
-                $timestamp = $row["jam_transaksi"];
-                $datetime = explode(" ",$timestamp);
-                $date = $datetime[0];
-                $time = $datetime[1];
-              ?>
+          <div class="table-responsive pt-2 px-2">
+            <table id="StafTablesTransaksi" class="table rounded dt-responsive table-hover nowrap" width="100%">
+              <thead class="thead-dark">
                 <tr class="text-nowrap text-center">
-                  <td class="d-none"></td>
-                  <td class="d-flex justify-content-center">
-                    <?php if($row["status"] === "VALID") : ?>
-                      <button type="button" class="btn btn-success rounded py-0 px-1"><i class="fas fa-check"></i> Diterima</button>
-                    <?php elseif($row["status"] === null) : ?>
-                      <button class="btn btn-outline-success rounded border-0" data-toggle="modal" data-target="#popUpReservasi_<?php echo $row["id_transaksi"] ?>"><i class="fas fa-check" style="font-size: 20px"></i></button>
-                      <button class="btn btn-outline-danger rounded border-0" data-toggle="modal" data-target="#popUpReservasiGakvalid_<?php echo $row["id_transaksi"] ?>"><i class="fas fa-times" style="font-size: 20px"></i></button>
-                    <?php elseif($row["status"] === "GAK VALID") : ?>
-                      <button type="button" class="btn btn-danger rounded py-0" style="padding-left: 6px; padding-right: 6px;"><i class="fas fa-times"></i> Ditolak</button>
-                    <?php endif; ?>
-                  </td>
-                  <!-- <td><?php //echo $row["id_transaksi"]; ?></td> -->
-                  <td>TRN-0<?=$row["id_transaksi"]; ?></td>
-
-                  <td class="p-1" style="cursor: pointer;">
-                    <div class="data_foto">
-                      <img src="../assets/foto_transaksi/<?php echo $row["foto_bukti_transaksi"] ?>" alt="" data-toggle="modal" data-target="#modalFoto_<?=$row["id_transaksi"];?>">
-                    </div>
-                  </td>
-                  <td><?= $row["nama_tamu"]; ?></td>
-                  <td><?= date_format(new Datetime($row["tgl_checkin"]), "d M Y"); ?></td>
-                  <td><?= date_format(new Datetime($row["tgl_checkout"]), "d M Y"); ?></td>
-                  <td><?php if($row["tipe_kamar"] == '1') :?>Tipe Satu <?php elseif($row["tipe_kamar"] == '2'): ?>Tipe Dua <?php else :?><?=$row["tipe_kamar"]; ?><?php endif; ?></td>
-                  <td>Rp.<?= number_format($row["total_pembayaran_kamar"],2,',','.'); ?>,-</td>
-                  <td><?= date_format(new Datetime($date), "d M, Y"); ?></td>
-                  <td><?= $time; ?></td>
-                  <td><?= $row["ket_transaksi"]; ?></td>
+                  <th>ID Trans</th>
+                  <th>Nama Tamu</th>
+                  <th>CheckIn</th>
+                  <th>Checkout</th>
+                  <th>Tipe Kamar</th>
+                  <th>Qty. Kam</th>
+                  <th>Bukti</th>
+                  <th>Status</th>
+                  <th>Total Bayar :</th>
+                  <th>Tanggal Transaksi :</th>
+                  <th>Jam :</th>
+                  <th>Ket :</th>
                 </tr>
-                <?php include 'modalFoto.php'; ?>
-                <?php include 'verifikasi_transaksi.php'; ?>
-                <?php include 'verifikasi_tidakValid.php'; ?>
-                <?php $i++; ?>
-              <?php endforeach; ?>
-            </tbody> 
-          </table>
+              </thead>
+              <tbody>
+                <?php $i = 1; ?>
+                <?php foreach( $data_transaksi as $row ) : ?>
+                <?php
+                  $timestamp = $row["jam_transaksi"];
+                  $datetime = explode(" ",$timestamp);
+                  $date = $datetime[0];
+                  $time = $datetime[1];
+                ?>
+                  <tr class="text-center">
+                    <td>TRN-0<?=$row["id_transaksi"]; ?></td>
+                    <td class="text-wrap"><?= $row["nama_tamu"]; ?></td>
+                    <td><?= date_format(new Datetime($row["tgl_checkin"]), "d M Y"); ?></td>
+                    <td><?= date_format(new Datetime($row["tgl_checkout"]), "d M Y"); ?></td>
+                    <td><?= $row["tipe_kamar"]; ?></td>
+                    <td><?= $row["jumlah_kamar_perPilihan"]; ?></td>
+                    <td class="p-1 d-flex justify-content-center">
+                      <?php if($row['foto_bukti_transaksi'] === '-.png' AND $row['status'] === NULL OR $row['foto_bukti_transaksi'] === NULL):?>
+                      <?php elseif($row['foto_bukti_transaksi'] === '-.png' AND $row['status'] === 'VALID'): ?>
+                        <div class="data_foto" style="opacity: .8;">
+                          <img src="../assets/images/payment.png" alt="">
+                        </div>
+                      <?php else : ?>
+                        <div class="data_foto" style="cursor: pointer;">
+                          <img src="../assets/foto_transaksi/<?php echo $row["foto_bukti_transaksi"] ?>" alt="" data-toggle="modal" data-target="#modalFoto_<?=$row["id_transaksi"];?>">
+                        </div>
+                      <?php endif; ?>
+                    </td>
+                    <td>
+                      <?php if($row["status"] === "VALID") : ?>
+                        <button type="button" class="btn btn-success rounded py-0 px-1"><i class="fas fa-check"></i> Diterima</button>
+                      <?php elseif($row["status"] === null) : ?>
+                        <button class="btn btn-outline-success rounded border-0" data-toggle="modal" data-target="#popUpReservasi_<?php echo $row["id_transaksi"] ?>"><i class="fas fa-check" style="font-size: 20px"></i></button>
+                        <button class="btn btn-outline-danger rounded border-0" data-toggle="modal" data-target="#popUpReservasiGakvalid_<?php echo $row["id_transaksi"] ?>"><i class="fas fa-times" style="font-size: 20px"></i></button>
+                      <?php elseif($row["status"] === "GAK VALID") : ?>
+                        <button type="button" class="btn btn-danger rounded py-0" style="padding-left: 6px; padding-right: 6px;"><i class="fas fa-times"></i> Ditolak</button>
+                      <?php endif; ?>
+                    </td>
+                    <td>Rp.<?= number_format($row["total_pembayaran_kamar"],2,',','.'); ?>,-</td>
+                    <td><?= date_format(new Datetime($date), "d M, Y"); ?></td>
+                    <td><?= $time; ?></td>
+                    <td><?= $row["ket_transaksi"]; ?></td>
+                  </tr>
+                  <?php include 'modalFoto.php'; ?>
+                  <?php include 'verifikasi_transaksi.php'; ?>
+                  <?php include 'verifikasi_tidakValid.php'; ?>
+                  <?php $i++; ?>
+                <?php endforeach; ?>
+              </tbody> 
+            </table>
+          </div>
         </div>    
       </div>
-      <div id="notif"></div>
       <?php include 'modal_ubah_password.php'; ?>
       <?php include '../footer/footer.html'; ?>
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
@@ -192,14 +175,16 @@
   </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
-
   <script>
     $('#StafTablesTransaksi').DataTable({
       "pagingType": "full_numbers",
@@ -210,92 +195,27 @@
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        { "orderable": false },
         { "orderable": false },
         null,
         null,
         null,
-        null,
-        null,
-        null,
-        null,
         null
-      ]
+      ],
+      "processing": true,
+      "lengthMenu": [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+      responsive: true,
+      "order": []
     });
 
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
-      $('#StafTablesTransaksi').toggleClass('table-responsive');
     });
-    <?php if(mysqli_num_rows($data_transaksi) >= 0) : ?>
-      $('#StafTablesTransaksi').addClass('table-responsive');
-    <?php else : ?>
-      $('#StafTablesTransaksi').removeClass('table-responsive');
-    <?php endif; ?>
   </script>
-
-  <!-- /////// BTN UBAH - TAMBAH /////// -->
-  <?php 
-    if( isset($_POST["submit"]) ) {
-      if( stafTambahTamu($_POST) > 0 ) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'success',
-              title: 'Data telah ditambahkan.',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      } else {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Gagal menambah data!',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      }
-    }
-
-    // EDIT FORM
-    if( isset($_POST["submit_ubah"]) ) {  
-      if( stafUbahTamu($_POST) >= 0 ) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'success',
-              title: 'Data berhasil diubah!',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      } else {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Data gagal diubah!',
-              showConfirmButton: false,
-              timer: 2000
-            }).then(function() {
-              window.location.href = 'tabel_tamu.php';
-            });
-          </script>
-        ";
-      }
-    }
-
+  <?php
     // UBAH PASSOWRD
     if( isset($_POST["submit_ubah_password"]) ) {
       if( ubah_pass_pengguna($_POST) >= 0 ) {
@@ -313,7 +233,6 @@
         ";
       }
     }
-
     // UBAH PROFILE
     if ( isset($_POST["submitUbahDataDiri_Pengguna"]) ) {
       if(UbahDataDiri_Pengguna($_POST) > 0){
@@ -344,7 +263,6 @@
         ";
       }
     }
-
     if( isset($_POST["transaksiValid"]) ) :
       if( VerifikasiValid($_POST) > 0 ) {
         echo "
@@ -379,7 +297,5 @@
       }
     endif;
   ?>
-
 </body>
-
 </html>

@@ -1,26 +1,19 @@
 <?php 
   session_start();
-
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }elseif ( !empty($_SESSION['loggedin_pengguna']) AND ($_SESSION["loggedin_pengguna"]["level_pengguna"] == "admn") ) {
     header('location: ../admin/index.php');
     exit;
   }
-
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-
   require '../koneksi/function_global.php';
-
   $TableData_tipeKamar = query("SELECT * FROM tbl_tipe_kamar");
   $AdaOwner = query("SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna = 'owner'");
-
   include '../query/queryDataDiri_pengguna.php';
-
 ?>
-
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -28,29 +21,20 @@
 <!--[if gt IE 8]><!-->
 <html lang="en">
 <!--<![endif]-->
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Tipe Kamar</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-
   <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel="stylesheet" href="../vendors-2/themify-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../vendors-2/flag-icon-css/css/flag-icon.min.css">
-  <link rel="stylesheet" href="../vendors-2/selectFX/css/cs-skin-elastic.css">
-  <link rel="stylesheet" href="../vendors-2/jqvmap/dist/jqvmap.min.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-
-
   <link rel="stylesheet" href="../assets-2/css/style.css">
-
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -61,39 +45,34 @@
           <a class="navbar-brand "><img src="../assets/images/logo.png" width="79.5" height="60" alt="Logo">
           </a>
           <a class="navbar-brand hidden" href=""><img src="../assets/images/logo-w.png" alt="Logo"></a>
-
         </div>
         <div id="main-menu" class="main-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
+              <a href="../index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-globe"></i></div>Kunjungi website</a>
             </li>
             <li>
-              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div>Dashboard</a>
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
-              <a href="tabel_reservasi.php"> <i class="menu-icon fas fa-calendar-check"></i>Reservasi</a>
+              <a href="tabel_reservasi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-calendar-check"></i></div>Reservasi</a>
             </li>
             <li>
-              <a href="tabel_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Data Tamu</a>
+              <a href="tabel_transaksi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-credit-card"></i></div>Transaski Pembayaran</a>
             </li>
             <li class="active">
-              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_tipeKamar.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-home"></i></div>Data Tipe Kamar</a>
             </li>
             <li>
-              <a href="tabel_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Transaski Pembayaran</a>
+              <a href="tabel_tamu.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-address-card"></i></div>Data Tamu</a>
             </li>
           </ul>
         </div>
       </nav>
     </aside>
-
     <div id="right-panel" class="right-panel">
-      <!-- HEADER -->
       <?php include '../header/headerStaf.php'; ?>
-      <!-- /HEADER -->
-
       <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
@@ -113,14 +92,11 @@
           </div>
         </div>
       </div>
-
-      <div class="col-sm-12 mb-5">
-
+      <div class="col-sm-12 mb-5 mt-1">
         <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
           <table id="TableTipeKamar" class="table table-striped rounded" width="100%">
             <thead class="thead-dark">
-              <tr class="text-nowrap text-center">
-                <th class="d-none"></th>
+              <tr class="text-nowrap">
                 <th>Aksi</th>
                 <th>Foto</th>
                 <th>Nama Kamar</th>
@@ -133,17 +109,15 @@
               <?php $i = 3; ?>
               <?php foreach( $TableData_tipeKamar as $row ) : ?>
               <?php $centangArray = explode(", ",$row['fasilitas']); ?>
-                <tr class="text-center text-nowrap">
-                  <td class="d-none"></td>
+                <tr class="text-nowrap">
                   <td>
                     <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_Ubah_TipeKam_<?=$row["id_tipe_kamar"];?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
                   </td>
-                  <td><div class="data_foto"><img src="../assets/foto_tipe_kamar/<?php echo $row["foto_tipe_kamar"] ?>" alt=""></div></td>
+                  <td class="py-1"><div class="data_foto"><img src="../assets/foto_tipe_kamar/<?php echo $row["foto_tipe_kamar"] ?>" alt=""></div></td>
                   <td class="text-nowrap"><?= $row["nama_tipe_kamar"]; ?></td>
                   <td><?= $row["jumlah_kamar"]; ?></td>
                   <td class="text-nowrap"><?= "Rp. ".number_format($row["harga_kamar"], 2, ",", ".").",-"; ?></td>
                   <td><?= $row["fasilitas"]; ?></td>
-                  
                 </tr>
                 <?php include 'modal_ubah_tipeKamar.php'; ?>
               <?php $i++; ?>
@@ -152,21 +126,20 @@
           </table>
         </div>    
       </div>
-      
       <?php include '../footer/footer.html'; ?>
       <?php include 'modal_ubah_password.php'; ?>
       <?php include 'modal_tambah_tipeKamar.php'; ?>
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
-    <!-- /#right-panel -->
     </div>
-  <!-- Right Panel -->
   </div>
-
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
@@ -177,14 +150,18 @@
         'emptyTable': 'Belum ada data Tipe Kamar ☹'
       },
       'columns': [
-        null,
         { 'orderable': false },
         { 'orderable': false },
         null,
         null,
         null,
         { 'orderable': false }
-      ]
+      ],
+      "processing": true,
+      "pagingType": "full_numbers",
+      "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+      responsive: true,
+      "order": []
     });
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');

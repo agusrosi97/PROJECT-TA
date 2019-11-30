@@ -164,7 +164,7 @@
                               <?php
                                 $j = 0;
                                 for ($x = 0; $x <= $row['jumlah_kamar']; $x++) {?>
-                                  <option value='<?php echo $x ?>'><?php echo $j; ?></option>
+                                  <option value='<?= $x ?>'><?= $j; ?></option>
                                   <?php
                                   $j++;
                                 }

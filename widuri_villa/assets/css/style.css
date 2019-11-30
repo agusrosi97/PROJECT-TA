@@ -271,6 +271,7 @@ h1, h2, h3, h4, h5,
         color: #ffffff !important; }
     .ftco-navbar-light.scrolled.awake {
       margin-top: 0px;
+      backdrop-filter: blur(15px);
       -webkit-transition: .3s all ease-out;
       -o-transition: .3s all ease-out;
       transition: .3s all ease-out; }
@@ -2530,4 +2531,9 @@ hr.liner:last-child {
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+}
+.lg-progress-bar .lg-progress {
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,0.7595413165266106) 35%, rgb(128, 183, 226) 100%) !important;
+  height: 3px;
+  width: 0;
 }

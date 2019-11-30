@@ -37,7 +37,7 @@
               </div>
 
               <div class="form-group col-md-8">
-                <label for="harga<?= $i ?>">Harga Kamar</label>
+                <label for="harga<?= $i ?>">Harga Kamar /Hari</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Rp</span>

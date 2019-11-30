@@ -1,6 +1,5 @@
 <?php 
   session_start();
-
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }  
@@ -8,21 +7,18 @@
     header('location: ../staf/index.php');
     exit;
   }
-
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
-
   require '../koneksi/function_global.php';
-
   include '../query/queryDataDiri_pengguna.php';
-
   // GET DATA PENGGUNA
   $TotalDataPengguna = mysqli_query($conn, "SELECT * FROM tbl_pengguna");
   $HasilDataPengguna = mysqli_num_rows($TotalDataPengguna);
-
+  $gettotalKamar = mysqli_query($conn, "SELECT sum(jumlah_kamar) AS jmlKamarTerkini FROM tbl_tipe_kamar");
+  $OutputKamar = mysqli_fetch_assoc($gettotalKamar);
+  $kamarSaatini = $OutputKamar['jmlKamarTerkini'];
 ?>
-
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -51,30 +47,25 @@
         <div id="main-menu" class="main-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
+              <a href="../index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-globe"></i></div>Kunjungi website</a>
             </li>
             <li class="active">
-              <a href=""> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div>Dashboard</a>
             </li>
             <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
             <li>
-              <a href="tabel_pengguna.php"> <i class="menu-icon fas fa-users"></i>Data Pengguna</a>
+              <a href="tabel_pengguna.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-users"></i></div>Data Pengguna</a>
             </li>
             <li>
-              <a href="tabel_tipeKamar.php"> <i class="menu-icon fas fa-home"></i>Data Tipe Kamar</a>
+              <a href="tabel_tipeKamar.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-home"></i></div>Data Tipe Kamar</a>
             </li>
           </ul>
         </div>
       </nav>
-    </aside><!-- /#left-panel -->
-
+    </aside>
     <div id="right-panel" class="right-panel">
-
-      <!-- HEADER -->
       <?php include '../header/headerAdmin.php'; ?>
-      <!-- /HEADER -->
-
-      <div class="breadcrumbs">
+      <div class="breadcrumbs shadow-sm">
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
@@ -92,47 +83,35 @@
           </div>
         </div>
       </div>
-
-      <div class="content mt-3">
-        <div class="row">
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-1">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                  <i class="fa fa-cog"></i>
-                </div>
-                <h4 class="mb-0">
-                  <span class="count"><?php echo $HasilDataPengguna; ?></span>
-                </h4>
-                <p class="text-light">Penguna</p>
-                <i class="fas fa-users" style="position: absolute; font-size: 70px; opacity: .7; right: 20px; top: 40px"></i>
-                <div class="chart-wrapper px-0" style="height:70px;" height="70"> 
-                </div>
+      <div class="content mt-2">
+        <div class="col-sm-12 px-0">
+          <div class="card col-md-4 no-padding bg-flat-color-10 mr-md-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_pengguna.php'">
+            <div class="card-body">
+              <div class="h1 text-light text-right mb-4">
+                <i class="fa fa-users"></i>
               </div>
+              <div class="h4 mb-0 text-light">
+                <span class="count"><?=$HasilDataPengguna;?></span>
+              </div>
+              <small class="text-light text-uppercase font-weight-bold">Pengunjung</small>
+              <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
             </div>
           </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-flat-color-1">
-              <div class="card-body pb-0">
-                <div class="dropdown float-right">
-                  <i class="fa fa-cog"></i>
-                </div>
-                <h4 class="mb-0">
-                  <span class="count">25</span>
-                </h4>
-                <p class="text-light">Jumlah Pengunjung</p>
-                <!-- <i class="fas fa-users" style="position: absolute; font-size: 70px; opacity: .7; right: 20px; top: 40px"></i> -->
-
-                <div class="chart-wrapper px-0" style="height:70px;" height="70">
-                    
-                </div>
-
+          <div class="card col-md-4 no-padding bg-flat-color-8 mx-md-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
+            <div class="card-body">
+              <div class="h1 text-light text-right mb-4">
+                <i class="fas fa-home"></i>
               </div>
-
+              <div class="h4 mb-0 text-light">
+                <span class="count"><?=$kamarSaatini;?></span>
+              </div>
+              <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
+              <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
             </div>
           </div>
-        </div><!--/.col-->
-
+        </div>
+      </div>
+      <div class="content">
         <div class="row mb-5">
           <div class="col-md-6 pr-xl-1">
             <div class="card">

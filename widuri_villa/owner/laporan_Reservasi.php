@@ -62,20 +62,20 @@ session_start();
         <div id="main-menu" class="main-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="../index.php"> <i class="menu-icon fas fa-globe"></i>Kunjungi website</a>
+              <a href="../index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-globe"></i></div>Kunjungi website</a>
             </li>
             <li>
-              <a href="index.php"> <i class="menu-icon fas fa-tachometer-alt"></i>Dashboard</a>
+              <a href="index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div>Dashboard</a>
             </li>
             <h3 class="menu-title">LAPORAN</h3>
             <li>
-              <a href="laporan_tamu.php"> <i class="menu-icon fas fa-address-card"></i>Laporan Data Tamu</a>
+              <a href="laporan_tamu.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-address-card"></i></div>Laporan Data Tamu</a>
             </li>
             <li class="active">
-              <a href="laporan_Reservasi.php"> <i class="menu-icon fas fa-luggage-cart"></i>Laporan Reservasi</a>
+              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon fas fa-luggage-cart"></i></div>Laporan Reservasi</a>
             </li>
             <li>
-              <a href="laporan_transaksi.php"> <i class="menu-icon fas fa-credit-card"></i>Laporan Transaksi</a>
+              <a href="laporan_transaksi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-credit-card"></i></div>Laporan Transaksi</a>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->

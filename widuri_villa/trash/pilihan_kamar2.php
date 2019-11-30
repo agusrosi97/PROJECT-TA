@@ -89,7 +89,13 @@
       }
     </script>
   </head>
-  <body>  
+  <body>
+    <?php 
+      $kk = mysqli_query($conn, "SELECT SUM(total_pembayaran_kamar) AS kk FROM tbl_transaksi_pembayaran WHERE DAY(jam_transaksi) = DAY(CURRENT_DATE()) AND STATUS = 'VALID'");
+      $pp = mysqli_fetch_assoc($kk);
+      $pk = $pp['kk'];
+      echo $pk;
+     ?>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="../index.php"><img src="../assets/images/logo.png" alt="widuri" width="79.5px" height="50px"></a>

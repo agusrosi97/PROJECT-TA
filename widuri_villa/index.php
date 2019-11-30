@@ -15,7 +15,7 @@
           $( document ).ready(function() {
             Swal.fire({
               type: 'error',
-              title: 'Maaf, kamar saat ini tidak tersedia!',
+              title: 'Maaf, untuk saat ini kamar sudah habis dipesan.',
               showConfirmButton: false,
               timer: 2000  
             }).then(function() {

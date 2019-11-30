@@ -49,7 +49,7 @@
       </div>
       <div class="modal-footer text-center justify-content-center">
         <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary rounded" name="submit">Simpan</button>
+        <button type="submit" class="btn btn-primary rounded" name="submit" id="TambahTamu">Simpan</button>
       </div>
         </form>
     </div>

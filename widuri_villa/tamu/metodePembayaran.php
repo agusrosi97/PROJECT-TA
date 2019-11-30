@@ -95,7 +95,6 @@
     <!-- pilihan kamar -->
     <section class="page-section ftco-section ftco-no-pb">
       <div class="container container-pembayaran">
-
         <div class="row">
           <div class="col-md-12 heading-section ftco-animate">
             <h2 class="mb-1">Metode Pembayaran</h2>
@@ -132,25 +131,25 @@
                     <div class="form-group mb-4">
                       <div class="custom-control custom-radio m-3">
                         <input type="radio" class="custom-control-input" id="bca" name="pilih_bank" value="bca" required>
-                        <label class="custom-control-label col triggerBtnPilihBank" for="bca"><img src="../assets/images/bca.png" style="position: absolute; top: -11px;"></label>
+                        <label class="custom-control-label col triggerBtnPilihBank" for="bca"><img src="../assets/images/bca.png" style="position: absolute; top: -11px; cursor: pointer;"></label>
                       </div>
                     </div>
                     <div class="form-group mb-4">
                       <div class="custom-control custom-radio m-3">
                         <input type="radio" class="custom-control-input" id="mandiri" name="pilih_bank" value="mandiri" required>
-                        <label class="custom-control-label col triggerBtnPilihBank" for="mandiri"><img src="../assets/images/mandiri.png" style="position: absolute; top: -11px;"></label>
+                        <label class="custom-control-label col triggerBtnPilihBank" for="mandiri"><img src="../assets/images/mandiri.png" style="position: absolute; top: -11px; cursor: pointer;"></label>
                       </div>
                     </div>
                     <div class="form-group mb-4">
                       <div class="custom-control custom-radio m-3">
                         <input type="radio" class="custom-control-input" id="bri" name="pilih_bank" value="bri" required>
-                        <label class="custom-control-label col triggerBtnPilihBank" for="bri"><img src="../assets/images/bri.png" style="position: absolute; top: -13px;"></label>
+                        <label class="custom-control-label col triggerBtnPilihBank" for="bri"><img src="../assets/images/bri.png" style="position: absolute; top: -13px; cursor: pointer;"></label>
                       </div>
                     </div>
                     <div class="form-group mb-4">
                       <div class="custom-control custom-radio m-3">
                         <input type="radio" class="custom-control-input" id="bni" name="pilih_bank" value="bni" required>
-                        <label class="custom-control-label col triggerBtnPilihBank" for="bni"><img src="../assets/images/bni.png" style="position: absolute; top: -11px;"></label>
+                        <label class="custom-control-label col triggerBtnPilihBank" for="bni"><img src="../assets/images/bni.png" style="position: absolute; top: -11px; cursor: pointer;"></label>
                       </div>
                     </div>
                     <div class="col text-center">

@@ -7,7 +7,7 @@
   $lastRes = $_SESSION["lastID_Reservasi"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
   if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 7200)) {
-    KembalikanJumlahKamar();
+    setGakValid();
     unset($_SESSION["pilihanKamar"], $_SESSION["privasi"] ,$_SESSION["bank"]["pilih"], $_SESSION["lastID_Reservasi"], $_SESSION["lastID_Transaksi"], $_SESSION["confirmPesanan"]);
   }
   $_SESSION['LAST_ACTIVITY'] = time();

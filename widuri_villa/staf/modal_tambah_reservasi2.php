@@ -21,14 +21,14 @@
             </select>
           </div>
           <div class="col text-center">
-            <button id="submitCreateSessionTamu" type="submit" name="submitCreateSessionTamu" class="btn btn-primary rounded shadow-sm mb-3 px-5 py-2 d-none">SUBMIT</button>
+            <button id="submitCreateSessionTamu" type="submit" name="submitCreateSessionTamu" class="btn btn-primary rounded shadow-sm mb-3 px-3 py-2 d-none">SUBMIT</button>
           </div>
         </form>
         <div class="col text-center">
           <h3>Atau</h3>
         </div>
         <div class="col text-center mt-2">
-          <button class="btn btn-primary font-weight-bold rounded shadow-sm text-uppercase">Input identitas Tamu</button>
+          <button class="btn btn-primary font-weight-bold rounded shadow-sm text-uppercase" id="TambahTamu">Input identitas Tamu</button>
         </div>
       </div>
     </div>

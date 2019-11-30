@@ -33,7 +33,7 @@
               </div>
 
               <div class="form-group col-md-8">
-                <label for="rp">Harga Kamar <sup class="harus-isi">*</sup></label>
+                <label for="rp">Harga Kamar /Hari <sup class="harus-isi">*</sup></label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Rp</span>
