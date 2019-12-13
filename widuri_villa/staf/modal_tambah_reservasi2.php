@@ -11,7 +11,7 @@
         <form method="POST" action="">
           <div class="form-group">
             <label><h5 class="text-center">Cari Nama Tamu</h5></label>
-            <select class="selectpicker mt-2 form-control rounded" data-live-search="true" title="Cari tamu" data-size="5" name="nama_tamu" id="selectIDtamu" onchange="makeSession();">
+            <select class="selectpicker mt-2 form-control rounded" data-live-search="true" title="Cari tamu" data-size="5" data-show-subtext="true" name="nama_tamu" id="selectIDtamu" onchange="makeSession();">
               <?php 
                 while ($baris = mysqli_fetch_array($hasil)) : ?>
                   <option value="<?=$baris['id_tamu'] ?>" data-subtext="<?=$baris["email_tamu"] ?>"><?=$baris['nama_tamu']; ?></option>
@@ -21,7 +21,7 @@
             </select>
           </div>
           <div class="col text-center">
-            <button id="submitCreateSessionTamu" type="submit" name="submitCreateSessionTamu" class="btn btn-primary rounded shadow-sm mb-3 px-3 py-2 d-none">SUBMIT</button>
+            <button id="submitCreateSessionTamu" type="submit" name="submitCreateSessionTamu" class="btn btn-primary rounded shadow-sm mb-3 px-3 py-2 d-none">SUBMIT <i class=" far fa-paper-plane"></i></button>
           </div>
         </form>
         <div class="col text-center">

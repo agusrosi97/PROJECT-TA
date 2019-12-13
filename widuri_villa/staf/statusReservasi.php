@@ -10,7 +10,7 @@
                           </div>
                         <?php elseif ($statusRes === NULL && $fotoRes !== NULL) : ?>
                           <div class="btn btn-danger2 py-0 px-1 rounded" title="Keterangan" data-toggle="popover" data-content="Menunggu konfirmasi." tabindex="0" style="cursor: help;">
-                            <i class="fas fa-clock"></i> Menunggu
+                            <i class="fas fa-exclamation-triangle"></i> Menunggu
                           </div>
                         <?php elseif ($statusRes === 'GAK VALID') : ?>
                           <div class="btn btn-danger py-0 px-1 rounded" title="Keterangan" data-toggle="popover" data-content="<?php if($row['id_pengguna'] === NULL) :?>Transaski tidak valid dan ditolak oleh sistem. <?php elseif($row['id_pengguna'] === $id && $levelnya === 'staf') : ?>Anda telah menolak pesanan ini. <?php else : ?>Transaksi dengan ID TRN-0<?=$baris['id_transaksi'] ?> ditolah oleh <b><?=$row['username_pengguna'] ?></b>.<?php endif; ?>" tabindex="0" style="cursor: help;">
@@ -21,8 +21,8 @@
                             <i class="fas fa-check"></i> Diterima
                           </div>
                         <!-- CHECKIN -->
-                        <?php elseif ($statusRes === 'VALID' && $fotoRes !== NULL && $row['tgl_checkout'] >= date('Y-m-d')) : ?>
-                          <div class="btn btn-primary py-0 px-1 rounded" title="Keterangan" data-toggle="popover" data-content="<?php if($row['id_pengguna'] === $id && $levelnya === 'staf') : ?>Anda telah mengkonfirmasi pesanan ini. <?php else : ?>Transaksi dengan ID TRN-0<?=$baris['id_transaksi'] ?> dikonfirmasi oleh <b><?=$row['username_pengguna'] ?></b>.<?php endif; ?><br/>Tamu sedang menggunakan kamar." tabindex="0" style="cursor: help;">
+                        <?php elseif ($statusRes === 'VALID' && $fotoRes !== NULL && $row['tgl_checkin'] <= date('Y-m-d') && $row['tgl_checkout'] >= date('Y-m-d')) : ?>
+                          <div class="btn btn-primary py-0 px-1 rounded" title="Keterangan" data-toggle="popover" data-content="<?php if($row['id_pengguna'] === $id && $levelnya === 'staf') : ?>Anda telah mengkonfirmasi pesanan ini. <?php else : ?>Transaksi dengan ID TRN-0<?=$baris['id_transaksi'] ?> dikonfirmasi oleh <b><?=$row['username_pengguna'] ?></b>.<?php endif; ?>" tabindex="0" style="cursor: help;">
                             <i class="fas fa-plane-arrival"></i> Checkin
                           </div>
                         <!-- Checkout -->

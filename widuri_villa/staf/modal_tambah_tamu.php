@@ -17,8 +17,8 @@
             </div>
 
             <div class="form-group col-md-5">
-              <label for="tgllhir">Tanggal lahir <sup class="harus-isi">*</sup></label>
-              <input id="tgllhir" class="form-control" type="date" name="inp_tgllahir_tamu" required>
+              <label for="tgllahir">Tanggal lahir <sup class="harus-isi">*</sup></label>
+              <input id="tgllahir" class="form-control pem" type="text" name="inp_tgllahir_tamu" placeholder="Tanggal lahir" readonly required>
             </div>
 
             <div class="form-group col-md-7">

@@ -2,7 +2,13 @@
   <div class="modal-dialog modal-dialog-scrollable shadow modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">Tambah Reservasi</h5>
+        <h5 class="modal-title d-flex align-items-center" id="exampleModalScrollableTitle"><div class="smalest-screen d-flex"><span class="pr-2"><i class="fas fa-plus text-success"></i></span> <span class="pr-3 mr-3 right-border2">Reservasi</span></div>
+          <div class="d-flex harga-small">
+            <div class="d-flex py-0 pl-sm-3 m-0">
+              Rp.<input type="text" class="form-control pem border-0 p-0 m-0 col" id="total_harga_duplicate" readonly style="font-weight: bold; font-size: 20px; height: 100% !important; box-shadow: none; outline: none;" value="0">
+            </div>
+          </div>
+        </h5>
         <button type="button" class="close btnClose" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -21,7 +27,7 @@
             <div class="col-lg-6">
               <input type="text" class="form-control pem border-top-0 border-left-0 border-right-0" id="nmtamu" value="<?=$datatamu['nama_tamu'] ?>" readonly>
             </div>
-            <div class="col-lg-4 d-flex align-items-start">
+            <div class="col-lg-4 d-flex align-items-start auto-Hide">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text bg-light">Rp</span>
@@ -78,7 +84,7 @@
                 $i = 1;
                 while ($rowTK = mysqli_fetch_array($queKamar)) : ?>
                   <div class="form-row border-bottom">
-                    <div class="form-group col-lg-1 d-flex align-self-center mb-0 mr-2">
+                    <div class="form-group col-sm-1 d-flex align-self-center mb-0 mr-2">
                       <div class="checkbox-custom" style="line-height: 1">
                         <label style="font-size: 1.5em;" class="d-flex justify-content-center align-items-center mb-0 forrup" onchange='hitung();'>
                           <input id="btnKamar_<?=$i;?>" type="checkbox" value="<?php echo $rowTK['id_tipe_kamar'] ?>" name="id_kamar[]">
@@ -86,12 +92,12 @@
                         </label>
                       </div>
                     </div>
-                    <div class="form-group col-lg-5 mb-1">
+                    <div class="form-group col-5 mb-1">
                       <label for="btnKamar_<?=$i;?>" class="form-control border-0 pl-0" onchange='hitung();'><h4><?=$rowTK["nama_tipe_kamar"] ?></h4></label>
                       <label for="btnKamar_<?=$i;?>" onchange='hitung();'><p class="mb-0 pb-0">Rp.<?=number_format($rowTK["harga_kamar"],2,',','.')?>,-</p></label>
                       <input type="hidden" id="hargaPerKamar<?=$i?>" value="<?php if($rowTK['harga_kamar'] <= 0) : ?>0<?php else : ?><?= $rowTK['harga_kamar'] ?><?php endif; ?>">
                     </div>
-                    <div class="form-group col-lg-5">
+                    <div class="form-group col">
                       <label for="Kamar<?=$i?>">Jumlah kamar</label>
                       <select name="jumlahKamarPerPilihan[]" class="form-control" onchange='hitung();' id="Kamar<?=$i?>" disabled>
                         <?php
@@ -113,10 +119,10 @@
             </div>
           </div>
         <!-- asasas -->
-        <div class="modal-footer text-center justify-content-center mt-3">
-          <button type="button" class="btn btn-secondary rounded btnClose" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary rounded" id="btnPesan_reservasi" name="submitTambahReservasi">Simpan</button>
-        </div>
+      </div>
+      <div class="modal-footer text-center justify-content-center mt-3">
+        <button type="button" class="btn btn-secondary rounded btnClose" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary rounded" id="btnPesan_reservasi" name="submitTambahReservasi">Simpan</button>
       </div>
         </form>
     </div>

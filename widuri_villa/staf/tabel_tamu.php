@@ -15,7 +15,7 @@
   include '../query/queryDataDiri_pengguna.php';
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,13 +23,13 @@
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-  <link rel="stylesheet" href="../assets-2/css/style.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -60,7 +60,7 @@
               <a href="tabel_tipeKamar.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-home"></i></div>Data Tipe Kamar</a>
             </li>
             <li class="active">
-              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon far fa-address-card"></i></div>Data Tamu</a>
+              <a href=""><div class="d-flex justify-content-center"><i class="menu-icon fas fa-address-card"></i></div>Data Tamu</a>
             </li>
           </ul>
         </div>
@@ -96,8 +96,8 @@
             <table id="StafTablesTamu" class="table rounded dt-responsive table-hover nowrap" width="100%">
               <thead class="thead-dark">
                 <tr class="text-nowrap">
+                  <th>#</th>
                   <th>Aksi</th>
-                  <!-- <th>Id Tamu</th> -->
                   <th>Foto</th>
                   <th>Nama Tamu</th>
                   <th>Tgl Lahir</th>
@@ -111,10 +111,10 @@
                 <?php $i = 1; ?>
                 <?php foreach( $data_tamu as $row ) : ?>
                   <tr class="text-nowrap">
+                    <td><?=$i;?></td>
                     <td>
                       <button title="Ubah data" class="btn btn-primary px-2 py-1 rounded" data-toggle="modal" data-target="#popup_ubah_tamu_<?php echo $row["id_tamu"] ?>" style="font-size: 13px"><i class="fas fa-edit"></i></button>
                     </td>
-                    <!-- <td><?=$row["id_tamu"]; ?></td> -->
                     <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
                     <td><?= $row["nama_tamu"]; ?></td>
                     <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
@@ -139,12 +139,12 @@
   </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
-  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
@@ -155,6 +155,7 @@
         'emptyTable': 'Tidak ada data Tamu ☹'
       },
       'columns': [
+        null,
         { "orderable": false },
         { "orderable": false },
         null,
@@ -173,6 +174,18 @@
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
     });
+    <?php
+      $q=1;
+      foreach ($data_tamu as $p): ?>
+        $('#tgllhir-<?=$q;?>').datepicker({
+          dateFormat: 'yy-mm-dd',
+          changeMonth: true,
+          changeYear: true
+        });
+      <?php
+      $q++;
+      endforeach;
+    ?>
   </script>
   <?php 
     // if( isset($_POST["submit"]) ) {

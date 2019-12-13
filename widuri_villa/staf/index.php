@@ -34,12 +34,13 @@
     FROM tbl_transaksi_pembayaran
     INNER JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
     INNER JOIN tbl_reservasi ON tbl_transaksi_pembayaran.id_reservasi = tbl_reservasi.id_reservasi
-    WHERE jumlah_kamar >= '1' AND status = 'VALID' AND tgl_checkout >= date('Y-m-d')
-    ORDER BY id_transaksi DESC LIMIT 20");
+    WHERE jumlah_kamar >= '1'
+    ORDER BY id_transaksi DESC LIMIT 10");
   $jmlPemesanTerbaru = mysqli_num_rows($cekPemesanTerbaru);
   //== jmlTransaksi
   $cekTransaksi = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE status = 'VALID'");
   $hasilTransaksi = mysqli_fetch_assoc($cekTransaksi);
+  $earliest_year = 2017;
 ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
@@ -55,12 +56,12 @@
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-  <link rel="stylesheet" href="../assets-2/css/style.css">
-  <link rel="stylesheet" href="../assets-2/css/Chart.min.css">
-  <link rel="stylesheet" href="../assets-2/bootstrap-select-1.13.9/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.min.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/Chart.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -118,90 +119,91 @@
         </div>
       </div>
       <div class="content mt-1">
-        <div class="col-sm-12 mb-2 px-0">
-          <div class="card-group">
-            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-10 mr-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tamu.php'">
-              <div class="card-body">
-                <div class="h1 text-light text-right mb-4">
-                  <i class="fa fa-users"></i>
-                </div>
-                <div class="h4 mb-0 text-light">
-                  <span class="count"><?=$OutputTamu;?></span>
-                </div>
-                <small class="text-light text-uppercase font-weight-bold">Pengunjung</small>
-                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
-              </div>
-            </div>
-            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-7 mx-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
-              <div class="card-body">
-                <div class="h1 text-light text-right mb-4">
-                  <i class="fas fa-home"></i>
-                </div>
-                <div class="h4 mb-0 text-light">
-                  <span class="count"><?=$OutputKamar;?></span>
-                </div>
-                <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
-                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
-              </div>
-            </div>
-            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-8 mx-lg-1 rounded shadow-sm dash-card resv">
-              <select id="selectResv" class="selectpicker form-control show-tick sel rounded position-absolute" title="Hari" data-width="fit">
-                <option value="day">Hari</option>
-                <option value="month">Bulan</option>
-                <option value="year">Tahun</option>
-              </select>
-              <div class="card-body" onclick="window.location.href='tabel_reservasi.php'">
-                <div class="h1 text-light text-right mb-4">
-                  <i class="fas fa-luggage-cart"></i>
-                </div>
-                <div id="tampilHasilResv">
-                  <div class="h4 mb-0 text-light">
-                    <span class="count"><?=$Outputreservasi;?></span>
+        <div class="row px-2">
+          <div class="col-sm-12 mb-2">
+            <div class="card-group">
+              <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-10 mr-lg-1 rounded shadow-sm dash-card tam">
+                <select id="selectTamu" class="selectpicker form-control show-tick sel rounded position-absolute" title="Pilih waktu" data-width="fit">
+                  <option value="day">24 jam terakhir</option>
+                  <option value="week">Seminggu terakhir</option>
+                  <option value="month">Sebulan terakhir</option>
+                  <option value="year">Setahun terakhir</option>
+                </select>
+                <div class="card-body" onclick="window.location.href='tabel_tamu.php'">
+                  <div class="h1 text-light text-right mb-4">
+                    <i class="fa fa-users"></i>
                   </div>
-                  <small class="text-light text-uppercase font-weight-bold">Total reservasi</small>
-                </div>
-                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
-              </div>
-            </div>
-            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-9 ml-lg-1 rounded shadow-sm dash-card trans">
-              <select id="selectTrans" class="selectpicker form-control show-tick sel rounded position-absolute" title="Hari" data-width="fit">
-                <option value="day">Hari</option>
-                <option value="month">Bulan</option>
-                <option value="year">Tahun</option>
-              </select>
-              <div class="card-body" onclick="window.location.href='tabel_transaksi.php'">
-                <div class="h1 text-light text-right mb-4">
-                  <i class="fas fa-luggage-cart"></i>
-                </div>
-                <div id="tampilHasilTrans" >
-                  <div class="h4 mb-0 text-light">
-                    <span class="">Rp.<?= number_format($hasilTransaksi['total_bayar'],2,',','.');?>,-</span>
+                  <div id="tampilHasilTamu">
+                    <div class="h4 mb-0 text-light">
+                      <span class="count"><?=$OutputTamu;?></span>
+                    </div>
+                    <small class="text-light text-uppercase font-weight-bold">Total tamu terdaftar</small>
                   </div>
-                  <small class="text-light text-uppercase font-weight-bold">Total Transaksi</small>
+                  <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
                 </div>
-                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
+              </div>
+              <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-7 mx-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
+                <div class="card-body">
+                  <div class="h1 text-light text-right mb-4">
+                    <i class="fas fa-home"></i>
+                  </div>
+                  <div class="h4 mb-0 text-light">
+                    <span class="count"><?=$OutputKamar;?></span>
+                  </div>
+                  <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
+                  <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
+                </div>
+              </div>
+              <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-8 mx-lg-1 rounded shadow-sm dash-card resv">
+                <select id="selectResv" class="selectpicker form-control show-tick sel rounded position-absolute" title="Pilih waktu" data-width="fit">
+                  <option value="day">24 jam terakhir</option>
+                  <option value="week">Seminggu terakhir</option>
+                  <option value="month">Sebulan terakhir</option>
+                  <option value="year">Setahun terakhir</option>
+                </select>
+                <div class="card-body" onclick="window.location.href='tabel_reservasi.php'">
+                  <div class="h1 text-light text-right mb-4">
+                    <i class="fas fa-concierge-bell"></i>
+                  </div>
+                  <div id="tampilHasilResv">
+                    <div class="h4 mb-0 text-light">
+                      <span class="count"><?=$Outputreservasi;?></span>
+                    </div>
+                    <small class="text-light text-uppercase font-weight-bold">Total reservasi</small>
+                  </div>
+                  <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
+                </div>
+              </div>
+              <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-9 ml-lg-1 rounded shadow-sm dash-card trans">
+                <select id="selectTrans" class="selectpicker form-control show-tick sel rounded position-absolute" title="Pilih waktu" data-width="fit">
+                  <option value="day">24 jam terakhir</option>
+                  <option value="week">Seminggu terakhir</option>
+                  <option value="month">Sebulan terakhir</option>
+                  <option value="year">Setahun terakhir</option>
+                </select>
+                <div class="card-body" onclick="window.location.href='tabel_transaksi.php'">
+                  <div class="h1 text-light text-right mb-4">
+                    <i class="fas fa-cash-register"></i>
+                  </div>
+                  <div id="tampilHasilTrans" >
+                    <div class="h4 mb-0 text-light">
+                      <span class="">Rp.<?= number_format($hasilTransaksi['total_bayar'],2,',','.');?>,-</span>
+                    </div>
+                    <small class="text-light text-uppercase font-weight-bold">Total Transaksi</small>
+                  </div>
+                  <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="content mb-4">
-        <div class="row mb-4">
-          <div class="col-md-6 pr-xl-1">
-            <div class="card rounded mb-2">
-              <div class="card-body shadow-sm">
-                <div class="row">
-                  <canvas id="chartResrvasi"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 pl-xl-1">
-            <div class="card rounded mb-2">
-              <div class="card-header shadow-sm text-secondary bg-white">
-              Pemesanan Terakhir
-              </div>
-              <div class="card-body shadow-sm pt-1" style="overflow-y: auto; height: 244px">
+        <div class="row mb-4 px-2">
+          <div class="col-lg-6 pr-lg-1">
+            <div class="card shadow rounded border-light mb-3">
+              <div class="card-header shadow-sm text-secondary bg-white">Pemesanan Terakhir</div>
+              <div class="card-body pt-1" style="overflow-y: auto; height: 235px">
                 <?php if(mysqli_num_rows($cekPemesanTerbaru) > 0) : ?>
                   <?php while($hasilPemesanTerbaru = mysqli_fetch_assoc($cekPemesanTerbaru)) : ?>
                     <div class="col-md-12 py-1 px-0">
@@ -243,9 +245,32 @@
                   <?php endwhile; ?>
                   <?php else : ?>
                   <div class="d-flex justify-content-center align-items-center h-100 w-100">
-                    <p>Belum ada pemesanan terbaru, harap menunggu 😉</p>
+                    <p>Belum ada pemesan, harap menunggu</p>
                   </div>
                 <?php endif; ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 pl-lg-1">
+            <div class="card border-0 mb-3">
+              <div class="card-body rounded border-light shadow">
+                <div class="row">
+                  <canvas id="chartResrvasi"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 pr-lg-1">
+            <div class="card grafiktrans rounded shadow border-0">
+              <select class="selectpicker form-control col-5 p-2" id="selectGrafikTrans" title="Pilih tahun">
+                <?php foreach (range(date('Y'), $earliest_year) as $x) {
+                  echo "<option value='".$x."'>".$x."</option>";
+                } ?>
+              </select>
+              <div class="card-body shadow-sm pt-0" id="loadGrafikTrans">
+                <div class="row">
+                  <canvas id="chartTrans" width="600" height="260"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -255,41 +280,60 @@
       <?php include 'modalUbah_DataDiriStaf.php'; ?>
       <?php include '../footer/footer.html'; ?>
     </div>
-  </div>s
+  </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.9/dist/js/bootstrap-select.min.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.12/dist/js/bootstrap-select.min.js"></script>
   <script src="../assets-2/js/main.js"></script>
-  <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
+  <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/Chart.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-  <?php include 'chartJs/chart.php'; ?>
+  <?php include '../chartJS/chart.php'; ?>
   <?php include 'confirmLogout.php'; ?>
   <script type="text/javascript">
     $(document).ready(function () {
       $('#selectTrans').on('change', function () {
         $.ajax({
           type: 'POST',
-          url: 'url_ajax/data_transaksi.php',
+          url: '../url_ajax/data_transaksi.php',
           data: {getValueTrans : $('#selectTrans').val()},
           success: function () {
-            $('#tampilHasilTrans').load('url_ajax/output_DataTransaksi.php');
+            $('#tampilHasilTrans').load('../url_ajax/output_DataTransaksi.php');
           }
         })
       });
       $('#selectResv').on('change', function () {
         $.ajax({
           type: 'POST',
-          url: 'url_ajax/data_reservasi.php',
+          url: '../url_ajax/data_reservasi.php',
           data: {getValueResv : $('#selectResv').val()},
           success: function () {
-            $('#tampilHasilResv').load('url_ajax/output_DataReservasi.php');
+            $('#tampilHasilResv').load('../url_ajax/output_DataReservasi.php');
+          }
+        })
+      });
+      $('#selectTamu').on('change', function () {
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/data_tamu.php',
+          data: {getValueTam : $('#selectTamu').val()},
+          success: function () {
+            $('#tampilHasilTamu').load('../url_ajax/output_DataTamu.php');
+          }
+        })
+      });
+      $('#selectGrafikTrans').on('change', function () {
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/data_grafikTrans.php',
+          data: {tahun : $('#selectGrafikTrans').val()},
+          success: function () {
+            $('#loadGrafikTrans').load('../url_ajax/output_GrafikTrans.php');
           }
         })
       });
     });
-
   </script>
   <?php 
   // BTN UBAH PASSWORD
@@ -341,7 +385,5 @@
       }
     }
   ?>
-
 </body>
-
 </html>

@@ -7,6 +7,7 @@
     header('location: ../admin/index.php');
     exit;
   }
+  date_default_timezone_set('Asia/Singapore');
   $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
@@ -14,8 +15,8 @@
   include '../query/queryDataDiri_pengguna.php';
   $input = "SELECT * FROM tbl_tamu";
   $hasil = mysqli_query($conn, $input);
-  date_default_timezone_set('Asia/Singapore');
   $queKamar = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE jumlah_kamar > 0");
+  setlocale (LC_TIME, "ID_id");
 ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
@@ -31,18 +32,17 @@
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.min.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-  <link rel='stylesheet' href='../assets/css/jquery-ui.min.css'>
-  <link rel="stylesheet" href="../assets-2/bootstrap-select-1.13.9/dist/css/bootstrap-select.min.css">
-  <link rel="stylesheet" href="../assets-2/css/style.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
+  <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
-<body onload="disableButtonPesan(); disableButtonPesan2(); disableCheck(); disableCheck2();" onchange="disableButtonPesan(); disableButtonPesan2();">
+<body onload="disableButtonPesan(); disableButtonPesan2(); disableCheck(); disableCheck2();" onchange="disableButtonPesan(); disableButtonPesan2(); disableCheck2();">
   <div class="bungkus">
     <aside id="left-panel" class="left-panel">
       <nav class="navbar navbar-expand-sm navbar-default">
@@ -59,7 +59,7 @@
             <li>
               <a href="index.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-tachometer-alt"></i></div>Dashboard</a>
             </li>
-            <h3 class="menu-title">MASTER DATA</h3><!-- /.menu-title -->
+            <h3 class="menu-title">MASTER DATA</h3>
             <li class="active">
               <a href="tabel_reservasi.php"><div class="d-flex justify-content-center"><i class="menu-icon fas fa-calendar-check"></i></div>Reservasi</a>
             </li>
@@ -100,21 +100,49 @@
         </div>
       </div>
       <div class="col-sm-12 mb-2 mt-1">
-        <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
-          <button class="btn btn-primary mb-1 shadow-sm btn-tmbh" data-toggle="modal" data-target="#popup_tambahReservasi"><i class="fas fa-plus"></i></button>
-          <div class="table-responsive pt-1 px-1">
+        <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm position-relative">
+          <div>
+            <div class="col-md-3 px-1">
+              <button class="btn btn-primary mb-1 shadow-sm btn-tmbh" data-toggle="modal" data-target="#popup_tambahReservasi"><i class="fas fa-plus"></i></button>
+              <button id="tombolKecil" class="btn btn-primary rounded mb-1"><i class="fas fa-search"></i> Reservasi</button>
+            </div>
+            <div class="col-md-9 px-1">
+              <div class="d-flex justify-content-end">
+                <div id="tombolBesar" class="form-row align-items-center">
+                  <div class="col-md-5">
+                    <div class="input-group">
+                      <input type="text" class="form-control pem" placeholder="Checkin" id="tgl_awal" readonly style="font-size: 15px">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center col-sm-1 px-0 strip">
+                    <i class="fas fa-minus text-secondary"></i>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <input type="text" class="form-control pem" placeholder="Checkout" id="tgl_akhir" readonly style="font-size: 15px" onchange="clickCari()">
+                      <div class="input-group-append">
+                        <button id="btnCariReservasi" class="btn btn-primary rounded-right" type="button" disabled><i class="fas fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive py-1 px-1" id="load_HasilCari">
             <table id="StafTablesReservasi" class="table rounded dt-responsive table-hover nowrap" width="100%">
               <thead class="thead-dark">
                 <tr class="text-nowrap text-center">
                   <th>Id Res</th>
                   <th>Nama Tamu</th>
+                  <th>Email Tamu</th>
                   <th>Status</th>
                   <th>Nama staf</th>
                   <th>Checkin</th>
                   <th>Checkout</th>
                   <th>J. Hari</th>
                   <th>Tipe Kamar</th>
-                  <th>Qty. Kam</th>
+                  <th>Qty /Kam</th>
                   <th>Aksi</th>
                   <th>J. Dewasa</th>
                   <th>J. Anak</th>
@@ -126,26 +154,28 @@
                     FROM tbl_reservasi
                     LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
                     LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu
+                    WHERE CURDATE() <= tgl_checkout
                     ORDER BY id_reservasi DESC
                   ");
                   // $qq = query("SELECT * FROM tbl_transaksi_pembayaran");
                   $no=1;
-                    foreach ($sql as $row) {
+                    foreach ($sql as $row) :
                       $jam_reservasi = date_format(new Datetime($row["jam_reservasi"]), "Y-m-d");
                     ?>
                     <tr class="text-nowrap text-center">
                       <td>RSV-0<?php echo $row['id_reservasi']; ?></td>
                       <td><?php echo $row['nama_tamu']; ?></td>
+                      <td><?=$row['email_tamu'] ?></td>
                       <td class="text-center">
                         <?php include 'statusReservasi.php'; ?>
                       </td>
                       <td><?php echo $row["username_pengguna"]; ?></td>
-                      <td class="text-nowrap"><?php echo $row['tgl_checkin']; ?></td>
-                      <td class="text-nowrap"><?php echo $row['tgl_checkout']; ?></td>
+                      <td class="text-nowrap"><?php echo tgl_indo($row['tgl_checkin']); ?></td>
+                      <td class="text-nowrap"><?php echo tgl_indo($row['tgl_checkout']); ?></td>
                       <td><?php echo $row['jumlah_hari']; ?></td>
                       <td><?=$row['tipe_kamar'];?></td>
                       <td><?=$row['jumlah_kamar_perPilihan'];?></td>
-                      <td class="text-nowrap" align="center">
+                      <td class="text-nowrap p-1" align="center">
                         <?php if($statusRes === "GAK VALID" OR date("Y-m-d") > $row['tgl_checkout']) : ?>
                           <button style="cursor: not-allowed;" disabled class='btn btn-primary px-2 py-1 rounded' ><span><i class='fas fa-edit'></i></span></button>
                         <?php else : ?>
@@ -162,7 +192,7 @@
                                 if (UbahReservasi($_POST) >= 0) {
                                   echo "
                                   <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
-                                  <script type='text/javascript' src='../assets-2/bootstrap_4.3.1/js/bootstrap.js'></script>
+                                  <script type='text/javascript' src='../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js'></script>
                                   <script>
                                     $(window).on('load', function(){
                                       $('#popupUbah_Reservasi_".$row['id_reservasi']."').modal({backdrop: 'static', keyboard: false});
@@ -178,9 +208,9 @@
                       <td><?php echo $row['jumlah_anak']; ?></td>
                     </tr>
                     <?php
-                    $no++;
                     include 'modal_Ubah_PilihKamar.php';
-                  }
+                    ++$no;
+                  endforeach;
                 ?>
               </tbody> 
             </table>
@@ -192,7 +222,7 @@
           $aa = $_POST["nama_tamu"];
           echo "
           <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
-          <script type='text/javascript' src='../assets-2/bootstrap_4.3.1/js/bootstrap.js'></script>
+          <script type='text/javascript' src='../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js'></script>
           <script>
             $(window).on('load', function(){
               $('#popupTambah_Reservasi').modal({backdrop: 'static', keyboard: false});
@@ -205,7 +235,7 @@
             echo "
             <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
             <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
-            <script type='text/javascript' src='../assets-2/bootstrap_4.3.1/js/bootstrap.js'></script>
+            <script type='text/javascript' src='../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js'></script>
             <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
             <script>
               $(window).on('load', function(){
@@ -242,25 +272,32 @@
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../assets/js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../assets/js/datepicker-id.js"></script>
   <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.9/dist/js/bootstrap-select.min.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.12/dist/js/bootstrap-select.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
-  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
-  <script src="../assets/js/jquery.waypoints.min.js"></script>
-  <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
-  <script src="../assets-2/js/main.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery.waypoints.min.js"></script>
+  <script type="text/javascript" src='../assets/js/sweetalert2.min.js'></script>
+  <script type="text/javascript" src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.min.js"></script>
   <?php include 'confirmLogout.php'; ?>
   <script>
     $('.btnClose').on('click', function() {
-      window.location.replace("tabel_reservasi.php");
+      $('#popupTambah_Reservasi').on('hidden.bs.modal', function () {
+        window.location.replace('tabel_reservasi.php');
+      });
+      <?php foreach ($sql as $row): ?>
+        $('#popupUbah_Reservasi_<?=$row['id_reservasi']?>').on('hidden.bs.modal', function () {
+          window.location.replace('tabel_reservasi.php');
+        });
+      <?php endforeach ?>
     });
     $('#StafTablesReservasi').DataTable({
       "columnDefs": [ {
-        "targets": 3,
+        "targets": [2, 4],
         "visible" : false,
         "searchable": true
       } ],
@@ -278,6 +315,7 @@
         null,
         null,
         null,
+        { 'orderable': false },
         null,
         { 'orderable': false }
       ],
@@ -315,6 +353,7 @@
       <?php endforeach; ?>
       var total_Harga = TotHarga * JmlHari;
       $('#total_harga').val(formatRupiah(total_Harga,' '));
+      $('#total_harga_duplicate').val(formatRupiah(total_Harga,' '));
       $('#jmlKamar').val(TotKamar);
     };
     <?php $i = 1; ?>
@@ -341,12 +380,17 @@
       }
     };
     function disableCheck() {
-      if($('#TM').val()==='' || $('#TK').val()===''){
-        $('.checkbox-custom input[type=checkbox]').prop('disabled', true);
-      }else{
-        $('.checkbox-custom input[type=checkbox]').prop('disabled', false);
-      }
-    }
+      var ttHargacheck = document.getElementById('total_harga');
+      <?php $i=1; ?>
+      <?php foreach ($queKamar as $key): ?>
+        if(ttHargacheck <= 0){
+          $('#btnKamar_<?=$i;?>').attr("disabled",true);
+        }else{
+          $('#btnKamar_<?=$i;?>').removeAttr("disabled");
+        }
+        <?php $i++; ?>
+      <?php endforeach; ?>
+    };
     // DatePick
     $('#TM').datepicker({
       minDate : 0,
@@ -398,6 +442,45 @@
     $('#TambahTamu').on('click',function () {
       $('#popup_tambahReservasi').modal('hide');
       $('#popup_tambah_tamu').modal({backdrop: 'static', keyboard: false});
+    });
+    $('#tgllahir').datepicker({
+      dateFormat: 'yy-mm-dd',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "-150:+0",
+    });
+    // Cari reservasi
+    $('#tgl_awal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      changeMonth: true,
+      changeYear: true
+    });
+    $('#tgl_akhir').datepicker({
+      dateFormat: 'yy-mm-dd',
+      changeMonth: true,
+      changeYear: true
+    });
+    $('#tombolKecil').on('click', function () {
+      $('#tombolBesar').toggleClass('d-block');
+    });
+    function clickCari() {
+      if ($('#tombolBesar #tgl_akhir') == '') {
+        $('#btnCariReservasi').prop('disabled', true);
+      }else{
+        $('#btnCariReservasi').prop('disabled', false);
+      }
+    };
+    $(document).ready(function () {
+      $('#btnCariReservasi').on('click', function () {
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/data_CariReservasi.php',
+          data: {tgl_awal : $('#tgl_awal').val(), tgl_akhir : $('#tgl_akhir').val()},
+          success : function () {
+            $('#load_HasilCari').load('../url_ajax/output_CariReservasi.php');
+          }
+        })
+      })
     });
   </script>
   <?php include '../assets/js/ubahReservasi.php'; ?>
@@ -464,34 +547,38 @@
         ";
       }
     }
-    if (isset($_POST['submitEditReservasi'])) {
-      if (ReservasiUbah($_POST) > 0) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'success',
-              title: 'Data reservasi berhasi diubah.',
-              showConfirmButton: false,
-              timer: 2000
-              }).then(function() {
-              window.location.replace('tabel_reservasi.php');
-            });
-          </script>
-        ";
-      }else{
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Data reservasi gagal diubah!',
-              showConfirmButton: false,
-              timer: 2000
-              }).then(function() {
-              window.location.replace('tabel_reservasi.php');
-            });
-          </script>
-        ";
+    $n=1;
+    foreach ($sql as $key) {
+      if (isset($_POST["submitEditReservasi_".$n.""])) {
+        if (ReservasiUbah($_POST) > 0) {
+          echo "
+            <script>
+              Swal.fire({
+                type: 'success',
+                title: 'Data reservasi berhasi diubah.',
+                showConfirmButton: false,
+                timer: 2000
+                }).then(function() {
+                window.location.replace('tabel_reservasi.php');
+              });
+            </script>
+          ";
+        }else{
+          echo "
+            <script>
+              Swal.fire({
+                type: 'error',
+                title: 'Data reservasi gagal diubah!',
+                showConfirmButton: false,
+                timer: 2000
+                }).then(function() {
+                window.location.replace('tabel_reservasi.php');
+              });
+            </script>
+          ";
+        }
       }
+      $n++;
     }
   ?>
 </body>

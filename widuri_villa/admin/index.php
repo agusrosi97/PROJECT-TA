@@ -15,9 +15,22 @@
   // GET DATA PENGGUNA
   $TotalDataPengguna = mysqli_query($conn, "SELECT * FROM tbl_pengguna");
   $HasilDataPengguna = mysqli_num_rows($TotalDataPengguna);
+  // GET JML KAMAR
   $gettotalKamar = mysqli_query($conn, "SELECT sum(jumlah_kamar) AS jmlKamarTerkini FROM tbl_tipe_kamar");
   $OutputKamar = mysqli_fetch_assoc($gettotalKamar);
   $kamarSaatini = $OutputKamar['jmlKamarTerkini'];
+  //== jmlTransaksi
+  $cekTransaksi = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE status = 'VALID'");
+  $hasilTransaksi = mysqli_fetch_assoc($cekTransaksi);
+  // // CARI KAMAR TERLARIS
+  // $Kam = mysqli_query($conn, "SELECT max(tipe_kamar) as tipe_kamar FROM tbl_transaksi_pembayaran WHERE tipe_kamar != '-'");
+  // while ($hasKam = mysqli_fetch_assoc($Kam)) {
+  //   $pp = explode(", ", $hasKam['tipe_kamar']);
+  //   $max = getMax($pp);
+  //   echo $max;
+  // }
+  // $already_selected_value = 2019;
+  $earliest_year = 2017;
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -28,11 +41,12 @@
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-  <link rel="stylesheet" href="../assets-2/css/style.css">
-  <link rel="stylesheet" href="../assets-2/css/Chart.min.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/Chart.min.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -83,46 +97,75 @@
           </div>
         </div>
       </div>
-      <div class="content mt-2">
-        <div class="col-sm-12 px-0">
-          <div class="card col-md-4 no-padding bg-flat-color-10 mr-md-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_pengguna.php'">
-            <div class="card-body">
-              <div class="h1 text-light text-right mb-4">
-                <i class="fa fa-users"></i>
+      <div class="content mt-1">
+        <div class="col-sm-12 mb-2 px-2">
+          <div class="card-group">
+            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-10 mr-lg-1 rounded shadow-sm dash-card">
+              <div class="card-body" onclick="window.location.href='tabel_pengguna.php'">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fa fa-users"></i>
+                </div>
+                <div id="tampilHasilTamu">
+                  <div class="h4 mb-0 text-light">
+                    <span class="count"><?=$HasilDataPengguna;?></span>
+                  </div>
+                  <small class="text-light text-uppercase font-weight-bold">Total Pengguna</small>
+                </div>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
-              <div class="h4 mb-0 text-light">
-                <span class="count"><?=$HasilDataPengguna;?></span>
-              </div>
-              <small class="text-light text-uppercase font-weight-bold">Pengunjung</small>
-              <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
             </div>
-          </div>
-          <div class="card col-md-4 no-padding bg-flat-color-8 mx-md-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
-            <div class="card-body">
-              <div class="h1 text-light text-right mb-4">
-                <i class="fas fa-home"></i>
+            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-7 mx-lg-1 rounded shadow-sm dash-card" onclick="window.location.href='tabel_tipeKamar.php'">
+              <div class="card-body">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fas fa-home"></i>
+                </div>
+                <div class="h4 mb-0 text-light">
+                  <span class="count"><?=$kamarSaatini;?></span>
+                </div>
+                <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
-              <div class="h4 mb-0 text-light">
-                <span class="count"><?=$kamarSaatini;?></span>
+            </div>
+            <div class="card col-md-6 no-padding border-0 mb-2 bg-flat-color-8 ml-lg-1 rounded shadow-sm dash-card trans">
+              <select id="selectTrans" class="selectpicker form-control show-tick sel rounded position-absolute" title="Pilih waktu" data-width="fit">
+                <option value="day">24 jam terakhir</option>
+                <option value="week">Seminggu terakhir</option>
+                <option value="month">Sebulan terakhir</option>
+                <option value="year">Setahun terakhir</option>
+              </select>
+              <div class="card-body" onclick="window.location.href='tabel_transaksi.php'">
+                <div class="h1 text-light text-right mb-4">
+                  <i class="fas fa-luggage-cart"></i>
+                </div>
+                <div id="tampilHasilTrans" >
+                  <div class="h4 mb-0 text-light">
+                    <span class="">Rp.<?= number_format($hasilTransaksi['total_bayar'],2,',','.');?>,-</span>
+                  </div>
+                  <small class="text-light text-uppercase font-weight-bold">Total Transaksi</small>
+                </div>
+                <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
               </div>
-              <small class="text-light text-uppercase font-weight-bold">Jumlah kamar saat ini</small>
-              <div class="progress progress-xs mt-3 mb-0" style="width: 40%; height: 5px;"></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="content">
-        <div class="row mb-5">
-          <div class="col-md-6 pr-xl-1">
-            <div class="card">
-              <div class="card-body shadow-sm">
+      <div class="content mb-4">
+        <div class="row mb-4 px-2">
+          <div class="col-lg-6 pr-xl-1">
+            <div class="card grafiktrans shadow rounded border-light">
+              <select class="selectpicker form-control col-5 p-2" id="selectGrafikTrans" title="Pilih tahun">
+                <?php foreach (range(date('Y'), $earliest_year) as $x) {
+                  echo "<option value='".$x."'>".$x."</option>";
+                } ?>
+              </select>
+              <div class="card-body shadow-sm pt-0" id="loadGrafikTrans">
                 <div class="row">
-                  <canvas id="chartResrvasi"></canvas>
+                  <canvas id="chartTrans" width="600" height="260"></canvas>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-6 pl-xl-1">
+          <!-- <div class="col-md-6 pl-xl-1">
             <div class="card">
               <div class="card-body shadow-sm">
                 <div class="row">
@@ -130,7 +173,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <?php include 'modal_ubah_password.php'; ?>
@@ -140,122 +183,91 @@
   </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
   <script src="../assets-2/js/main.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.12/dist/js/bootstrap-select.min.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script type="text/javascript" src="../assets-2/js/Chart.min.js"></script>
   <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
   <?php include 'confirmLogout.php'; ?>
   <script>
+    $(document).ready(function () {
+      $('#selectTrans').on('change', function () {
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/data_transaksi.php',
+          data: {getValueTrans : $('#selectTrans').val()},
+          success: function () {
+            $('#tampilHasilTrans').load('../url_ajax/output_DataTransaksi.php');
+          }
+        })
+      });
+      $('#selectGrafikTrans').on('change', function () {
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/data_grafikTrans.php',
+          data: {tahun : $('#selectGrafikTrans').val()},
+          success: function () {
+            $('#loadGrafikTrans').load('../url_ajax/output_GrafikTrans.php');
+          }
+        })
+      });
+    });
     //chart Transaksi
-  var ctx = document.getElementById("chartResrvasi").getContext('2d');
-  ctx.height = 150;
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
-      datasets: [{
-        label: "Transaksi valid (<?php echo date('Y') ?>)",
-        data: [ 
-          <?php 
-            $data =  grafikValid(date('Y'));
-            for ($i=0; $i <count($data) ; ++$i) { 
-              echo  $data[$i].',';
-            }
-          ?>
-        ],
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: "1",
-        backgroundColor: "rgba(54, 162, 235, 0.2)" }, {
-          label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
+    var ctx = document.getElementById("chartTrans").getContext('2d');
+    ctx.height = 150;
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
+        datasets: [{
+          label: "Transaksi valid (<?php echo date('Y') ?>)",
           data: [ 
             <?php 
-              $data =  grafikGakValid(date('Y'));
+              $data =  grafikValid(date('Y'));
               for ($i=0; $i <count($data) ; ++$i) { 
                 echo  $data[$i].',';
               }
             ?>
           ],
-          borderColor: "rgba(255,99,132,1)",
+          borderColor: "rgba(54, 162, 235, 1)",
           borderWidth: "1",
-          backgroundColor: "rgba(255, 99, 132, 0.2)"
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      tooltips: {
-        mode: 'index',
-        intersect: false
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            callback: function(value) {if (value % 1 === 0) {return value;}}
+          backgroundColor: "rgba(54, 162, 235, 1)" }, {
+            label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
+            data: [ 
+              <?php 
+                $data =  grafikGakValid(date('Y'));
+                for ($i=0; $i <count($data) ; ++$i) { 
+                  echo  $data[$i].',';
+                }
+              ?>
+            ],
+            borderColor: "rgba(255, 87, 87,1)",
+            borderWidth: "1",
+            backgroundColor: "rgba(255, 87, 87,1)"
           }
-        }]
-      }
-    }
-  });
-    var ctx = document.getElementById("chartTransaksi").getContext('2d');
-  ctx.height = 150;
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
-      datasets: [{
-        label: "Transaksi valid (<?php echo date('Y') ?>)",
-        data: [ 
-          <?php 
-            $data =  grafikValid(date('Y'));
-            for ($i=0; $i <count($data) ; ++$i) { 
-              echo  $data[$i].',';
+        ]
+      },
+      options: {
+        responsive: true,
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              callback: function(value) {if (value % 1 === 0) {return value;}}
             }
-          ?>
-        ],
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: "1",
-        backgroundColor: "rgba(54, 162, 235, 0.2)" }, {
-          label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
-          data: [ 
-            <?php 
-              $data =  grafikGakValid(date('Y'));
-              for ($i=0; $i <count($data) ; ++$i) { 
-                echo  $data[$i].',';
-              }
-            ?>
-          ],
-          borderColor: "rgba(255,99,132,1)",
-          borderWidth: "1",
-          backgroundColor: "rgba(255, 99, 132, 0.2)"
+          }]
         }
-      ]
-    },
-    options: {
-      responsive: true,
-      tooltips: {
-        mode: 'index',
-        intersect: false
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            callback: function(value) {if (value % 1 === 0) {return value;}}
-          }
-        }]
       }
-    }
-  });
+    });
   </script>
 
   <?php 
@@ -310,5 +322,4 @@
   ?>
 
 </body>
-
 </html>

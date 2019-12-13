@@ -28,13 +28,12 @@
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="../assets-2/css/rowReorder.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
-  <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
-  <link rel="stylesheet" href="../assets-2/css/style.css">
+  <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
+  <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -134,12 +133,11 @@
   </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
-  <script type="text/javascript" src="../assets-2/js/dataTables.rowReorder.min.js"></script>
   <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
   <script src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>

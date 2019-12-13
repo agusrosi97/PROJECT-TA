@@ -1,5 +1,4 @@
 <?php 
-// koneksi ke database
 $conn = mysqli_connect("localhost", "root", "", "widurivilla");
 function query($query) {
 	global $conn;
@@ -10,7 +9,6 @@ function query($query) {
 	}
 	return $rows;
 }
-
 function stringToInt($string){
   $bar = (float) $string;
   return $bar;
@@ -19,6 +17,24 @@ function hilangkanTitik($nilai) {
   $a = str_replace(".", "", $nilai);
   $a = stringToInt($a);
   return $a;
+};
+function tgl_indo($tanggal){
+	$bulan = array (
+		1 =>   'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'Mei',
+		'Jun',
+		'Jul',
+		'Agu',
+		'Sep',
+		'Okt',
+		'Nov',
+		'Des'
+	);
+	$pecahkan = explode('-', $tanggal);
+	return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ', ' . $pecahkan[0];
 };
 ////////////////////////////////// ////////////////////////////////// 
 //                                TAMU                             //
@@ -222,7 +238,7 @@ function PesananReservasiSementara($data) {
   	endif;
 	endif;
 	return mysqli_affected_rows($conn);
-}
+};
 
 // ========================================================================== //
 // ========================= TAMU UPDATE RESERVASI ========================== //
