@@ -1,24 +1,19 @@
-<!----SESSION USERNAME---->
 <?php
-    // Initialize the session
-    session_start();
-   
-    // If session variable is not set it will redirect to login page
-    if(!isset($_SESSION['loggedin_pengguna'])){
-        header("location: ../login/login.php");
-        exit;
-    }
+  session_start();
+  if(!isset($_SESSION['loggedin_pengguna'])){
+    header("location: ../login/login.php");
+    exit;
+  }
+  date_default_timezone_set('Asia/Singapore');
+  setlocale(LC_ALL, 'ID_id');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Print Result</title>
-	<!--Icon-->
 	<link rel="icon" type="image/png" href="../assets/images/logo-w.png">
-	<!--Bootstrap For Layout-->
-  <link rel="stylesheet" href="../assets-2/bootstrap_4.3.1/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
 
     <style type="text/css">
     	.wrapper{
@@ -52,7 +47,7 @@
     </style>
 </head>
 <body>
-	<div class="wrapper">
+	<div class="wrapper rounded">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -62,7 +57,12 @@
 
 					<?php
 					require_once '../koneksi/function_global.php';
-					$sql = "SELECT * FROM tbl_tamu";
+					if (!empty($_SESSION['LaporanTamu'])) {
+						$sql = "".$_SESSION['LaporanTamu']."";
+					}
+					else{
+						$sql = "SELECT * FROM tbl_tamu WHERE date_sub(now(), interval 5 day) <= `date_create` ORDER BY id_tamu DESC";
+					};
 					if ($result = mysqli_query($conn, $sql)) {
 						if (mysqli_num_rows($result) > 0) {
 							echo "<table class='table table-bordered table-striped'>";
@@ -85,7 +85,7 @@
 											echo "<th class='text-center'>$no</th>";
 											echo "<td class='text-center'>" . $row['id_tamu'] . "</td>";
                       echo "<td>" . $row['nama_tamu'] . "</td>";
-                      echo "<td class='text-center'>" . date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y") . "</td>";
+                      echo "<td class='text-center'>" . tgl_indo2($row['tgl_lahir_tamu']) . "</td>";
                       echo "<td class='text-center'>" . $row['email_tamu'] . "</td>";
                       echo "<td>" . $row['no_telp_tamu'] . "</td>";
                       echo "<td>" . $row['jk_tamu'] . "</td>";
@@ -106,12 +106,11 @@
 				</div>
 				<div class="col d-flex justify-content-end">
 					<div class="p-5">
-						<p class="text-center">Widuri Villa<br></p>
+						<p class="text-center"><?= $_SESSION["loggedin_pengguna"]["nama_pengguna"]; ?><br></p>
 						<br>
 						<br>
 						<?php
-						date_default_timezone_set('Asia/Singapore');
-							echo date('l j F Y');
+							echo strftime("%A, %m %B %Y");
 						?>
 					</div>
 				</div>
@@ -119,7 +118,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		window.print();
+		// window.print();
 	</script>
 </body>
 </html>

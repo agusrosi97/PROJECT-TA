@@ -38,7 +38,7 @@
         <form action="" method="post">
           <div class="form-group position-relative wrapper-inp-login">
             <label>Email address</label>
-            <input type="email" name="inp_email_tamu" class="form-control login-inp" placeholder="Email">
+            <input type="email" name="inp_email_tamu" class="form-control login-inp" placeholder="Email" autofocus>
             <span class="inp-focus"></span>
           </div>
           <div class="form-group position-relative wrapper-inp-login">
@@ -104,7 +104,7 @@
                 type: 'success',
                 title: '<h2>Selamat datang</h2>',
                 showConfirmButton: false,
-                timer : 2000
+                timer : 1000
               }).then(function() {
                 window.location.href = '../metodePembayaran.php';
               })
@@ -117,7 +117,7 @@
                 type: 'error',
                 title: 'Email atau kata sandi Anda salah!',
                 showConfirmButton: false,
-                timer : 2000
+                timer : 1000
               }).then(function() {
                 window.location.href = 'login.php';
               })
@@ -131,7 +131,7 @@
               type: 'error',
               title: 'Email Anda belum terdaftar!',
               showConfirmButton: false,
-              timer : 2000
+              timer : 1000
             }).then(function() {
               window.location.href = 'login.php';
             })

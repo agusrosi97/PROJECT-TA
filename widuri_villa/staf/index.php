@@ -62,7 +62,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/Chart.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">

@@ -43,7 +43,7 @@
   <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
   <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">
@@ -127,7 +127,7 @@
               </div>
             </div>
           </div>
-          <div class="table-responsive pt-2 px-2 rounded" style="z-index: 9" id="load_HasilCari">
+          <div class="table-responsive pt-2 px-2 rounded" id="load_HasilCari">
             <table id="StafTablesTransaksi" class="table rounded dt-responsive table-hover nowrap" width="100%">
               <thead class="thead-dark">
                 <tr class="text-nowrap">
@@ -244,7 +244,6 @@
       responsive: true,
       "order": []
     });
-
     $('#menuToggle').click(function() {
       $('.menu-admin').toggleClass('hide');
     });
@@ -271,16 +270,14 @@
         $('#btnCariReservasi').prop('disabled', false);
       }
     };
-    $(document).ready(function () {
-      $('#btnCariReservasi').on('click', function () {
-        $.ajax({
-          type: 'POST',
-          url: '../url_ajax/data_CariTransaksi.php',
-          data: {tgl_awal : $('#tgl_awal').val(), tgl_akhir : $('#tgl_akhir').val()},
-          success : function () {
-            $('#load_HasilCari').load('../url_ajax/output_CariTransaksi.php');
-          }
-        })
+    $(document).on('click','#btnCariReservasi', function () {
+      $.ajax({
+        type: 'POST',
+        url: '../url_ajax/data_CariTransaksi.php',
+        data: {tgl_awal : $('#tgl_awal').val(), tgl_akhir : $('#tgl_akhir').val()},
+        success : function () {
+          $('#load_HasilCari').load('../url_ajax/output_CariTransaksi.php');
+        }
       })
     });
   </script>
@@ -331,40 +328,48 @@
           </script>
         ";
       }
-    }
-    if( isset($_POST["transaksiValid"]) ) :
-      if( VerifikasiValid($_POST) > 0 ) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'success',
-              title: 'Data berhasil divalidasi!',
-              showConfirmButton: false,
-              timer: 2000
-              }).then(function() {
-              window.location.href = 'tabel_transaksi.php';             
-            });
-          </script>
-        ";
-      }
-    endif;
-    if( isset($_POST["transaksiGakValid"]) ) :
-      if( VerifikasiTidakValid($_POST) > 0 ) {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Data tertolak!',
-              text: 'Data Resevasi tidak valid.',
-              showConfirmButton: false,
-              timer: 2000
-              }).then(function() {
-              window.location.href = 'tabel_transaksi.php';             
-            });
-          </script>
-        ";
-      }
-    endif;
+    };
+    $n=1;
+    foreach ($data_transaksi as $key) :
+      if( isset($_POST["transaksiValid_".$n.""]) ) :
+        if( VerifikasiValid($_POST) > 0 ) {
+          echo "
+            <script>
+              Swal.fire({
+                type: 'success',
+                title: 'Data berhasil divalidasi!',
+                showConfirmButton: false,
+                timer: 2000
+                }).then(function() {
+                window.location.href = 'tabel_transaksi.php';             
+              });
+            </script>
+          ";
+        }
+      endif;
+      ++$n;
+    endforeach;
+    $n=1;
+    foreach ($data_transaksi as $key) :
+      if( isset($_POST["transaksiGakValid_".$n.""]) ) :
+        if( VerifikasiTidakValid($_POST) > 0 ) {
+          echo "
+            <script>
+              Swal.fire({
+                type: 'error',
+                title: 'Data tertolak!',
+                text: 'Data Resevasi tidak valid.',
+                showConfirmButton: false,
+                timer: 2000
+                }).then(function() {
+                window.location.href = 'tabel_transaksi.php';             
+              });
+            </script>
+          ";
+        }
+      endif;
+      ++$n;
+    endforeach;
   ?>
 </body>
 </html>

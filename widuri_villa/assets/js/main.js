@@ -370,14 +370,3 @@ $("#zz").focusout(function() {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 });
-jQuery.fn.extend({
-  toggleText: function (a, b){
-    var isClicked = false;
-    var that = this;
-    this.click(function (){
-      if (isClicked) { that.text(a); isClicked = false; }
-      else { that.text(b); isClicked = true; }
-    });
-    return this;
-  }
-});

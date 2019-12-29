@@ -10,13 +10,13 @@
       $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(),INTERVAL 168 HOUR)";
     break;
     case 'month':
-      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 2 MONTH)), INTERVAL 1 DAY)";
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
     break;
     case 'year':
-      $_SESSION['currentDate_Resv'] = "YEAR(jam_reservasi) = YEAR(CURRENT_DATE())";
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
     break;
     default:
-  	$_SESSION['currentDate_Resv'] = "YEAR(jam_reservasi) = YEAR(CURRENT_DATE())";
+  	$_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
 	}
 	// }
 ?>

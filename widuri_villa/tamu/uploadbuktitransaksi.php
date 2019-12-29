@@ -111,26 +111,25 @@
     </section>
     <!-- /Fasility -->
     <?php include '../footer/footer-tamu.php'; ?>
-    <?php include 'modal_gallery.php'; ?>
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="../assets/js/popper.min.js"></script>
-    <script src="../assets/vendor/particles.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="../assets/vendor/particles.min.js"></script>
     <script type="text/javascript" src="../assets/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../assets-2/bootstrap_4.3.1/js/bootstrap.js"></script>
     <script type="text/javascript" src="../assets/js/parallax.js"></script>
-    <script src="../assets/js/jquery.waypoints.min.js"></script>
-    <script src="../assets/js/jquery.stellar.min.js"></script>
-    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.waypoints.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.stellar.min.js"></script>
+    <script type="text/javascript" src="../assets/js/owl.carousel.min.js"></script>
     <script type="text/javascript" src="../assets/vendor/fontawesome-free-5.10.2-web/js/all.js"></script>
-    <script src="../assets/js/lightgallery-all.min.js"></script>
-    <script src="../assets/js/aos.js"></script>
-    <script src="../assets/js/scrollax.min.js"></script>
-    <script src="../assets/js/jquery.easing.min.js"></script>
-    <script src="../assets/js/main.js"></script>
+    <script type="text/javascript" src="../assets/js/lightgallery-all.min.js"></script>
+    <script type="text/javascript" src="../assets/js/aos.js"></script>
+    <script type="text/javascript" src="../assets/js/scrollax.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="../assets/js/main.js"></script>
     <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
     <script type="text/javascript">
       particlesJS.load('particles-js', '../assets/vendor/particles.json', function() {

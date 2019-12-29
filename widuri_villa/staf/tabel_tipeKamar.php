@@ -34,7 +34,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
   <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">

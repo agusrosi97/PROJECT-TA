@@ -1,24 +1,24 @@
 <?php
 session_start();
-date_default_timezone_set('Asia/Singapore');
+date_default_timezone_set('Asia/Jakarta');
 $id = $_SESSION["loggedin_pengguna"]["id_pengguna"];
-  $emailnya = $_SESSION["loggedin_pengguna"]["email"];
-  $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
+$emailnya = $_SESSION["loggedin_pengguna"]["email"];
+$levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
 require '../koneksi/function_global.php';
 include '../query/queryDataDiri_pengguna.php';
 $data_transaksi = mysqli_query($conn,"
-  SELECT tbl_transaksi_pembayaran.*, tbl_tamu.*, tbl_reservasi.*
-  FROM tbl_transaksi_pembayaran
-  LEFT JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
-  LEFT JOIN tbl_reservasi ON tbl_transaksi_pembayaran.id_reservasi = tbl_reservasi.id_reservasi
-  WHERE jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."'
-  ORDER BY id_transaksi DESC
+SELECT tbl_transaksi_pembayaran.*, tbl_tamu.*, tbl_reservasi.*
+FROM tbl_transaksi_pembayaran
+INNER JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
+INNER JOIN tbl_reservasi ON tbl_transaksi_pembayaran.id_reservasi = tbl_reservasi.id_reservasi
+WHERE (jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."' + INTERVAL 24 HOUR)
+ORDER BY id_transaksi DESC
 ");
 // Transaksi valid
-$data_bayarVAL = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."' AND status = 'VALID'");
+$data_bayarVAL = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."' + INTERVAL 24 HOUR AND status = 'VALID'");
 $output_totalVAL = mysqli_fetch_assoc($data_bayarVAL);
 // transaksi ditolak
-$data_bayarGAK = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."' AND status = 'GAK VALID'");
+$data_bayarGAK = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar FROM tbl_transaksi_pembayaran WHERE jam_transaksi BETWEEN '".$_SESSION['tgl_awalTrans']."' AND '".$_SESSION['tgl_akhirTrans']."' + INTERVAL 24 HOUR AND status = 'GAK VALID'");
 $output_totalGAK = mysqli_fetch_assoc($data_bayarGAK);
 ?>
 <style type="text/css">

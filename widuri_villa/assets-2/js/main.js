@@ -1,5 +1,3 @@
-"use strict";
-
 // [].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
 // 	new SelectFx(el);
 // } );
@@ -252,10 +250,8 @@ $('.count').each(function () {
   });
 });
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip({
-    trigger: 'hover'
-  })
+$('[data-toggle="tooltip"]').tooltip({
+  trigger: 'hover'
 });
 $('[data-toggle="popover"]').popover({
   html: true,

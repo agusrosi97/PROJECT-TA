@@ -960,7 +960,7 @@
 body {
   background: #f1f2f7;
   display: table;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif !important;
   font-size: 15px !important;
   width: 100%; }
 @media (max-width: 700px){
@@ -971,8 +971,8 @@ div[class*="col-"] {
   float: left; }
 
 p {
-  font-size: 16px;
-  font-family: 'Open Sans' sans-serif;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif !important;
   font-weight: 400;
   line-height: 24px;
   color: #878787; }
@@ -1063,7 +1063,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b0d",endCo
   .navbar .navbar-brand {
     border-bottom: 1px solid #4e4e52;
     color: #f1f2f7 !important;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;
     font-size: 22px;
     float: none;
     line-height: 50px;
@@ -1094,7 +1094,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b0d",endCo
     color: #9496a1;
     clear: both;
     display: block;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;;
     font-size: 14px;
     font-weight: 700;
     line-height: 50px;
@@ -1115,7 +1115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b0d",endCo
         background: none !important;
         color: #c8c9ce !important;
         display: inline-block;
-        font-family: 'Open Sans';
+        font-family: 'Roboto', sans-serif !important;
         font-size: 14px;
         line-height: 30px;
         padding: 10px 0;
@@ -1136,7 +1136,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b0d",endCo
           font-size: 14px; }
         .navbar .navbar-nav li > a .badge {
           border-radius: 0;
-          font-family: 'Open Sans';
+          font-family: 'Roboto', sans-serif !important;
           font-weight: 600;
           float: right;
           margin: 6px 0 0;
@@ -1222,7 +1222,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b0d",endCo
   background: #a9d86e;
   border-radius: 50%;
   color: #fff;
-  font-family: 'Open Sans';
+  font-family: 'Roboto', sans-serif !important;
   font-size: 9px;
   font-weight: 700;
   float: right;
@@ -1601,7 +1601,7 @@ header .form-inline {
   .user-area .user-menu {
     background: #fff;
     border: none;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;
     left: inherit !important;
     right: 0;
     top: 40px !important;
@@ -1631,7 +1631,7 @@ header .form-inline {
     background: #d9534f;
     border-radius: 50%;
     color: #fff;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;
     font-size: 9px;
     font-weight: 700;
     float: right;
@@ -1976,8 +1976,9 @@ header .form-inline {
 }
 .login-inp {
 	border: none;
+	border-radius: unset !important;
 	outline: none;
-  border-bottom: 2px solid #dbdbdb;
+  border-bottom: 2px solid #dbdbdb !important;
 }
 .inp-focus {
 	position: absolute;
@@ -1992,7 +1993,7 @@ header .form-inline {
 	content: "";
   display: block;
   position: absolute;
-  bottom: -2px;
+  bottom: 0px;
   left: 0;
   width: 0;
   height: 2px;
@@ -2012,7 +2013,7 @@ header .form-inline {
 .btn-show-password {
 	position: absolute;
 	right: 5px;
-	top: 40%;
+	top: 50%;
 	transform: translateY(50%);
 	color: #616161;
 	transition: all .20s;
@@ -2198,7 +2199,7 @@ input[type="file"] {
 	position: absolute;
   right: 30px;
   top: 50%;
-  transform: translateY(20%);
+  transform: translateY(50%);
 }
 
 /* /file upload */
@@ -2360,7 +2361,8 @@ input[type="file"] {
 .register-inp {
 	border: none;
 	outline: none;
-  border-bottom: 2px solid #dbdbdb;
+  border-bottom: 2px solid #dbdbdb !important;
+  border-radius: unset !important;
 }
 /* /REGISTER FORM */
 
@@ -2969,7 +2971,7 @@ input[type="file"] {
     display: none; }
    .open aside.left-panel .navbar .navbar-nav li a {
    	display: flex;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;
     font-size: 12px;
     line-height: 30px;
     padding: 10px 0;
@@ -3044,10 +3046,6 @@ input {
 textarea {
   outline: none;
   border: none;
-}
-
-textarea:focus, input:focus {
-  border-color: transparent !important;
 }
 
 input:focus::-webkit-input-placeholder { color:transparent; }
@@ -3432,7 +3430,7 @@ textarea.input100 {
 
 .test {
 	color: #272c33 !important;
-    font-family: 'Open Sans';
+    font-family: 'Roboto', sans-serif !important;
     padding-top: 6px;
     padding-right: 5px;
 }
@@ -3705,14 +3703,14 @@ input.nohide{
 }
 
 .btn-danger2 {
-  color: #fff;
-  background-color: #FF9800;
-  border-color: #FF9800;
+  color: #fff !important;
+  background-color: #FF9800 !important;
+  border-color: #FF9800 !important;
 }
 .btn-danger2:hover {
   color: #fff;
-  background-color: #F57C00;
-  border-color: #FB8C00;
+  background-color: #F57C00 !important;
+  border-color: #FB8C00 !important;
 }
 .btn-light:hover {
   border-color: #d1d1d1 !important;
@@ -3899,6 +3897,9 @@ div.dataTables_wrapper div.dataTables_filter label {
 .dash-card .bootstrap-select.show-tick .dropdown-menu li a span.text {
 	margin-right: 10px !important; 
 }
+.bootstrap-select .dropdown-toggle:focus {
+	outline: none !important;
+}
 
 #tombolKecil {
 	display: none;
@@ -3918,26 +3919,30 @@ div.dataTables_wrapper div.dataTables_filter label {
 	}
 }
 /*LAPORAN*/
-.selectCari_tamu .bootstrap-select>.dropdown-toggle.bs-placeholder {
+.selectCari_tamu .bootstrap-select>.dropdown-toggle.bs-placeholder, .selectCari_reservasi .bootstrap-select>.dropdown-toggle.bs-placeholder {
 	background-color: #007bff;
 	color: rgba(245, 245, 245, 0.82) !important;
   border-color: #007bff !important;
 }
-.selectCari_tamu .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+.selectCari_tamu .bootstrap-select>.dropdown-toggle.bs-placeholder:hover, .selectCari_reservasi .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
 	border-color: #007bff !important;
 	color: white !important;
 }
-.selectCari_tamu .bootstrap-select>.dropdown-toggle:after {
+.selectCari_tamu .bootstrap-select>.dropdown-toggle:after, .selectCari_reservasi .bootstrap-select>.dropdown-toggle:after {
   margin-top: 3px;
   margin-left: .555em;
 }
-.selectCari_tamu .bootstrap-select.show-tick .dropdown-menu li a span.text {
+.selectCari_tamu .bootstrap-select.show-tick .dropdown-menu li a span.text, .selectCari_reservasi .bootstrap-select.show-tick .dropdown-menu li a span.text {
 	margin-right: 10px !important; 
 }
 #rntg {
 	display: none;
 }
-#btn-PrintLapTam {
+#btn-PrintLapTam, #btn-PrintRntg, #btn-PrintDtTamuSaatIni {
+	display: none;
+}
+
+#wrap-chek, #wrap-prio, #btnPrintResv {
 	display: none;
 }
 /*/ LAPORAN*/
@@ -3968,4 +3973,66 @@ div.dataTables_wrapper div.dataTables_filter label {
   .right-border2 {
   	border: none;
   }
+}
+.head_print .text-center h2 {
+	font-family: 'Raleway', sans-serif !important;
+}
+.head_print img {
+	position: absolute;
+	top: 10px;
+	left: 80px
+}
+.hr_print {
+	border: 0;
+  height: 1px !important;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)) !important;
+}
+table.lap.table-bordered{
+  border:1px solid #aaaaaa;
+    margin-top:20px;
+  }
+table.lap.table-bordered > tbody > tr > td{
+  border:1px solid #aaaaaa;
+}
+table.lap thead th {
+  vertical-align: middle !important;
+  border-bottom: 2px solid #dee2e6;
+}
+table.lap tbody tr td {
+  vertical-align: middle !important;
+}
+@media print{
+  .table thead tr td,.table tbody tr td{
+    font-size: 10px !important;
+    background-color: red;
+    -webkit-print-color-adjust:exact ;
+  }
+  .table thead tr th {
+  	background-color: #343a40 !important;
+  	color: #fff !important;
+  	border: 1px solid #343a40 !important;
+  }
+  .table tbody tr td {
+  	border-top: 1px solid #dee2e6 !important;
+  }
+  .table.lap tr td.foot {
+    color: #fff !important;
+    background-color: #343a40 !important;
+    border-color: #454d55 !important;
+	}
+	.hr_print {
+		border: 0;
+	  height: 1px !important;
+	  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)) !important;
+	}
+}
+body.lapresv {
+	background: #fff !important;
+}
+table.lap {
+	border-style: hidden !important;
+}
+
+table.print_indv tr{
+	line-height: 30px !important;
 }

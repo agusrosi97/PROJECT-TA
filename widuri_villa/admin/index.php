@@ -13,7 +13,7 @@
   require '../koneksi/function_global.php';
   include '../query/queryDataDiri_pengguna.php';
   // GET DATA PENGGUNA
-  $TotalDataPengguna = mysqli_query($conn, "SELECT * FROM tbl_pengguna");
+  $TotalDataPengguna = mysqli_query($conn, "SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna != 'owner' AND status_pengguna != 'Tidak Aktif'");
   $HasilDataPengguna = mysqli_num_rows($TotalDataPengguna);
   // GET JML KAMAR
   $gettotalKamar = mysqli_query($conn, "SELECT sum(jumlah_kamar) AS jmlKamarTerkini FROM tbl_tipe_kamar");
@@ -47,7 +47,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/Chart.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">
@@ -152,15 +152,10 @@
       <div class="content mb-4">
         <div class="row mb-4 px-2">
           <div class="col-lg-6 pr-xl-1">
-            <div class="card grafiktrans shadow rounded border-light">
-              <select class="selectpicker form-control col-5 p-2" id="selectGrafikTrans" title="Pilih tahun">
-                <?php foreach (range(date('Y'), $earliest_year) as $x) {
-                  echo "<option value='".$x."'>".$x."</option>";
-                } ?>
-              </select>
-              <div class="card-body shadow-sm pt-0" id="loadGrafikTrans">
+            <div class="card shadow rounded border-light">
+              <div class="card-body shadow-sm pt-0">
                 <div class="row">
-                  <canvas id="chartTrans" width="600" height="260"></canvas>
+                  <canvas id="chartResrvasi"></canvas>
                 </div>
               </div>
             </div>
@@ -191,68 +186,49 @@
   <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
   <?php include 'confirmLogout.php'; ?>
   <script>
-    $(document).ready(function () {
-      $('#selectTrans').on('change', function () {
-        $.ajax({
-          type: 'POST',
-          url: '../url_ajax/data_transaksi.php',
-          data: {getValueTrans : $('#selectTrans').val()},
-          success: function () {
-            $('#tampilHasilTrans').load('../url_ajax/output_DataTransaksi.php');
-          }
-        })
-      });
-      $('#selectGrafikTrans').on('change', function () {
-        $.ajax({
-          type: 'POST',
-          url: '../url_ajax/data_grafikTrans.php',
-          data: {tahun : $('#selectGrafikTrans').val()},
-          success: function () {
-            $('#loadGrafikTrans').load('../url_ajax/output_GrafikTrans.php');
-          }
-        })
-      });
-    });
-    //chart Transaksi
-    var ctx = document.getElementById("chartTrans").getContext('2d');
+    // chart Resrvasi
+    var ctx = document.getElementById( "chartResrvasi" );
     ctx.height = 150;
-    var myChart = new Chart(ctx, {
-      type: 'bar',
+    var myChart = new Chart( ctx, {
+      type: 'line',
       data: {
         labels: ["Jan", "Feb", "Ma", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov","Dec"],
         datasets: [{
-          label: "Transaksi valid (<?php echo date('Y') ?>)",
+          label: "Reservasi tahun ini (<?php echo date('Y') ?>)",
           data: [ 
             <?php 
-              $data =  grafikValid(date('Y'));
+              $data =  grafikReservasi(date('Y'));
               for ($i=0; $i <count($data) ; ++$i) { 
                 echo  $data[$i].',';
               }
             ?>
           ],
-          borderColor: "rgba(54, 162, 235, 1)",
-          borderWidth: "1",
-          backgroundColor: "rgba(54, 162, 235, 1)" }, {
-            label: "Transaksi Ditolak (<?php echo date('Y') ?>)",
+          borderColor: "rgba(0, 123, 255, 0.9)",
+          borderWidth: "0.8",
+          backgroundColor: "rgba(0, 123, 255, 0.5)",
+          pointHighlightStroke: "rgba(26,179,148,1)"
+          },
+          {
+            label: "Reservasi tahun lalu (<?php echo date('Y',strtotime("-1 year")); ?>)",
             data: [ 
               <?php 
-                $data =  grafikGakValid(date('Y'));
+                $data =  grafikReservasi(date('Y',strtotime("-1 year")));
                 for ($i=0; $i <count($data) ; ++$i) { 
                   echo  $data[$i].',';
                 }
               ?>
             ],
-            borderColor: "rgba(255, 87, 87,1)",
-            borderWidth: "1",
-            backgroundColor: "rgba(255, 87, 87,1)"
+            borderColor: "rgba(0,0,0,.3)",
+            borderWidth: "0.8",
+            backgroundColor: "rgba(0,0,0,.2)",
+            pointHighlightStroke: "rgba(26,179,148,1)"
           }
         ]
       },
       options: {
-        responsive: true,
         tooltips: {
           mode: 'index',
-          intersect: false
+          intersect: false,
         },
         hover: {
           mode: 'nearest',

@@ -113,7 +113,7 @@
 	  </nav>
     <!-- END nav -->
     <!-- home -->
-    <div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home">
+    <!-- <div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home"> -->
       <div class="overlay"></div>
       <div class="container-fluid">
         <div class="row no-gutters slider-text justify-content-center align-items-center">
@@ -249,7 +249,6 @@
     	</div>
     </section>
     <!-- /Gallery -->
-    
     <!-- Contact -->
     <footer class="page-section ftco-footer ftco-section" id="contact">
       <div class="container-fluid">

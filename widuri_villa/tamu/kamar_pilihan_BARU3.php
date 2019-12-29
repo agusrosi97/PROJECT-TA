@@ -4,6 +4,7 @@
   if (empty($_SESSION["pilihanKamar"])) :
     header("location:../index.php");
   endif;
+  date_default_timezone_set('Asia/Makassar');
   // get session
   $tglCI = $_SESSION["pilihanKamar"]["tglCheckin"];
   $tglCO =  $_SESSION["pilihanKamar"]["tglCheckout"];
@@ -93,7 +94,7 @@
     </nav>
     <!-- END nav -->
     <!-- home -->
-    <div class="parallax-window hero-wrap--2 ftco-degree-bg" data-parallax="scroll" data-image-src="../assets/images/20180819_134434.jpg">
+    <!-- <div class="parallax-window hero-wrap--2 ftco-degree-bg" data-parallax="scroll" data-image-src="../assets/images/20180819_134434.jpg"> -->
       <div class="overlay"></div>
       <div class="container-fluid">
         <div class="row no-gutters slider-text--2 justify-content-center align-items-center">
@@ -174,7 +175,7 @@
                         </div>       
                       </div>
                       <div class="d-flex justify-content-end">
-                        <div id="textPilih<?=$i;?>" class="checkbox-custom" data-toggle="tooltip" data-placement="top" title="klik untuk memilih" style="line-height: 1">
+                        <div id="textPilih<?=$i;?>" class="checkbox-custom" style="line-height: 1">
                           <label style="font-size: 1.5em;" class="d-flex justify-content-center align-items-center mb-0 forrup" onchange='hitung();'>
                             <span id="textTarget<?=$i;?>">Pilih Kamar?</span>
                             <input id="btnKamar_<?=$i;?>" type="checkbox" value="<?php echo $row['id_tipe_kamar'] ?>" name="id_kamar[]" form="form_reservasi">
@@ -220,7 +221,6 @@
     <script src="../assets/js/jquery.easing.min.js"></script>
     <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
     <script type="text/javascript">
-      
       function hitung(){
         var JmlHari = Number($('#jumlahHari').val());
         var TotHarga=0;

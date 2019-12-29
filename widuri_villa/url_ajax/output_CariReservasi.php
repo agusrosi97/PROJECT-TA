@@ -41,7 +41,7 @@ include '../query/queryDataDiri_pengguna.php';
         FROM tbl_reservasi
         LEFT JOIN tbl_pengguna ON tbl_reservasi.id_pengguna = tbl_pengguna.id_pengguna
         LEFT JOIN tbl_tamu ON tbl_reservasi.id_tamu = tbl_tamu.id_tamu
-        WHERE tgl_checkin >= '".$_SESSION['tgl_awalRes']."' AND tgl_checkout <= '".$_SESSION['tgl_akhirRes']."'
+        WHERE (tgl_checkin >= '".$_SESSION['tgl_awalRes']."' AND tgl_checkout <= '".$_SESSION['tgl_akhirRes']."')
         ORDER BY id_reservasi DESC
       ");
       $no=1;
@@ -107,7 +107,7 @@ include '../query/queryDataDiri_pengguna.php';
       "searchable": true
     } ],
     'language': {
-      'emptyTable': 'Tidak ada data Reservasi ☹'
+      'emptyTable': 'Tidak ada data Reservasi'
     },
     'columns': [
       null,

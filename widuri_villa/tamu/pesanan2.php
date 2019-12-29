@@ -120,7 +120,6 @@
                   <h3>Informasi</h3>
                   <div class="d-flex flex-column border-bottom">
                     <h5><i class="fas fa-info-circle text-danger"></i> Harap upload bukti transaksi dalam waktu dua jam!</h5>
-                    <h5><i class="fas fa-exclamation-triangle text-warning"></i> Jika Anda ingin mengubah data pesanan, harap dilakukan sebelum membayar ke rekening tujuan!</h5>
                   </div>
                   <div class="d-flex justify-content-between align-items-center py-2 border-bottom bg-light px-2">
                     <?php if ($bank === "bca"): ?>

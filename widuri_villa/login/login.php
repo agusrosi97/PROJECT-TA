@@ -184,7 +184,7 @@
 
   <div class="wrapper-login">
     <div class="wrapper-img-login">
-      <!-- <img src="../assets/images/20190502_091550_Richtone(HDR).jpg" alt="" class="img-login"> -->
+      <img src="../assets/images/20190502_091550_Richtone(HDR).jpg" alt="" class="img-login">
     </div>     
     <div class="login-form px-5">
       <div class="text-center pb-4 mb-md-5 mb-lg-5">
@@ -196,17 +196,16 @@
         <form action="" method="post">
           <div class="form-group position-relative wrapper-inp-login">
             <label>Email address</label>
-            <input type="email" name="inp_email_pengguna" class="form-control login-inp" placeholder="Email">
+            <input type="email" name="inp_email_pengguna" class="form-control login-inp" placeholder="Email" autofocus>
             <span class="inp-focus"></span>
           </div>
           <div class="form-group position-relative wrapper-inp-login">
             <label>Password</label>
-            <input type="password" name="inp_pass_pengguna" class="form-control login-inp" placeholder="Password" id="inp-pass">
+            <input type="password" name="inp_pass_pengguna" class="form-control login-inp" placeholder="Password" id="inp-pass" autocomplete="true">
             <span class="inp-focus"></span>
             <div class="btn-show-password" title="Show password" id="btn-toggle-pass">
               <i class="fas fa-eye"></i>
             </div>
-            
           </div>
           <div class="text-center">
             <button type="submit" name="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30">Sign in</button>
@@ -215,7 +214,6 @@
       </div>
     </div>
   </div>
-
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   <script src="../assets-2/js/main.js"></script>

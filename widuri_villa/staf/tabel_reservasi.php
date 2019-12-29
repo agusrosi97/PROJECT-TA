@@ -40,7 +40,7 @@
   <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
   <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body onload="disableButtonPesan(); disableButtonPesan2(); disableCheck(); disableCheck2();" onchange="disableButtonPesan(); disableButtonPesan2(); disableCheck2();">
   <div class="bungkus">

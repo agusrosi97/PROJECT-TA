@@ -3,8 +3,8 @@
 	require '../koneksi/function_global.php';
 	$day = "date_create >= DATE_SUB(NOW(),INTERVAL 24 HOUR)";
 	$week = "date_create >= DATE_SUB(NOW(),INTERVAL 168 HOUR)";
-	$month = "date_create >= DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 2 MONTH)), INTERVAL 1 DAY)";
-	$year = "YEAR(date_create) = YEAR(CURRENT_DATE())";
+	$month = "date_create >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
+	$year = "date_create >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
 	$ambilData = mysqli_query($conn, "SELECT COUNT(id_tamu) AS akun_tamu FROM tbl_tamu WHERE ".$_SESSION['currentDate_Tamu']."");
 	$get = mysqli_fetch_assoc($ambilData);
 ?>

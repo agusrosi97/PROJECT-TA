@@ -3,8 +3,8 @@
 	require '../koneksi/function_global.php';
 	$day = "jam_transaksi >= DATE_SUB(NOW(),INTERVAL 24 HOUR) AND status = 'VALID'";
 	$week = "jam_transaksi >= DATE_SUB(NOW(),INTERVAL 168 HOUR) AND status = 'VALID'";
-	$month = "jam_transaksi >= DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 2 MONTH)), INTERVAL 1 DAY) AND status = 'VALID'";
-	$year = "YEAR(jam_transaksi) = YEAR(CURRENT_DATE()) AND status = 'VALID'";
+	$month = "jam_transaksi >= DATE_SUB(NOW(), INTERVAL 1 MONTH) AND status = 'VALID'";
+	$year = "jam_transaksi >= DATE_SUB(NOW(), INTERVAL 1 YEAR) AND status = 'VALID'";
 	$ambilData = mysqli_query($conn, "SELECT sum(total_pembayaran_kamar) AS total_bayar_kamar FROM tbl_transaksi_pembayaran WHERE ".$_SESSION['currentDate_Trans']."");
 	$get = mysqli_fetch_assoc($ambilData);
 ?>

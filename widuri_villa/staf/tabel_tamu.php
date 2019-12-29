@@ -30,7 +30,7 @@
   <link rel='stylesheet' type="text/css" href='../assets/css/sweetalert2.min.css'>
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">
@@ -117,7 +117,7 @@
                     </td>
                     <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
                     <td><?= $row["nama_tamu"]; ?></td>
-                    <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
+                    <td><?= tgl_indo2($row["tgl_lahir_tamu"]); ?></td>
                     <td><?= $row["email_tamu"]; ?></td>
                     <td><?= $row["no_telp_tamu"]; ?></td>
                     <td><?= $row["alamat_tamu"]; ?></td>
@@ -187,37 +187,7 @@
       endforeach;
     ?>
   </script>
-  <?php 
-    // if( isset($_POST["submit"]) ) {
-    //   if( stafTambahTamu($_POST) > 0 ) {
-    //     echo "
-    //       <script>
-    //         Swal.fire({
-    //           type: 'success',
-    //           title: 'Data telah ditambahkan.',
-    //           showConfirmButton: false,
-    //           timer: 2000
-    //         }).then(function() {
-    //           window.location.href = 'tabel_tamu.php';
-    //         });
-    //       </script>
-    //     ";
-    //   } else {
-    //     echo "
-    //       <script>
-    //         Swal.fire({
-    //           type: 'error',
-    //           title: 'Gagal menambah data!',
-    //           showConfirmButton: false,
-    //           timer: 2000
-    //         }).then(function() {
-    //           window.location.href = 'tabel_tamu.php';
-    //         });
-    //       </script>
-    //     ";
-    //   }
-    // }
-
+  <?php
     // EDIT FORM
     if( isset($_POST["submit_ubah"]) ) {  
       if( stafUbahTamu($_POST) >= 0 ) {

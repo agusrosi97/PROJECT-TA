@@ -1,7 +1,8 @@
 <?php 
 session_start();
+date_default_timezone_set('Asia/Singapore');
 require '../koneksi/function_global.php';
-$data_tamu = mysqli_query($conn, "".$_SESSION['LaporanTamu']."");
+$data_tamu = query("".$_SESSION['LaporanTamu']."");
 ?>
 <table id="OwnerLaporanTamu" class="table rounded dt-responsive table-hover nowrap" width="100%">
   <thead class="thead-dark">
@@ -21,22 +22,22 @@ $data_tamu = mysqli_query($conn, "".$_SESSION['LaporanTamu']."");
     <?php foreach( $data_tamu as $row ) : ?>
       <tr class="text-nowrap">
         <td><?=$i;?></td>
-        <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
+        <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?=$row["foto_tamu"] ?>" alt=""></div></td>
         <td><?= $row["nama_tamu"]; ?></td>
-        <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
+        <td><?= tgl_indo2($row["tgl_lahir_tamu"]); ?></td>
         <td><?= $row["email_tamu"]; ?></td>
         <td><?= $row["no_telp_tamu"]; ?></td>
         <td><?= $row["alamat_tamu"]; ?></td>
-        <td><?= $row["jk_tamu"]; ?></td>
+        <td><?=$row['jk_tamu'] === 'L' ? 'Laki-laki' : 'Perempuan' ?></td>
       </tr>
       <?php $i++; ?>
     <?php endforeach; ?>
   </tbody> 
 </table>
 <script>
-  $('#OwnerLaporanTamu').DataTable({
+  var lap_tamu = $('#OwnerLaporanTamu').DataTable({
     'language': {
-      'emptyTable': 'Belum ada tamu mendaftar dalam lima hari terakhir'
+      'emptyTable': '<p class=text-muted>Tidak ada data tamu untuk ditampilkan.</p>'
     },
     'columns': [
       null,
@@ -50,11 +51,18 @@ $data_tamu = mysqli_query($conn, "".$_SESSION['LaporanTamu']."");
     ],
     "processing": true,
     "pagingType": "full_numbers",
-    "lengthMenu": [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+    "lengthMenu": [[6, 10, 25, 50, -1], [6, 10, 25, 50, "All"]],
     responsive: true,
-    "order": []
+    "order": [],
+    "bPaginate": true,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": true,
   });
-  $('#menuToggle').click(function() {
-    $('.menu-admin').toggleClass('hide');
-  });
+  if ( ! lap_tamu.data().any() ) {
+    $('#btn-PrintLapTam').fadeOut();
+  }else{
+    $('#btn-PrintLapTam').fadeIn();
+  }
+  $('#btn-PrintDtTamuSaatIni').fadeOut();
 </script>

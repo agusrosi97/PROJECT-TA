@@ -13,7 +13,7 @@
   // $fotonya = $_SESSION["loggedin_pengguna"]["foto_pengguna"];
   require '../koneksi/function_global.php';
   $TableData_pengguna = query("SELECT * FROM tbl_pengguna ORDER BY id_pengguna DESC");
-  $AdaOwner = query("SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna = 'owner'");
+  $AdaOwner = query("SELECT * FROM tbl_pengguna WHERE hak_akses_pengguna = 'owner' AND status_pengguna = 'Aktif'");
   include '../query/queryDataDiri_pengguna.php';
 ?>
 <!doctype html>
@@ -37,7 +37,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/fontawesome-free-5.10.2-web/css/all.css">
   <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
   <link rel="stylesheet" href="../assets-2/css/style.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">

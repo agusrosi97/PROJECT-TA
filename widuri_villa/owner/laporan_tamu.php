@@ -1,5 +1,6 @@
 <?php 
   session_start();
+  date_default_timezone_set('Asia/Singapore');
   if ( empty($_SESSION["loggedin_pengguna"]) ) {
     header('location: ../login/login.php');
   }
@@ -11,7 +12,7 @@
   $emailnya = $_SESSION["loggedin_pengguna"]["email"];
   $levelnya = $_SESSION["loggedin_pengguna"]["level_pengguna"];
   require '../koneksi/function_global.php';
-  $data_tamu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE date_sub(now(), interval 5 day) <= `date_create` ORDER BY id_tamu DESC");
+  $data_tamu = query("SELECT * FROM tbl_tamu WHERE date_sub(now(), interval 5 day) <= `date_create` ORDER BY nama_tamu ASC");
   include '../query/queryDataDiri_pengguna.php';
 ?>
 <!doctype html>
@@ -19,7 +20,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Data Tamu</title>
+  <title>Laporan Tamu</title>
   <meta name="description" content="Sufee Admin - HTML5 Admin Template">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../assets/images/logo-w.png">
@@ -31,7 +32,7 @@
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link rel='stylesheet' type="text/css" href='../assets/css/jquery-ui.min.css'>
   <link rel="stylesheet" type="text/css" href="../assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="bungkus">
@@ -72,7 +73,7 @@
         <div class="col-sm-4">
           <div class="page-header float-left">
             <div class="page-title">
-              <h1>Data Tamu</h1>
+              <h1>Laporan Tamu</h1>
             </div>
           </div>
         </div>
@@ -81,7 +82,7 @@
             <div class="page-title">
               <ol class="breadcrumb text-right">
                 <li><a href="index.php">Dashboard</a></li>
-                <li class="active">Data Tamu</li>
+                <li class="active">Lap. Tamu</li>
               </ol>
             </div>
           </div>
@@ -90,16 +91,19 @@
       <div class="col-sm-12 mb-2 mt-1">
         <div class="p-2 bg-white border rounded mb-5 overflow-hidden wrapper-table shadow-sm">
           <div class="row">
-            <div class="col-12 px-0">
-              <div class="col-sm-auto pl-3 pr-1 mb-2 selectCari_tamu">
-                <select class="selectpicker show-tick form-control" data-style="btn-primary" title="Cari Tamu" data-width="fit" id="selectLaporanTamu" data-actions-box="true">
+            <div class="d-flex flex-wrap">
+              <div class="pl-3 pr-0 mb-2 selectCari_tamu">
+                <select class="selectpicker show-tick form-control form-control-sm shadow-sm" data-style="btn-primary" title="CARI TAMU" data-width="fit" id="selectLaporanTamu" data-actions-box="true">
                   <option value="digunakan">Sedang menggunakan kamar</option>
                   <option value="tidak_memesan">Tidak memesan kamar</option>
                   <option data-divider="true"></option>
-                  <option value="rentang"></option>
+                  <option value="rentang">Rentang tanggal checkout</option>
                 </select>
               </div>
-              <div id="btn-PrintLapTam" class="col-sm-auto px-sm-3"><button class="btn btn-secondary font-weight-bold rounded shadow-sm">PRINT</button></div>
+              <!-- tmbl print laporan -->
+              <div id="btn-PrintLapTam" class="pr-1 pl-3"><a href="print_laptamu.php" target="_blank" class="btn btn-secondary btn-sm rounded shadow-sm">PRINT&nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a></div>
+              <div id="btn-PrintRntg" class="pr-1 pl-3"><a href="print_laptamu2.php" target="_blank" class="btn btn-secondary btn-sm rounded shadow-sm">PRINT&nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a></div>
+              <div id="btn-PrintDtTamuSaatIni" class="pr-1 pl-3"><a href="print_laptamu.php" target="_blank" class="btn btn-secondary btn-sm rounded shadow-sm">PRINT&nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a></div>
             </div>
           </div>
           <div class="table-responsive p-1" id="loadhasilCariLaporanTamu">
@@ -123,15 +127,15 @@
                     <td><?=$i;?></td>
                     <td class="p-1"><div class="data_foto"><img src="../assets/foto_tamu/<?php echo $row["foto_tamu"] ?>" alt=""></div></td>
                     <td><?= $row["nama_tamu"]; ?></td>
-                    <td><?= date_format(new Datetime($row["tgl_lahir_tamu"]), "d F Y"); ?></td>
+                    <td><?= tgl_indo2($row["tgl_lahir_tamu"]); ?></td>
                     <td><?= $row["email_tamu"]; ?></td>
                     <td><?= $row["no_telp_tamu"]; ?></td>
                     <td><?= $row["alamat_tamu"]; ?></td>
-                    <td><?= $row["jk_tamu"]; ?></td>
+                    <td><?=$row['jk_tamu'] === 'L' ? 'Laki-laki' : 'Perempuan' ?></td>
                   </tr>
                   <?php $i++; ?>
                 <?php endforeach; ?>
-              </tbody> 
+              </tbody>
             </table>
           </div>
         </div>    
@@ -145,8 +149,8 @@
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
       <div class="modal-content shadow border-light">
         <div class="modal-header">
-          <h6 class="modal-title">Rentang tanggal Checkout</h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title">Tanggal tamu yang sudah chekout</h6>
+          <button type="button" class="close cls-popup" data-dismiss="modal" aria-label="Close" onClick="history.go(0);">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -154,18 +158,18 @@
           <div class="form-group row">
             <label for="awal_checkout" class="col-lg-3 col-form-label">Dari</label>
             <div class="col-lg-9">
-              <input type="text" readonly class="form-control pem" id="awal_checkout">
+              <input type="text" class="form-control" id="awal_checkout" autocomplete="off">
             </div>
           </div>
           <div class="form-group row">
             <label for="akhir_checkout" class="col-lg-3 col-form-label">Sampai</label>
             <div class="col-lg-9">
-              <input type="text" readonly class="form-control pem" id="akhir_checkout">
+              <input type="text" class="form-control" id="akhir_checkout" autocomplete="off">
             </div>
           </div>
         </div>
         <div class="modal-footer py-1">
-          <button type="button" class="btn btn-primary rounded shadow-sm" id="submitRntg">Mulai</button>
+          <button type="button" class="btn btn-primary btn-sm rounded shadow-sm" id="submitRntg">MULAI</button>
         </div>
       </div>
     </div>
@@ -179,13 +183,13 @@
   <script type="text/javascript" src="../assets-2/js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/dataTables.responsive.min.js"></script>
   <script type="text/javascript" src="../assets-2/js/responsive.bootstrap4.min.js"></script>
-  <script type='text/javascript' src='../assets/js/sweetalert2.min.js'></script>
+  <script type="text/javascript" src='../assets/js/sweetalert2.min.js'></script>
   <script type="text/javascript" src="../assets-2/bootstrap-select-1.13.12/dist/js/bootstrap-select.min.js"></script>
-  <script src="../assets-2/js/main.js"></script>
+  <script type="text/javascript" src="../assets-2/js/main.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <?php include 'confirmLogout.php'; ?>
   <script>
-    $('#OwnerLaporanTamu').DataTable({
+    var laporan_tamu = $('#OwnerLaporanTamu').DataTable({
       'language': {
         'emptyTable': 'Belum ada tamu mendaftar dalam lima hari terakhir'
       },
@@ -201,12 +205,57 @@
       ],
       "processing": true,
       "pagingType": "full_numbers",
-      "lengthMenu": [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+      "lengthMenu": [[6, 10, 25, 50, -1], [6, 10, 25, 50, "All"]],
       responsive: true,
-      "order": []
+      "order": [],
+      "bPaginate": true,
+      "bLengthChange": false,
+      "bFilter": false,
+      "bInfo": true,
     });
-    $('#menuToggle').click(function() {
-      $('.menu-admin').toggleClass('hide');
+    if ( ! laporan_tamu.data().any() ) {
+      $('#btn-PrintDtTamuSaatIni').fadeOut();
+    }else{
+      $('#btn-PrintDtTamuSaatIni').fadeIn();
+    }
+    // ajax select
+    $('#selectLaporanTamu').on('change', function () {
+      if ($(this).val() === 'rentang') {
+        $('#rntg_khusus').modal({'backdrop': 'static', 'keyboard': false});
+      }
+      $.ajax({
+        type: 'POST',
+        data: {laporanTamuSelect : $('#selectLaporanTamu').val()},
+        url: '../url_ajax/data_LaporanTamu.php',
+        success: function () {
+          $('#loadhasilCariLaporanTamu').load('../url_ajax/output_LaporanTamu.php');
+          if ($('#selectLaporanTamu').val() !== 'rentang') {
+            $('#btn-PrintRntg').fadeOut();
+            $('#btn-PrintDtTamuSaatIni').fadeOut();
+          }else{
+            $('#btn-PrintLapTam').fadeOut();
+          }
+        }
+      })
+      $('#btn-PrintRntg').fadeOut();
+    });
+    // ajax submit
+    $('#submitRntg').on('click', function () {
+      $('#rntg_khusus').modal('hide');
+      $.ajax({
+        type: 'POST',
+        data: {tgl_awal : $('#awal_checkout').val(), tgl_akhir : $('#akhir_checkout').val()},
+        url: '../url_ajax/data_RntgLaporanTamu.php',
+        success: function () {
+          $('#loadhasilCariLaporanTamu').load('../url_ajax/output_RntgLaporanTamu.php');
+          clearSelect();
+          $('#btn-PrintDtTamuSaatIni').fadeOut();
+          $('#btn-PrintLapTam').fadeOut();
+        }
+      })
+    });
+    $('#btn-PrintDtTamuSaatIni').on('click', function () {
+      <?php unset($_SESSION['LaporanTamu']); ?>
     });
     $('#awal_checkout').datepicker({
       maxDate: '0',
@@ -220,45 +269,15 @@
       changeMonth: true,
       changeYear: true,
     });
-    $('#selectLaporanTamu').on('change', function () {
-      if ($(this).val() === 'rentang') {
-        $('#rntg_khusus').modal('show');
-      }
-      $.ajax({
-        type: 'POST',
-        data: {laporanTamuSelect : $('#selectLaporanTamu').val()},
-        url: '../url_ajax/data_LaporanTamu.php',
-        success: function () {
-          $('#loadhasilCariLaporanTamu').load('../url_ajax/output_LaporanTamu.php');
-          if ($('#selectLaporanTamu').val() !== 'rentang') {
-            $('#btn-PrintLapTam').fadeIn();
-          }else{
-            $('#btn-PrintLapTam').fadeOut();
-          }
-        }
-      })
-    });
-    $('#submitRntg').on('click', function () {
-      $('#rntg_khusus').modal('hide');
-      $.ajax({
-        type: 'POST',
-        data: {tgl_awal : $('#awal_checkout').val(), tgl_akhir : $('#akhir_checkout').val()},
-        url: '../url_ajax/data_RntgLaporanTamu.php',
-        success: function () {
-          $('#loadhasilCariLaporanTamu').load('../url_ajax/output_RntgLaporanTamu.php');
-          clearSelect();
-        }
-      })
-    });
-    $('#rntg_khusus').on('hidden.bs.modal', function (e) {
+    $('#rntg_khusus').on('hidden.bs.modal', function () {
       clearSelect();
     });
     function clearSelect() {
       $('#selectLaporanTamu').val('zzz');
     };
-
-    $
-
+    $('#menuToggle').click(function() {
+      $('.menu-admin').toggleClass('hide');
+    });
   </script>
   <?php
     if( isset($_POST["submit_ubah_password"]) ) {

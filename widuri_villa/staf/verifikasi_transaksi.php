@@ -15,10 +15,12 @@
           <input type="hidden" name="id_transaksi" value="<?php echo $row["id_transaksi"] ?>">
           <input type="hidden" name="id_reservasi" value="<?php echo $row["id_reservasi"]; ?>">
           <input type="hidden" name="id_staf" value="<?php echo $id ?>">
+          <input type="hidden" name="get_EmailTamu" value="<?=$row['email_tamu'] ?>">
+          <input type="text" name="" value="<?=$row['tipe_kamar'] ?>">
       </div>
       <div class="modal-footer text-center justify-content-center">
         <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">BELUM</button>
-        <button type="submit" class="btn btn-primary rounded" name="transaksiValid">SUDAH</button>
+        <button type="submit" class="btn btn-primary rounded" name="transaksiValid_<?=$i?>">SUDAH</button>
       </div>
         </form>
     </div>

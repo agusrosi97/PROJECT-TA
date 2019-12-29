@@ -112,22 +112,21 @@
                   </div>
                   <div class="col px-0 d-flex justify-content-between py-3">
                     <h4 class="total_harga">Total Pembayaran Anda :</h4>
-                    <h4 class="total_harga"><b>Rp.<?php echo number_format($total_harga,2,',','.')?>,-</b></h4>
+                    <h4 class="total_harga"><b>Rp.<?=number_format($total_harga,2,',','.')?>,-</b></h4>
                   </div>
                   <h6>Pilih Rekening tujuan</h6>
                   <form action="" method="POST" id="formMetodePembayaran">
                     <!-- PENTING -->
-                    <input type="hidden" value="<?php echo $id ?>" name="id_tamu">
+                    <input type="hidden" value="<?=$id ?>" name="id_tamu">
                     <input type="hidden" value="Online" name="ketRes_Tamu" >
-                    <input type="hidden" value="<?php echo $total_harga ?>" name="inp_totalHarga" >
-                    <input type="hidden" value="<?php echo $tglCI ?>" name="inp_CekIn">
-                    <input type="hidden" value="<?php echo $tglCO ?>" name="inp_CekOut">
-                    <input type="hidden" value="<?php echo "$jmlHari" ?>" name="inp_totalTtanggal" >
-                    <input type="hidden" value="<?php echo $adlt ?>" name="inp_orgDewasa">
-                    <input type="hidden" value="<?php echo $cild ?>" name="inp_Anak">
-                    <input type="hidden" value="<?php echo $jumlah_kamar ?>" name="jumlah_kamar">
+                    <input type="hidden" value="<?=$total_harga ?>" name="inp_totalHarga" >
+                    <input type="hidden" value="<?=$tglCI ?>" name="inp_CekIn">
+                    <input type="hidden" value="<?=$tglCO ?>" name="inp_CekOut">
+                    <input type="hidden" value="<?="$jmlHari" ?>" name="inp_totalTtanggal" >
+                    <input type="hidden" value="<?=$adlt ?>" name="inp_orgDewasa">
+                    <input type="hidden" value="<?=$cild ?>" name="inp_Anak">
+                    <input type="hidden" value="<?=$jumlah_kamar ?>" name="jumlah_kamar">
                     <!-- /PENTING -->
-
                     <div class="form-group mb-4">
                       <div class="custom-control custom-radio m-3">
                         <input type="radio" class="custom-control-input" id="bca" name="pilih_bank" value="bca" required>
@@ -176,14 +175,14 @@
                     <div class="col-md-5 py-2">
                       <div class="gambar-kamar rounded shadow-sm">
                         <div class="d-flex align-self-center align-items-center">
-                          <img class="img-fluid rounded" src="../assets/foto_tipe_kamar/<?php echo $row["foto_tipe_kamar"]; ?>" alt="">
+                          <img class="img-fluid rounded" src="../assets/foto_tipe_kamar/<?=$row["foto_tipe_kamar"]; ?>" alt="">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-7">
                       <div class="d-flex justify-content-between align-items-center pt-1">
-                        <h4><?php echo $row["nama_tipe_kamar"]; ?></h4>
-                        <h5>Jumlah kamar: <b><?php echo $JmlKamarTerpilih; ?></b></h5>
+                        <h4><?=$row["nama_tipe_kamar"]; ?></h4>
+                        <h5>Jumlah kamar: <b><?=$JmlKamarTerpilih; ?></b></h5>
                       </div>
                       <div class="border-top pt-2">
                         <h6>Fasilitas :</h6>
@@ -207,32 +206,123 @@
               <h2 class="text-center border-bottom pb-4">Reservasi Anda</h2>
               <div class="form-group">
                 <label for="tgl_c1" class="mb-0">Checkin</label>
-                <input type="text" id="tgl_c1" class="form-control pem inputangka inputangka border-top-0 border-right-0 pt-0 border-left-0" value="<?php echo $tglCI ?>" readonly>
+                <input type="text" id="tgl_c1" class="form-control pem inputangka inputangka border-top-0 border-right-0 pt-0 border-left-0" value="<?=$tglCI ?>" readonly>
               </div>
               <div class="form-group">
                 <label for="tgl_co" class="mb-0">Checkout</label>
-                <input type="text" id="tgl_co" class="form-control pem inputangka border-top-0 border-right-0 border-left-0" value="<?php echo $tglCO ?>" readonly>
+                <input type="text" id="tgl_co" class="form-control pem inputangka border-top-0 border-right-0 border-left-0" value="<?=$tglCO ?>" readonly>
               </div>
               <div class="form-group">
                 <label class="mb-0">Jumlah hari</label>
-                <input type="text" id="jumlahHari" value="<?php echo "$jmlHari" ?>" class="form-control pem inputangka border-top-0 border-right-0 border-left-0" readonly>
+                <input type="text" id="jumlahHari" value="<?="$jmlHari" ?>" class="form-control pem inputangka border-top-0 border-right-0 border-left-0" readonly>
               </div>
               <div class="form-group">
                 <label for="jml_adlt" class="mb-0">Dewasa</label>
-                <input type="text" value="<?php echo $adlt ?>" id="jml_adlt" class="form-control pem border-top-0 border-right-0 border-left-0" readonly>
+                <input type="text" value="<?=$adlt ?>" id="jml_adlt" class="form-control pem border-top-0 border-right-0 border-left-0" readonly>
               </div>
               <div class="form-group">
                 <label for="jml_ank" class="mb-0">Anak-anak</label>
-                <input type="text" value="<?php echo $cild ?>" id="jml_ank" class="form-control pem border-top-0 border-right-0 border-left-0" readonly>
+                <input type="text" value="<?=$cild ?>" id="jml_ank" class="form-control pem border-top-0 border-right-0 border-left-0" readonly>
               </div>
               <div class="form-group">
                 <label for="jmlKamar">Jumlah kamar terpilih</label>
-                <input type="text" id="jmlKamar" class="form-control pem border-top-0 border-right-0 border-left-0"  value="<?php echo $jumlah_kamar ?>" readonly>
+                <input type="text" id="jmlKamar" class="form-control pem border-top-0 border-right-0 border-left-0"  value="<?=$jumlah_kamar ?>" readonly>
               </div>
             </div>
           </div>
           <!-- /your reservation -->
         </div>
+
+    <!-- <?php 
+      date_default_timezone_set('Asia/Makassar');
+      $id_kamar = $_SESSION["pilihanKamar"]["tipeKamarTerpilih"];
+      $JmlKamar = $_SESSION["pilihanKamar"]["jumlahKamarTerpilih"];
+      $tglCI = $_SESSION["pilihanKamar"]["tglCheckin"];
+      $tglCO =  $_SESSION["pilihanKamar"]["tglCheckout"];
+      $jmlHari = $_SESSION["pilihanKamar"]["jml_hari"];
+      $adlt = $_SESSION["pilihanKamar"]["adt"];
+      $cild = $_SESSION["pilihanKamar"]["cld"];
+      $total_harga = $_SESSION["pilihanKamar"]["total_harga"];
+      $Kam = '';
+      $JumKam = '';
+      $HarKam = '';
+      foreach (array_combine($id_kamar, $JmlKamar) as $key => $JmlKamarTerpilih) {
+        $query = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = ".$key."");
+        $rowkam = mysqli_fetch_assoc($query);
+        $Kam .= $rowkam['nama_tipe_kamar'].'<br>';
+        $JumKam .= $JmlKamarTerpilih.' Kamar <br>';
+        $HarKam .= 'Rp.'.number_format($rowkam['harga_kamar'],0,',','.').'</br>';
+      }
+      $tgl_indo2 = 'tgl_indo2';
+      $number_format = 'number_format';
+      $hilangkanTitik = 'hilangkanTitik';
+      $my_var = <<<EOD
+        <html lang="en">
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <title></title>
+          <style type="text/css">
+          </style>    
+        </head>
+        <body style="margin:0; padding:0; background-color:#FFFFFF;">
+          <div>
+            <p style="font-size:17px">Terimakasih, Anda sudah memilih Kami sebagai tujuan penginapan Anda.</p>
+            <p style="font-size:17px">Pesanan Anda akan segera kami konfirmasi.</p>
+          </div>
+          <p>Detail Pesanan :</p>
+          <div style="border: 1px solid #dee2e6 !important; box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important; display: inline-block; padding: 10px 20px; border-radius: 0.25rem;position:relative">
+            <div style="border-bottom: 1px solid #dee2e6;margin:0 0 10px 0"><h4 style="margin-bottom: 0; font-size:17px">Reservasi Anda</h4></div>
+            <table border="0" cellspacing="0">
+              <tr >
+                <th style="text-align:left;">Checkin</th>
+                <td style="padding-right: 15px; padding-left: 10px"> : </td>
+                <td>{$tgl_indo2(date_format(new Datetime($tglCI), "Y-m-d"))}</td>
+              </tr>
+              <tr>
+                <th style="text-align:left;">Checkout</th>
+                <td style="padding-right: 15px; padding-left: 10px"> : </td>
+                <td>{$tgl_indo2(date_format(new Datetime($tglCO), "Y-m-d"))}</td>
+              </tr>
+              <tr>
+                <th style="text-align:left;">Malam</th>
+                <td style="padding-right: 15px; padding-left: 10px"> : </td>
+                <td>$jmlHari Malam</td>
+              </tr>
+              <tr>
+                <th style="text-align:left;">J. Dewasa</th>
+                <td style="padding-right: 15px; padding-left: 10px"> : </td>
+                <td>$adlt Orang</td>
+              </tr>
+              <tr>
+                <th style="text-align:left;">J. Anak</th>
+                <td style="padding-right: 15px; padding-left: 10px"> : </td>
+                <td>$cild</td>
+              </tr>
+            </table>
+            <div style="border-bottom: 1px solid #dee2e6;margin:10px 0"><h4 style="margin-bottom: 0; font-size:17px">Kamar Pilihan</h4></div>
+            <table>
+              <tr>
+                <th>Kamar</th>
+                <th style="padding-left:20px; text-align:left;">Harga /Kamar</th>
+                <th style="padding-left:20px; text-align:left;">Qty.kamar pilihan</th>
+                <th style="padding-left:20px; text-align:left;">Total Bayar</th>
+              </tr>
+              <tr>
+                <td>$Kam</td>
+                <td style="padding-left:20px">$HarKam</td>
+                <td style="padding-left:20px">$JumKam</td>
+                <td valign="middle" style="padding-left:20px">Rp.{$number_format($hilangkanTitik($total_harga),0,',','.')}</td>
+              </tr>
+            </table>
+          </div>
+        </body>
+        </html>
+      EOD;
+      echo $my_var;
+      ?> -->
+
       </div>
     </section>
     <!-- /Fasility -->
@@ -260,7 +350,6 @@
       </div>
     </div>
     <?php include '../footer/footer-tamu.php'; ?>
-    <?php include 'modal_gallery.php'; ?>
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   
