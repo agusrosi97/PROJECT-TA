@@ -1,12 +1,13 @@
-<?php 
-  session_start();
-  if ( !empty($_SESSION['loggedin']) ) {
-    echo "<script>javascript:history.go(-1);</script>";
-    exit;
-  }
+<?php
+session_start();
+if (!empty($_SESSION['loggedin'])) {
+  echo "<script>javascript:history.go(-1);</script>";
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,19 +27,20 @@
   <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
 </head>
+
 <body>
-  <?php 
+  <?php
   require '../koneksi/function_global.php';
-  if( isset($_POST["submit"]) ) {
+  if (isset($_POST["submit"])) {
     $email_tamu = strtolower(htmlspecialchars($_POST["inp_email_tamu"]));
     $password_tamu = strtolower(htmlspecialchars($_POST["inp_pass_tamu"]));
     $result = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE email_tamu = '$email_tamu'");
     $cekTamuIseng = mysqli_query($conn, "SELECT tbl_transaksi_pembayaran.*, tbl_tamu.*
       FROM tbl_transaksi_pembayaran
       INNER JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
-      WHERE tbl_tamu.email_tamu = '".$email_tamu."' AND `status` = 'GAK VALID'
+      WHERE tbl_tamu.email_tamu = '" . $email_tamu . "' AND `status` = 'GAK VALID'
     ");
-    if( mysqli_num_rows($result) === 1 ) {
+    if (mysqli_num_rows($result) === 1) {
       $row = mysqli_fetch_assoc($result);
       $id = $row['id_tamu'];
       $nama_tamu = $row["nama_tamu"];
@@ -49,7 +51,7 @@
       $alamat_tamu = $row["alamat_tamu"];
       $jk_tamu = $row["jk_tamu"];
       $foto_tamu = $row["foto_tamu"];
-      if( password_verify($password_tamu, $row["password_tamu"]) ) {
+      if (password_verify($password_tamu, $row["password_tamu"])) {
         if (mysqli_num_rows($cekTamuIseng) >= 3) {
           echo "
             <script>
@@ -88,7 +90,7 @@
             </script>
           ";
         }
-      }else{
+      } else {
         echo "
           <script>
             Swal.fire({
@@ -102,7 +104,7 @@
           </script>
         ";
       }
-    }else{
+    } else {
       echo "
         <script>
           Swal.fire({
@@ -155,7 +157,10 @@
     </div>
   </div>
   <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
   <script src="../assets-2/js/main.js"></script>
 </body>
+
 </html>

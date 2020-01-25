@@ -490,10 +490,10 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 			}
 			$('#jumlahHari').val(diff);
 		};
+		
 		window.addEventListener('load', () => {
 			registerSW();
 		});
-
 		async function registerSW() {
 			if ('serviceWorker' in navigator) {
 				try {
