@@ -1,0 +1,22 @@
+<?php
+	session_start();
+	// if (isset($_REQUEST['getValue'])) {
+	$getData = $_POST['getValueResv'];
+	switch ($getData) {
+    case 'day':
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(),INTERVAL 24 HOUR)";
+    break;
+    case 'week':
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(),INTERVAL 168 HOUR)";
+    break;
+    case 'month':
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
+    break;
+    case 'year':
+      $_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
+    break;
+    default:
+  	$_SESSION['currentDate_Resv'] = "jam_reservasi >= DATE_SUB(NOW(), INTERVAL 1 YEAR)";
+	}
+	// }
+?>

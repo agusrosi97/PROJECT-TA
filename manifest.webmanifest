@@ -1,0 +1,20 @@
+{
+  "name": "Widuri Villa",
+  "short_name": "Villas",
+  "start_url": "index.php",
+  "display": "standalone",
+  "bacground_color": "#fff",
+  "description": "Room Reservations",
+  "icons": [
+    {
+      "src": "assets/images/20190502_091550_Richtone(HDR).jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo-w.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
