@@ -214,7 +214,6 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 					<h2 class="mb-2">Exclusive Offer For You</h2>
 				</div>
 			</div>
-			
 			<div class="row d-flex justify-content-center">
 				<?php foreach ($infoKamar as $row) : ?>
 					<div class="col-md-5">
