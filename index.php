@@ -216,6 +216,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 			</div>
 			<div class="row d-flex justify-content-center">
 				<?php foreach ($infoKamar as $row) : ?>
+				
 					<div class="col-md-5">
 						<div class="property-wrap ftco-animate">
 							<span class="img rounded shadow-sm" style="background-image: url(assets/foto_tipe_kamar/<?= $row['foto_tipe_kamar'] ?>);"></span>
