@@ -74,6 +74,12 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<title>Widuri Villa</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Add to Home">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="shortcut icon" href="assets/images/logo-w.png">
 	<link rel="stylesheet" type="text/css" href="assets/css/open-iconic-bootstrap.min.css">
@@ -90,10 +96,11 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<link rel="stylesheet" type="text/css" href="assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/font/flaticon.css">
-	<link rel='stylesheet' type="text/css" href='assets/css/sweetalert2.min.css'>
-	<link rel='stylesheet' type="text/css" href='assets/css/jquery-ui.min.css'>
+	<link rel="stylesheet" type="text/css" href="assets/css/sweetalert2.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
 	<link rel="manifest" href="manifest.webmanifest">
+	<link rel="stylesheet" type="text/css" href="assets/css/addtohomescreen.css">
 </head>
 
 <body>
@@ -154,18 +161,18 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<!-- END nav -->
 	<!-- home -->
 	<div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home">
-		<div class="overlay"></div>
-		<div class="container-fluid">
-			<div class="row no-gutters slider-text justify-content-center align-items-center">
-				<div class="col-lg-12 col-md-12 ftco-animate d-flex align-items-center justify-content-center">
-					<div class="text text-center">
-						<h1 class="mb-4">WIDURI VILLA</h1>
-						<p style="font-size: 18px; text-shadow: 4px 3px 5px #000000ba">Jalan Raya Kerobokan Kelod - No 101 - Br. Taman - Kuta Utara - Badung - Bali - Indonesia</p>
-						<button class="btn btn-primary" data-toggle="modal" data-target="#form-ca">Reservasi Sekarang</button>
-					</div>
+	<div class="overlay"></div>
+	<div class="container-fluid">
+		<div class="row no-gutters slider-text justify-content-center align-items-center">
+			<div class="col-lg-12 col-md-12 ftco-animate d-flex align-items-center justify-content-center">
+				<div class="text text-center">
+					<h1 class="mb-4">WIDURI VILLA</h1>
+					<p style="font-size: 18px; text-shadow: 4px 3px 5px #000000ba">Jalan Raya Kerobokan Kelod - No 101 - Br. Taman - Kuta Utara - Badung - Bali - Indonesia</p>
+					<button class="btn btn-primary" data-toggle="modal" data-target="#form-ca">Reservasi Sekarang</button>
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	<!-- /home -->
 	<!-- about -->
@@ -444,7 +451,8 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<script type="text/javascript" src="assets/js/scrollax.min.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.easing.min.js"></script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
-	<script type='text/javascript' src='assets/js/sweetalert2.min.js'></script>
+	<script type="text/javascript" src="assets/js/sweetalert2.min.js"></script>
+	<script type="text/javascript" src="assets/js/addtohomescreen.min.js"></script>
 	<script>
 		function clikb() {
 			Swal.fire({
@@ -490,7 +498,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 			}
 			$('#jumlahHari').val(diff);
 		};
-		
+
 		window.addEventListener('load', () => {
 			registerSW();
 		});
@@ -503,6 +511,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 				}
 			}
 		}
+		addToHomescreen();
 	</script>
 </body>
 
