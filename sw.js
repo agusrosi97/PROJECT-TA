@@ -1,6 +1,5 @@
 const cacheName = 'news-v1';
 const staticAssets = [
-  'index.php',
   'assets/css/style.css',
   'assets/css/sweetalert2.min.css',
   'assets/js/jquery-3.2.1.min.js',
@@ -67,42 +66,22 @@ async function networkAndCache(req) {
     return cached;
   }
 }
-'use strict';
 
-var cacheVersion = 1;
-var currentCache = {
-  offline: 'offline-cache' + cacheVersion
-};
-const offlineUrl = 'offline.html';
+function cleanResponse(response) {
+  const clonedResponse = response.clone();
 
-this.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(currentCache.offline).then(function (cache) {
-      return cache.addAll([
-        'assets/images/offline.png',
-        offlineUrl
-      ]);
-    })
-  );
-});
+  // Not all browsers support the Response.body stream, so fall back to reading
+  // the entire body into memory as a blob.
+  const bodyPromise = 'body' in clonedResponse ?
+    Promise.resolve(clonedResponse.body) :
+    clonedResponse.blob();
 
-this.addEventListener('fetch', event => {
-  // request.mode = navigate isn't supported in all browsers
-  // so include a check for Accept: text/html header.
-  if (event.request.mode === 'navigate' || (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
-    event.respondWith(
-      fetch(event.request.url).catch(error => {
-        // Return the offline page
-        return caches.match(offlineUrl);
-      })
-    );
-  }
-  else {
-    // Respond with everything else if we can
-    event.respondWith(caches.match(event.request)
-      .then(function (response) {
-        return response || fetch(event.request);
-      })
-    );
-  }
-});
+  return bodyPromise.then((body) => {
+    // new Response() is happy when passed either a stream or a Blob.
+    return new Response(body, {
+      headers: clonedResponse.headers,
+      status: clonedResponse.status,
+      statusText: clonedResponse.statusText,
+    });
+  });
+}

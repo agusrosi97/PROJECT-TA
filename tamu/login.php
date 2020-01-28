@@ -21,105 +21,9 @@ if (!empty($_SESSION['loggedin'])) {
   <link rel="stylesheet" type="text/css" href="../assets-2/css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="../assets/css/sweetalert2.min.css">
-  <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
-  <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
-  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
-  <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
 </head>
 
 <body>
-  <?php
-  require '../koneksi/function_global.php';
-  if (isset($_POST["submit"])) {
-    $email_tamu = strtolower(htmlspecialchars($_POST["inp_email_tamu"]));
-    $password_tamu = strtolower(htmlspecialchars($_POST["inp_pass_tamu"]));
-    $result = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE email_tamu = '$email_tamu'");
-    $cekTamuIseng = mysqli_query($conn, "SELECT tbl_transaksi_pembayaran.*, tbl_tamu.*
-      FROM tbl_transaksi_pembayaran
-      INNER JOIN tbl_tamu ON tbl_transaksi_pembayaran.id_tamu = tbl_tamu.id_tamu
-      WHERE tbl_tamu.email_tamu = '" . $email_tamu . "' AND `status` = 'GAK VALID'
-    ");
-    if (mysqli_num_rows($result) === 1) {
-      $row = mysqli_fetch_assoc($result);
-      $id = $row['id_tamu'];
-      $nama_tamu = $row["nama_tamu"];
-      $tgl_lahir_tamu = $row["tgl_lahir_tamu"];
-      $email_tamu = $row["email_tamu"];
-      $password_tamu_old = $row["password_tamu"];
-      $no_telp_tamu = $row["no_telp_tamu"];
-      $alamat_tamu = $row["alamat_tamu"];
-      $jk_tamu = $row["jk_tamu"];
-      $foto_tamu = $row["foto_tamu"];
-      if (password_verify($password_tamu, $row["password_tamu"])) {
-        if (mysqli_num_rows($cekTamuIseng) >= 3) {
-          echo "
-            <script>
-              Swal.fire({
-                type: 'error',
-                title: 'Akun Anda terblokir!',
-                html: 'Karena pesanan Anda tidak memenuhi ketentuan.',
-                showConfirmButton: false,
-                timer : 2500
-              }).then(function() {
-                window.location.href = '../tamu/login.php';
-              })
-            </script>
-          ";
-        } else {
-          $_SESSION["loggedin"]                   = array();
-          $_SESSION["loggedin"]["id_tamu"]        = $id;
-          $_SESSION["loggedin"]["nama_tamu"]      = $nama_tamu;
-          $_SESSION["loggedin"]["tgl_lahir_tamu"] = $tgl_lahir_tamu;
-          $_SESSION["loggedin"]["email_tamu"]     = $email_tamu;
-          $_SESSION["loggedin"]["password_tamu"]  = $password_tamu_old;
-          $_SESSION["loggedin"]["no_telp_tamu"]   = $no_telp_tamu;
-          $_SESSION["loggedin"]["alamat_tamu"]    = $alamat_tamu;
-          $_SESSION["loggedin"]["jk_tamu"]        = $jk_tamu;
-          $_SESSION["loggedin"]["foto_tamu"]      = $foto_tamu;
-          echo "
-            <script>
-              Swal.fire({
-                type: 'success',
-                title: '<h2>Selamat datang</h2>',
-                showConfirmButton: false,
-                timer : 980
-              }).then(function() {
-                javascript:history.go(-2);
-              })
-            </script>
-          ";
-        }
-      } else {
-        echo "
-          <script>
-            Swal.fire({
-              type: 'error',
-              title: 'Email atau kata sandi Anda salah!',
-              showConfirmButton: false,
-              timer : 980
-            }).then(function() {
-              window.location.href = '../tamu/login.php';
-            })
-          </script>
-        ";
-      }
-    } else {
-      echo "
-        <script>
-          Swal.fire({
-            type: 'error',
-            title: 'Email Anda belum terdaftar!',
-            showConfirmButton: false,
-            timer : 980
-          }).then(function() {
-            window.location.href = '../tamu/login.php';
-          })
-        </script>
-      ";
-    }
-  }
-  ?>
   <div class="wrapper-login">
     <div class="wrapper-img-login">
       <img src="../assets/images/20190502_091550_Richtone(HDR).jpg" alt="" class="img-login">
@@ -132,10 +36,10 @@ if (!empty($_SESSION['loggedin'])) {
         </a>
       </div>
       <div class="position-relative form-tamu-login">
-        <form action="" method="post">
+        <form id="login-form" method="post">
           <div class="form-group position-relative wrapper-inp-login">
             <label>Email address</label>
-            <input type="email" name="inp_email_tamu" class="form-control login-inp" placeholder="Email" autofocus>
+            <input id="email" type="email" name="inp_email_tamu" class="form-control login-inp" placeholder="Email" autofocus>
             <span class="inp-focus"></span>
           </div>
           <div class="form-group position-relative wrapper-inp-login">
@@ -147,20 +51,104 @@ if (!empty($_SESSION['loggedin'])) {
             </div>
           </div>
           <div class="text-center">
-            <button type="submit" name="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30">Sign in</button>
+            <button id="btn-login" type="submit" name="submit" class="btn btn-darkblue btn-flat m-b-30 m-t-30">Sign in</button>
           </div>
           <div class="register-link mt-4 text-center">
             <p>Don't have account ? <a href="../tamu/register.php" class="text-primary"> Sign Up Here</a></p>
           </div>
         </form>
       </div>
+      <div id="error" style="margin-top: 10px"></div>
     </div>
   </div>
   <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+  <div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
-  <script src="../assets-2/js/main.js"></script>
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+    </svg>
+  </div>
+  <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="../assets-2/js/Popper.js"></script>
+  <script type="text/javascript" src="../assets/js/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
+  <script type="text/javascript" src="../assets-2/js/main.js"></script>
+  <script type="text/javascript">
+    $('document').ready(function() {
+      /* validation */
+      $("#login-form").validate({
+        rules: {
+          inp_email_tamu: {
+            required: true,
+            email: true
+          },
+          inp_pass_tamu: {
+            required: true,
+          },
+        },
+        messages: {
+          inp_email_tamu: "please enter your email address",
+          inp_pass_tamu: {
+            required: "please enter your password"
+          },
+        },
+        submitHandler: submitForm
+      });
+
+      function submitForm() {
+        var data = $("#login-form").serialize();
+        $.ajax({
+          type: 'POST',
+          url: '../url_ajax/login_proses.php',
+          data: data,
+          beforeSend: function() {
+            $("#error").fadeOut();
+            $("#btn-login").html('sending ...');
+          },
+          success: function(response) {
+            if (response == "iseng") {
+              Swal.fire({
+                type: 'error',
+                title: 'Akun Anda terblokir!',
+                html: 'Karena pesanan Anda tidak memenuhi ketentuan.',
+								showConfirmButton: false,
+								timer: 2500
+              })
+            } else if (response == "hore") {
+              Swal.fire({
+                type: 'success',
+                title: '<h2>Selamat datang</h2>',
+                showConfirmButton: false,
+                timer: 2000
+              }).then(function() {
+                window.location.href = '../index';
+              });
+            } else if (response == "salah password") {
+              Swal.fire({
+                type: 'error',
+                title: 'Email atau kata sandi Anda salah!',
+                showConfirmButton: false,
+                timer: 2000
+              })
+            } else if (response == "bodong") {
+              Swal.fire({
+                type: 'error',
+                title: 'Email Anda belum terdaftar!',
+                showConfirmButton: false,
+                timer: 2000
+              })
+            }
+          },
+          complete: function() {
+						$("#btn-login").html('Sign in');
+					}
+        });
+        return false;
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -2029,6 +2029,7 @@ header .form-inline {
 .btn.btn-darkblue:hover {
 	background-color: #3a3c49;
 	border-radius: 5px;
+  color: white !important;
 }
 .nobdr .form-control:focus {
 	border-color: #ffffff;
