@@ -104,7 +104,7 @@
             <?php else : ?>
               <div class='dropdown tamu-user'>
                 <div class="wrapper-avatar--2 tamu-avatar dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false" tabindex="0">
-                  <?php if($fotoT === "") : ?><img src='assets/images/user.png' alt=''><?php else : ?><img src='../assets/foto_tamu/<?= $fotoT; ?>' alt=''><?php endif; ?>
+                  <?php if($fotoT === "") : ?><img src='../assets/images/user.png' alt=''><?php else : ?><img src='../assets/foto_tamu/<?= $fotoT; ?>' alt=''><?php endif; ?>
                 </div>
                 <div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
                   <a href='user_ubah.php?id=<?=$id?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-cog'></span></i> Ubah akun</a>

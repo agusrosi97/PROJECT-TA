@@ -65,7 +65,7 @@ if (!empty($_SESSION['loggedin'])) {
   <div id="ftco-loader" class="show fullscreen">
     <svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00">
     </svg>
   </div>
   <script type="text/javascript" src="../assets-2/js/jquery-3.3.1.js"></script>
@@ -75,9 +75,8 @@ if (!empty($_SESSION['loggedin'])) {
   <script type="text/javascript" src="../assets/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script type="text/javascript" src="../assets-2/js/main.js"></script>
-  <script type="text/javascript">
-    $('document').ready(function() {
-      /* validation */
+  <script>
+    $(document).ready(function() {
       $("#login-form").validate({
         rules: {
           inp_email_tamu: {
@@ -89,9 +88,9 @@ if (!empty($_SESSION['loggedin'])) {
           },
         },
         messages: {
-          inp_email_tamu: "please enter your email address",
+          inp_email_tamu: "Masukkan Email Anda!",
           inp_pass_tamu: {
-            required: "please enter your password"
+            required: "Masukkan Password Anda!"
           },
         },
         submitHandler: submitForm
@@ -113,8 +112,8 @@ if (!empty($_SESSION['loggedin'])) {
                 type: 'error',
                 title: 'Akun Anda terblokir!',
                 html: 'Karena pesanan Anda tidak memenuhi ketentuan.',
-								showConfirmButton: false,
-								timer: 2500
+                showConfirmButton: false,
+                timer: 2500
               })
             } else if (response == "hore") {
               Swal.fire({
@@ -123,7 +122,7 @@ if (!empty($_SESSION['loggedin'])) {
                 showConfirmButton: false,
                 timer: 2000
               }).then(function() {
-                window.location.href = '../index';
+                javascript:history.go(-1);
               });
             } else if (response == "salah password") {
               Swal.fire({
@@ -142,12 +141,12 @@ if (!empty($_SESSION['loggedin'])) {
             }
           },
           complete: function() {
-						$("#btn-login").html('Sign in');
-					}
+            $("#btn-login").html('Sign in');
+          }
         });
         return false;
       }
-    });
+    })
   </script>
 </body>
 

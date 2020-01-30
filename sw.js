@@ -27,6 +27,9 @@ const staticAssets = [
   'assets-2/fontawesome-free-5.10.2-web/css/all.min.css',
   'assets-2/fontawesome-free-5.10.2-web/js/all.min.js',
   'assets-2/js/Chart.min.js',
+  'assets/images/user.png',
+  'assets/images/20190502_091550_Richtone(HDR).jpg',
+  'assets/images/logo-title.png'
 ];
 self.addEventListener('install', async e => {
   const cache = await caches.open(cacheName);
