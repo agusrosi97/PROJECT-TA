@@ -148,7 +148,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 							<?php if ($fotoT === "") : ?><img src='assets/images/user.png' alt=''><?php else : ?><img src='assets/foto_tamu/<?= $fotoT; ?>' alt=''><?php endif; ?>
 						</div>
 						<div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
-							<a href='tamu/user_ubah.php?id=<?= $id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-cog'></span></i> Ubah akun</a>
+							<a href='tamu/user_ubah.php?id=<?=$id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-cog'></span></i> Ubah akun</a>
 							<a href='tamu/user_ubah_password.php?id=<?= $id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-key'></i></span> Ganti password</a>
 							<a href='tamu/logout.php' class='dropdown-item text-danger'><span class="mr-2"><i class='fas fa-sign-out-alt'></i></span> Logout</a>
 						</div>

@@ -101,7 +101,7 @@ endif;
           data: data,
           beforeSend: function() {
             $("#error").fadeOut();
-            $("#btn-login").html('sending ...');
+            $("#btn-login").html('Logged in ...');
           },
           success: function(response) {
             if (response == "iseng") {

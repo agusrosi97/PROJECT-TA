@@ -1,51 +1,58 @@
-<?php 
+<?php
 $conn = mysqli_connect("localhost", "root", "", "widurivilla");
+
 use PHPMailer\PHPMailer\PHPMailer;
-function query($query) {
+
+function query($query)
+{
   global $conn;
   $result = mysqli_query($conn, $query);
   $rows = [];
-  while( $row = mysqli_fetch_assoc($result) ) {
+  while ($row = mysqli_fetch_assoc($result)) {
     $rows[] = $row;
   }
   return $rows;
 }
-function stringToInt($string){
+function stringToInt($string)
+{
   $bar = (float) $string;
   return $bar;
 };
-function hilangkanTitik($nilai) {
+function hilangkanTitik($nilai)
+{
   $a = str_replace(".", "", $nilai);
   $a = stringToInt($a);
   return $a;
 };
 function tgl_indo($tanggal, $cetak_hari = false)
 {
-  $hari = array ( 1 =>    'Senin',
-        'Selasa',
-        'Rabu',
-        'Kamis',
-        'Jumat',
-        'Sabtu',
-        'Minggu'
-      );
-      
-  $bulan = array (1 =>   'Januari',
-        'Feb',
-        'Mar',
-        'Apr',
-        'Mei',
-        'Jun',
-        'Jul',
-        'Agu',
-        'Sep',
-        'Okt',
-        'Nov',
-        'Des'
-      );
+  $hari = array(
+    1 =>    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+    'Minggu'
+  );
+
+  $bulan = array(
+    1 =>   'Januari',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agu',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des'
+  );
   $split    = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ', ' . $split[0];
-  
+  $tgl_indo = $split[2] . ' ' . $bulan[(int) $split[1]] . ', ' . $split[0];
+
   if ($cetak_hari) {
     $num = date('N', strtotime($tanggal));
     return $hari[$num] . ', ' . $tgl_indo;
@@ -54,31 +61,33 @@ function tgl_indo($tanggal, $cetak_hari = false)
 };
 function tgl_indo2($tanggal, $cetak_hari = false)
 {
-  $hari = array ( 1 =>    'Senin',
-        'Selasa',
-        'Rabu',
-        'Kamis',
-        'Jumat',
-        'Sabtu',
-        'Minggu'
-      );
-      
-  $bulan = array (1 =>   'Januari',
-        'Februari',
-        'Maret',
-        'April',
-        'Mei',
-        'Juni',
-        'Juli',
-        'Agustus',
-        'September',
-        'Oktober',
-        'November',
-        'Desember'
-      );
+  $hari = array(
+    1 =>    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+    'Minggu'
+  );
+
+  $bulan = array(
+    1 =>   'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  );
   $split    = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
-  
+  $tgl_indo = $split[2] . ' ' . $bulan[(int) $split[1]] . ' ' . $split[0];
+
   if ($cetak_hari) {
     $num = date('N', strtotime($tanggal));
     return $hari[$num] . ', ' . $tgl_indo;
@@ -88,7 +97,8 @@ function tgl_indo2($tanggal, $cetak_hari = false)
 ////////////////////////////////// ////////////////////////////////// 
 //                                TAMU                             //
 ////////////////////////////////// ////////////////////////////////// 
-function register($data) {
+function register($data)
+{
   global $conn;
   $nama_tamu = htmlspecialchars($data["inp_nama_tamu"]);
   $tgl_lahir_tamu = htmlspecialchars($data["inp_tgllahir_tamu"]);
@@ -101,7 +111,7 @@ function register($data) {
 
   $result = mysqli_query($conn, "SELECT email_tamu FROM tbl_tamu WHERE email_tamu = '$email_tamu'");
 
-  if( mysqli_fetch_assoc($result) ) {
+  if (mysqli_fetch_assoc($result)) {
     echo "
       <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
       <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
@@ -122,7 +132,7 @@ function register($data) {
 
   $password_enc = password_hash($password_tamu, PASSWORD_DEFAULT);
 
-  if( $_FILES['inp_foto_tamu']['error'] === 4 ) {
+  if ($_FILES['inp_foto_tamu']['error'] === 4) {
     $foto_tamu = $uploadFotoTamu;
   } else {
     $foto_tamu = upload();
@@ -143,13 +153,14 @@ function register($data) {
   return mysqli_affected_rows($conn);
 }
 
-function upload() {
+function upload()
+{
   $namaFile = $_FILES['inp_foto_tamu']['name'];
   $ukuranFile = $_FILES['inp_foto_tamu']['size'];
   $error = $_FILES['inp_foto_tamu']['error'];
   $tmpName = $_FILES['inp_foto_tamu']['tmp_name'];
   // cek apakah tidak ada gambar yang diupload
-  if( $error === 4 ) {
+  if ($error === 4) {
     echo "<script>
       alert('Upload gambar terlebih dahulu!');
       </script>";
@@ -159,14 +170,14 @@ function upload() {
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
     echo "<script>
       alert('Yang Anda upload bukan gambar!');
       </script>";
     return false;
   }
   // cek jika ukurannya terlalu besar
-  if( $ukuranFile > 1000000 ) {
+  if ($ukuranFile > 1000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
       </script>";
@@ -181,7 +192,8 @@ function upload() {
   return $namaFileBaru;
 }
 
-function ubah($data) {
+function ubah($data)
+{
   global $conn;
 
   $id = $data["inp_id_tamu"];
@@ -192,9 +204,9 @@ function ubah($data) {
   $alamat_tamu = htmlspecialchars($data["inp_alamat_tamu"]);
   $jk_tamu = htmlspecialchars($data["inp_jk_tamu"]);
   $foto_tamu_lama = htmlspecialchars($data["inp_foto_LM"]);
-  
+
   // cek apakah user pilih gambar baru atau tidak
-  if( $_FILES['inp_foto_tamu']['error'] === 4 ) {
+  if ($_FILES['inp_foto_tamu']['error'] === 4) {
     $foto_tamu = $foto_tamu_lama;
   } else {
     $foto_tamu = upload();
@@ -204,28 +216,27 @@ function ubah($data) {
 
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 }
 
-function ubah_pass($data) {
+function ubah_pass($data)
+{
   global $conn;
   $id = $data["inp_id_tamu"];
   $password_tamu_lama = strtolower(htmlspecialchars($data["inp_pass_lama_tamu"]));
   $password_tamu_baru = strtolower(htmlspecialchars($data["inp_pass_ubah_tamu"]));
   $result = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE id_tamu = '$id'");
-  if( mysqli_num_rows($result) === 1 ) {
+  if (mysqli_num_rows($result) === 1) {
     $row = mysqli_fetch_assoc($result);
-    if( password_verify($password_tamu_lama, $row["password_tamu"]) ) {
+    if (password_verify($password_tamu_lama, $row["password_tamu"])) {
       $password_tamu_terbaru_enc = password_hash($password_tamu_baru, PASSWORD_DEFAULT);
       $query = "UPDATE tbl_tamu SET
         password_tamu = '$password_tamu_terbaru_enc'
         WHERE id_tamu = $id
       ";
       mysqli_query($conn, $query);
-      return mysqli_affected_rows($conn); 
-    }
-    else
-    {
+      return mysqli_affected_rows($conn);
+    } else {
       echo "
         <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
         <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
@@ -248,7 +259,8 @@ function ubah_pass($data) {
 // ========================================================================== //
 // ========================= PROSES PESAN SEMENTARA ========================= //
 // ========================================================================== //
-function PesananReservasiSementara($data) {
+function PesananReservasiSementara($data)
+{
   global $conn;
   date_default_timezone_set('Asia/Makassar');
   $id_tamu = $data["id_tamu"];
@@ -279,7 +291,7 @@ function PesananReservasiSementara($data) {
     if (mysqli_query($conn, $queryInpTrans)) :
       $last_idTrans = mysqli_insert_id($conn);
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
       $_SESSION["lastID_Transaksi"] = $last_idTrans;
@@ -292,7 +304,8 @@ function PesananReservasiSementara($data) {
 // ========================= TAMU UPDATE RESERVASI ========================== //
 // ========================================================================== //
 
-function UpdateReservasiSementara($data) {
+function UpdateReservasiSementara($data)
+{
   global $conn;
   date_default_timezone_set('Asia/Makassar');
   $jamSekarang = date('Y-m-d H:i:s a', time());
@@ -319,7 +332,7 @@ function UpdateReservasiSementara($data) {
     $queryUpdtTrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '$tipeKamarYangdiPilih', jumlah_kamar_perPilihan = '$jumlahPerKamarYangdiPilih', total_pembayaran_kamar = '$total_harga', jam_transaksi = '$jamSekarang', ket_transaksi = '$ketRes_Tamu' WHERE id_transaksi = '$lastTrans'";
     if (mysqli_query($conn, $queryUpdtTrans)) :
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -330,7 +343,8 @@ function UpdateReservasiSementara($data) {
 // ========================================================================== //
 // ================== KEMBALIKAN JUMLAH KAMAR - SESSION ===================== //
 // ========================================================================== //
-function setGakValid() {
+function setGakValid()
+{
   global $conn;
   $lastRes = $_SESSION["lastID_Reservasi"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
@@ -341,7 +355,7 @@ function setGakValid() {
     $queryubahtrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '-', jumlah_kamar_perPilihan = '0', total_pembayaran_kamar = '0', status = 'GAK VALID' WHERE id_transaksi = '$lastTrans'";
     if (mysqli_query($conn, $queryubahtrans)) :
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -352,7 +366,8 @@ function setGakValid() {
 // ========================================================================== //
 // ======================== KEMBALIKAN JUMLAH KAMAR ========================= //
 // ========================================================================== //
-function KembalikanJumlahKamar() {
+function KembalikanJumlahKamar()
+{
   global $conn;
   $lastRes = $_SESSION["lastID_Reservasi"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
@@ -363,7 +378,7 @@ function KembalikanJumlahKamar() {
     $queryubahtrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '-', jumlah_kamar_perPilihan = '0', total_pembayaran_kamar = '0' WHERE id_transaksi = '$lastTrans'";
     if (mysqli_query($conn, $queryubahtrans)) :
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -374,7 +389,8 @@ function KembalikanJumlahKamar() {
 // ========================================================================== //
 // ========================= PROSES UPLOAD BUKTI ============================ //
 // ========================================================================== //
-function TahapAkhirReservasi() {
+function TahapAkhirReservasi()
+{
   global $conn;
   $id_tamu = $_SESSION["loggedin"]["id_tamu"];
   $lastTrans = $_SESSION["lastID_Transaksi"];
@@ -389,11 +405,12 @@ function TahapAkhirReservasi() {
   $MAILNama  = $hasilTamu['nama_tamu'];
   $MAILEmail = $hasilTamu['email_tamu'];
   NotifEmailPesananTamu($MAILNama, $MAILEmail);
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
 // Kirim Email Pemesan
-function NotifEmailPesananTamu($MAILNama, $MAILEmail) {
+function NotifEmailPesananTamu($MAILNama, $MAILEmail)
+{
   global $conn;
   require_once 'PHPMailer/PHPMailer/PHPMailer.php';
   require_once 'PHPMailer/PHPMailer/SMTP.php';
@@ -410,11 +427,11 @@ function NotifEmailPesananTamu($MAILNama, $MAILEmail) {
   $JumKam      = '';
   $HarKam      = '';
   foreach (array_combine($id_kamar, $JmlKamar) as $key => $JmlKamarTerpilih) {
-    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = ".$key."");
+    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = " . $key . "");
     $rowkam = mysqli_fetch_assoc($query);
-    $Kam    .= $rowkam['nama_tipe_kamar'].'<br>';
-    $JumKam .= $JmlKamarTerpilih.' Kamar <br>';
-    $HarKam .= 'Rp.'.number_format($rowkam['harga_kamar'],0,',','.').'<br>';
+    $Kam    .= $rowkam['nama_tipe_kamar'] . '<br>';
+    $JumKam .= $JmlKamarTerpilih . ' Kamar <br>';
+    $HarKam .= 'Rp.' . number_format($rowkam['harga_kamar'], 0, ',', '.') . '<br>';
   }
   $tgl_indo2      = 'tgl_indo2';
   $number_format  = 'number_format';
@@ -476,7 +493,7 @@ function NotifEmailPesananTamu($MAILNama, $MAILEmail) {
             <td>$Kam</td>
             <td style="padding-left:20px">$HarKam</td>
             <td style="padding-left:20px">$JumKam</td>
-            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga),0,',','.')}</td>
+            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga), 0, ',', '.')}</td>
           </tr>
         </table>
       </div>
@@ -498,17 +515,18 @@ function NotifEmailPesananTamu($MAILNama, $MAILEmail) {
   $mail->isHTML(true);
   $mail->Body       = $BodyContent;
   if (!$mail->send()) {
-    echo 'Mailer Error: '. $mail->ErrorInfo;
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
   }
 };
 
-function UploadFotoTransaksi(){
+function UploadFotoTransaksi()
+{
   $namaFile = $_FILES['inp_bukti_pembayaran']['name'];
   $ukuranFile = $_FILES['inp_bukti_pembayaran']['size'];
   $error = $_FILES['inp_bukti_pembayaran']['error'];
   $tmpName = $_FILES['inp_bukti_pembayaran']['tmp_name'];
   // cek apakah tidak ada gambar yang diupload
-  if( $error === 4 ) {
+  if ($error === 4) {
     echo "<script>
       alert('Anda tidak upload foto.');
     </script>";
@@ -517,13 +535,13 @@ function UploadFotoTransaksi(){
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
     echo "<script>
       alert('Yang Anda upload bukan gambar!');
     </script>";
     return false;
   }
-  if( $ukuranFile > 1000000 ) {
+  if ($ukuranFile > 1000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
     </script>";
@@ -543,7 +561,8 @@ function UploadFotoTransaksi(){
 // ========================================================================== //
 // ========================== Tambah RESERVASI ============================== //
 // ========================================================================== //
-function ReservasiTambah($data) {
+function ReservasiTambah($data)
+{
   global $conn;
   date_default_timezone_set('Asia/Makassar');
   $id_tamu = $data["id_tamu"];
@@ -569,7 +588,7 @@ function ReservasiTambah($data) {
     if (mysqli_query($conn, $queryInpTrans)) :
       $last_idTrans = mysqli_insert_id($conn);
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -581,7 +600,8 @@ function ReservasiTambah($data) {
 // ======================= BUTTON UBAH RESERVASI ============================ //
 // ========================================================================== //
 
-function UbahReservasi($data) {
+function UbahReservasi($data)
+{
   global $conn;
   $id_reservasi = $data['id_reservasi'];
   $getId_kamar = $data['id_kamar'];
@@ -595,7 +615,7 @@ function UbahReservasi($data) {
     $queryubahtrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '-', jumlah_kamar_perPilihan = '0', total_pembayaran_kamar = '0' WHERE id_transaksi = '$id_reservasi'";
     if (mysqli_query($conn, $queryubahtrans)) :
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$jumlahKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar + '$jumlahKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -606,7 +626,8 @@ function UbahReservasi($data) {
 // ========================================================================== //
 // ========================== UBAH RESERVASI ================================ //
 // ========================================================================== //
-function ReservasiUbah($data) {
+function ReservasiUbah($data)
+{
   global $conn;
   date_default_timezone_set('Asia/Makassar');
   $id_reservasi = $data['id_reservasi'];
@@ -631,7 +652,7 @@ function ReservasiUbah($data) {
     $queryUpdtTrans = "UPDATE tbl_transaksi_pembayaran SET tipe_kamar = '$inputIDKamar', jumlah_kamar_perPilihan = '$jumlahKamarPerPilihan', total_pembayaran_kamar = '$total_harga', jam_transaksi = '$jamSekarang' WHERE id_transaksi = '$id_reservasi'";
     if (mysqli_query($conn, $queryUpdtTrans)) :
       foreach ($id_kamar as $key => $val) :
-        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '".$val."'";
+        $queryUbahJMLKamar = "UPDATE tbl_tipe_kamar SET jumlah_kamar = jumlah_kamar - '$TotKamarPerPilihan[$key]' WHERE id_tipe_kamar = '" . $val . "'";
         mysqli_query($conn, $queryUbahJMLKamar);
       endforeach;
     endif;
@@ -639,7 +660,8 @@ function ReservasiUbah($data) {
   return mysqli_affected_rows($conn);
 };
 
-function VerifikasiValid($data) {
+function VerifikasiValid($data)
+{
   global $conn;
   $id_reservasi = $data['id_reservasi'];
   $id_transaksi = $data['id_transaksi'];
@@ -662,18 +684,19 @@ function VerifikasiValid($data) {
   $query = "UPDATE tbl_transaksi_pembayaran SET
             id_pengguna = '$id_pengguna',
             status = 'VALID'
-            WHERE id_transaksi = '".$id_transaksi."'";
-  if(mysqli_query($conn, $query)):
+            WHERE id_transaksi = '" . $id_transaksi . "'";
+  if (mysqli_query($conn, $query)) :
     $query2 = "UPDATE tbl_reservasi SET
             id_pengguna = '$id_pengguna'
-            WHERE id_reservasi = '".$id_reservasi."'";
+            WHERE id_reservasi = '" . $id_reservasi . "'";
     mysqli_query($conn, $query2);
   endif;
-  NotifValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,$anak,$tp_kamar,$jml_kamar, $jml_hari);
+  NotifValid($email_tamu, $total_harga, $tgl_checkin, $tgl_checkout, $dewasa, $anak, $tp_kamar, $jml_kamar, $jml_hari);
   return mysqli_affected_rows($conn);
 };
 
-function NotifValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,$anak,$tp_kamar,$jml_kamar, $jml_hari) {
+function NotifValid($email_tamu, $total_harga, $tgl_checkin, $tgl_checkout, $dewasa, $anak, $tp_kamar, $jml_kamar, $jml_hari)
+{
   global $conn;
   require_once 'PHPMailer/PHPMailer/PHPMailer.php';
   require_once 'PHPMailer/PHPMailer/SMTP.php';
@@ -682,11 +705,11 @@ function NotifValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,
   $JumKam = '';
   $HarKam = '';
   foreach (array_combine($tp_kamar, $jml_kamar) as $key => $JmlKamarTerpilih) {
-    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = ".$key."");
+    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = " . $key . "");
     $rowkam = mysqli_fetch_assoc($query);
-    $Kam    .= $rowkam['nama_tipe_kamar'].'<br>';
-    $JumKam .= $JmlKamarTerpilih.' Kamar <br>';
-    $HarKam .= 'Rp.'.number_format($rowkam['harga_kamar'],0,',','.').'<br>';
+    $Kam    .= $rowkam['nama_tipe_kamar'] . '<br>';
+    $JumKam .= $JmlKamarTerpilih . ' Kamar <br>';
+    $HarKam .= 'Rp.' . number_format($rowkam['harga_kamar'], 0, ',', '.') . '<br>';
   }
   $tgl_indo2      = 'tgl_indo2';
   $number_format  = 'number_format';
@@ -744,7 +767,7 @@ function NotifValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,
             <td>$Kam</td>
             <td style="padding-left:20px">$HarKam</td>
             <td style="padding-left:20px">$JumKam</td>
-            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga),0,',','.')}</td>
+            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga), 0, ',', '.')}</td>
           </tr>
         </table>
       </div>
@@ -770,11 +793,12 @@ function NotifValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,
   $mail->isHTML(true);
   $mail->Body       = $BodyContent;
   if (!$mail->send()) :
-    echo 'Mailer Error: '. $mail->ErrorInfo;
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
   endif;
 };
 
-function VerifikasiTidakValid($data) {
+function VerifikasiTidakValid($data)
+{
   global $conn;
   $id_reservasi = $data["id_reservasi"];
   $id_transaksi = $data["id_transaksi"];
@@ -796,18 +820,19 @@ function VerifikasiTidakValid($data) {
   $jml_kamar     = explode(", ", $rowDataRes['jumlah_kamar_perPilihan']);
   $query = "UPDATE tbl_transaksi_pembayaran SET
             status = 'GAK VALID'
-            WHERE id_transaksi = '".$id_transaksi."'";
-  if(mysqli_query($conn, $query)):
+            WHERE id_transaksi = '" . $id_transaksi . "'";
+  if (mysqli_query($conn, $query)) :
     $query2 = "UPDATE tbl_reservasi SET
             id_pengguna = '$id_pengguna'
-            WHERE id_reservasi = '".$id_reservasi."'";
+            WHERE id_reservasi = '" . $id_reservasi . "'";
     mysqli_query($conn, $query2);
   endif;
-  NotifGakValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,$anak,$tp_kamar,$jml_kamar, $jml_hari);
+  NotifGakValid($email_tamu, $total_harga, $tgl_checkin, $tgl_checkout, $dewasa, $anak, $tp_kamar, $jml_kamar, $jml_hari);
   return mysqli_affected_rows($conn);
 };
 
-function NotifGakValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewasa,$anak,$tp_kamar,$jml_kamar, $jml_hari) {
+function NotifGakValid($email_tamu, $total_harga, $tgl_checkin, $tgl_checkout, $dewasa, $anak, $tp_kamar, $jml_kamar, $jml_hari)
+{
   global $conn;
   require_once 'PHPMailer/PHPMailer/PHPMailer.php';
   require_once 'PHPMailer/PHPMailer/SMTP.php';
@@ -816,11 +841,11 @@ function NotifGakValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewa
   $JumKam = '';
   $HarKam = '';
   foreach (array_combine($tp_kamar, $jml_kamar) as $key => $JmlKamarTerpilih) {
-    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = ".$key."");
+    $query  = mysqli_query($conn, "SELECT * FROM tbl_tipe_kamar WHERE id_tipe_kamar = " . $key . "");
     $rowkam = mysqli_fetch_assoc($query);
-    $Kam    .= $rowkam['nama_tipe_kamar'].'<br>';
-    $JumKam .= $JmlKamarTerpilih.' Kamar <br>';
-    $HarKam .= 'Rp.'.number_format($rowkam['harga_kamar'],0,',','.').'<br>';
+    $Kam    .= $rowkam['nama_tipe_kamar'] . '<br>';
+    $JumKam .= $JmlKamarTerpilih . ' Kamar <br>';
+    $HarKam .= 'Rp.' . number_format($rowkam['harga_kamar'], 0, ',', '.') . '<br>';
   }
   $tgl_indo2      = 'tgl_indo2';
   $number_format  = 'number_format';
@@ -878,7 +903,7 @@ function NotifGakValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewa
             <td>$Kam</td>
             <td style="padding-left:20px">$HarKam</td>
             <td style="padding-left:20px">$JumKam</td>
-            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga),0,',','.')}</td>
+            <td valign="middle" style="padding-left:20px;font-size:20px;font-weight:bold;">Rp.{$number_format($hilangkanTitik($total_harga), 0, ',', '.')}</td>
           </tr>
         </table>
       </div>
@@ -904,11 +929,12 @@ function NotifGakValid($email_tamu,$total_harga,$tgl_checkin,$tgl_checkout,$dewa
   $mail->isHTML(true);
   $mail->Body       = $BodyContent;
   if (!$mail->send()) :
-    echo 'Mailer Error: '. $mail->ErrorInfo;
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
   endif;
 };
 
-function stafTambahTamu($data) {
+function stafTambahTamu($data)
+{
   global $conn;
   $nama_tamu = htmlspecialchars($data["inp_nama_tamu"]);
   $tgl_lahir_tamu = htmlspecialchars($data["inp_tgllahir_tamu"]);
@@ -920,7 +946,7 @@ function stafTambahTamu($data) {
   // cek email tamu
   $result = mysqli_query($conn, "SELECT email_tamu FROM tbl_tamu WHERE email_tamu = '$email_tamu'");
 
-  if( mysqli_fetch_assoc($result) ) {
+  if (mysqli_fetch_assoc($result)) {
     echo "<script>
       alert('Akun sudah terdaftar!');
       </script>";
@@ -937,15 +963,16 @@ function stafTambahTamu($data) {
   // }
 
   $query = "INSERT INTO tbl_tamu VALUES (null, '$nama_tamu', '$tgl_lahir_tamu', '$email_tamu', '$password_terbaru', '$hp_tamu', '$almt_tamu', '$jk_tamu', '',null)";
-    
+
   mysqli_query($conn, $query);
   $aa = mysqli_insert_id($conn);
   $_SESSION["getIDTAMU"] = $aa;
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
-function stafUbahTamu($data) {
+function stafUbahTamu($data)
+{
   global $conn;
 
   $id = $data["id"];
@@ -969,21 +996,22 @@ function stafUbahTamu($data) {
 
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
-function stafUploadFotoTamu() {
+function stafUploadFotoTamu()
+{
   $namaFile = $_FILES['inp_foto_tamu']['name'];
   $ukuranFile = $_FILES['inp_foto_tamu']['size'];
   $tmpName = $_FILES['inp_foto_tamu']['tmp_name'];
-  
+
   // cek apakah yang diupload adalah gambar
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  
+
   // cek jika ukurannya terlalu besar
-  if( $ukuranFile > 1000000 ) {
+  if ($ukuranFile > 1000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
       </script>";
@@ -1002,7 +1030,8 @@ function stafUploadFotoTamu() {
 ////////////////////////////////// ////////////////////////////////// 
 //                              ADMIN                              //
 ////////////////////////////////// ////////////////////////////////// 
-function AdminTambahPengguna($data) {
+function AdminTambahPengguna($data)
+{
   global $conn;
   $nama_pengguna = htmlspecialchars($data["inp_nama_pengguna"]);
   $tgl_lahir_pengguna = htmlspecialchars($data["inp_tgllahir_pengguna"]);
@@ -1015,13 +1044,13 @@ function AdminTambahPengguna($data) {
 
   $result = mysqli_query($conn, "SELECT email_pengguna FROM tbl_pengguna WHERE email_pengguna = '$email_pengguna'");
 
-  if( mysqli_fetch_assoc($result) ) {
+  if (mysqli_fetch_assoc($result)) {
     echo "<script>
       alert('Akun sudah terdaftar!');
       </script>";
     return false;
   }
-  
+
   $tlgLahirP = date_format(new Datetime($tgl_lahir_pengguna), "Ymd");
 
   $password_terbaru = password_hash($tlgLahirP, PASSWORD_DEFAULT);
@@ -1030,13 +1059,14 @@ function AdminTambahPengguna($data) {
         VALUES
         (null, '$nama_pengguna', '$password_terbaru', '$email_pengguna', '$akses_pengguna', '$tgl_lahir_pengguna', '$hp_pengguna', '$almt_pengguna', '$jk_pengguna', '','$status_pengguna')
       ";
-    
+
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
-function AdminUbahPengguna($data) {
+function AdminUbahPengguna($data)
+{
   global $conn;
 
   $id = $data["id"];
@@ -1063,34 +1093,36 @@ function AdminUbahPengguna($data) {
 
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
 ////////////////////////////////// ////////////////////////////////// 
 //                               PENGGUNA                          //
 ////////////////////////////////// //////////////////////////////////
-function PenggunaTambahTipeKamar($data) {
+function PenggunaTambahTipeKamar($data)
+{
   global $conn;
   $namaKamar = htmlspecialchars($data["inp_namaKamar"]);
   $jumlah_kamar = htmlspecialchars($data["inp_jumlahKamar"]);
   $harga_kamar = htmlspecialchars($data["inp_hargaKamar"]);
   $checkFasilitas = implode(', ', ($data["inp_fasilitas"]));
   $foto_Kamar = uploadFotoTipeKamar();
-  if( !$foto_Kamar ) {
+  if (!$foto_Kamar) {
     return false;
   }
   $query = "INSERT INTO tbl_tipe_kamar VALUES (null,'$namaKamar','$jumlah_kamar','$harga_kamar','$foto_Kamar','$checkFasilitas')";
   mysqli_query($conn, $query);
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
-function uploadFotoTipeKamar() {
+function uploadFotoTipeKamar()
+{
   $namaFile = $_FILES['inp_foto_tipeKamar']['name'];
   $ukuranFile = $_FILES['inp_foto_tipeKamar']['size'];
   $error = $_FILES['inp_foto_tipeKamar']['error'];
   $tmpName = $_FILES['inp_foto_tipeKamar']['tmp_name'];
   // cek apakah tidak ada gambar yang diupload
-  if( $error === 4 ) {
+  if ($error === 4) {
     echo "<script>
       alert('Anda belum memilih gambar!');
     </script>";
@@ -1099,13 +1131,13 @@ function uploadFotoTipeKamar() {
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
     echo "<script>
       alert('Yang Anda upload bukan gambar!');
     </script>";
     return false;
   }
-  if( $ukuranFile > 3000000 ) {
+  if ($ukuranFile > 3000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
     </script>";
@@ -1118,7 +1150,8 @@ function uploadFotoTipeKamar() {
   return $namaFileBaru;
 };
 
-function PenggunaUbahTipeKamar($data) {
+function PenggunaUbahTipeKamar($data)
+{
   global $conn;
 
   $id = $data["id"];
@@ -1127,9 +1160,9 @@ function PenggunaUbahTipeKamar($data) {
   $harga_kamar = htmlspecialchars($data["udt_hargaKamar"]);
   $checkFasilitas = implode(', ', ($data["udt_fasilitas"]));
   $FTKLama = htmlspecialchars($data["udt_fotoTipeKamar_Lama"]);
-  if( $_FILES['udt_foto_tipeKamar']['error'] === 4 ) {
+  if ($_FILES['udt_foto_tipeKamar']['error'] === 4) {
     $foto_Kamar = $FTKLama;
-  }else{
+  } else {
     $foto_Kamar = UbahFotoTipeKamar();
   }
   $query = "UPDATE tbl_tipe_kamar SET
@@ -1142,15 +1175,16 @@ function PenggunaUbahTipeKamar($data) {
           ";
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 };
 
-function UbahFotoTipeKamar() {
+function UbahFotoTipeKamar()
+{
   $namaFile = $_FILES['udt_foto_tipeKamar']['name'];
   $ukuranFile = $_FILES['udt_foto_tipeKamar']['size'];
   $error = $_FILES['udt_foto_tipeKamar']['error'];
   $tmpName = $_FILES['udt_foto_tipeKamar']['tmp_name'];
-  if( $error === 4 ) {
+  if ($error === 4) {
     echo "<script>
       alert('Sukses!');
       </script>";
@@ -1159,13 +1193,13 @@ function UbahFotoTipeKamar() {
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
     echo "<script>
       alert('Yang Anda upload bukan gambar!');
     </script>";
     return false;
   }
-  if( $ukuranFile > 1000000 ) {
+  if ($ukuranFile > 1000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
       </script>";
@@ -1178,7 +1212,8 @@ function UbahFotoTipeKamar() {
   return $namaFileBaru;
 }
 
-function ubah_pass_pengguna($data) {
+function ubah_pass_pengguna($data)
+{
   global $conn;
 
   $id = $data["inp_id_pengguna"];
@@ -1187,11 +1222,11 @@ function ubah_pass_pengguna($data) {
 
   $result = mysqli_query($conn, "SELECT * FROM tbl_pengguna WHERE id_pengguna = '$id'");
 
-  if( mysqli_num_rows($result) === 1 ) {
+  if (mysqli_num_rows($result) === 1) {
 
     $row = mysqli_fetch_assoc($result);
 
-    if( password_verify($password_pengguna_lama, $row["password_pengguna"]) ) {
+    if (password_verify($password_pengguna_lama, $row["password_pengguna"])) {
 
       $password_pengguna_terbaru_enc = password_hash($password_pengguna_baru, PASSWORD_DEFAULT);
 
@@ -1202,10 +1237,8 @@ function ubah_pass_pengguna($data) {
 
       mysqli_query($conn, $query);
 
-      return mysqli_affected_rows($conn); 
-    }
-    else
-    {
+      return mysqli_affected_rows($conn);
+    } else {
       echo "
         <script type='text/javascript' src='../assets-2/js/jquery-3.3.1.js'></script>
         <link rel='stylesheet' href='../assets/css/sweetalert2.min.css'>
@@ -1226,7 +1259,8 @@ function ubah_pass_pengguna($data) {
   }
 };
 
-function UbahDataDiri_Pengguna($data) {
+function UbahDataDiri_Pengguna($data)
+{
   global $conn;
 
   $id = $data["id"];
@@ -1237,9 +1271,9 @@ function UbahDataDiri_Pengguna($data) {
   $jk_pengguna = htmlspecialchars($data["inp_jk_pengguna"]);
   $gakFoto = htmlspecialchars($data["fotoLamanya"]);
 
-  if( $_FILES['inp_foto_pengguna']['error'] === 4 ) {
+  if ($_FILES['inp_foto_pengguna']['error'] === 4) {
     $Foto = $gakFoto;
-  }else{
+  } else {
     $Foto = upload_FotoDataDiri_pengguna();
   }
 
@@ -1255,16 +1289,17 @@ function UbahDataDiri_Pengguna($data) {
 
   mysqli_query($conn, $query);
 
-  return mysqli_affected_rows($conn); 
+  return mysqli_affected_rows($conn);
 }
 
-function upload_FotoDataDiri_pengguna() {
+function upload_FotoDataDiri_pengguna()
+{
   $namaFile = $_FILES['inp_foto_pengguna']['name'];
   $ukuranFile = $_FILES['inp_foto_pengguna']['size'];
   $error = $_FILES['inp_foto_pengguna']['error'];
   $tmpName = $_FILES['inp_foto_pengguna']['tmp_name'];
   // cek apakah tidak ada gambar yang diupload
-  if( $error === 4 ) {
+  if ($error === 4) {
     echo "<script>
       alert('Anda tidak upload foto.');
     </script>";
@@ -1273,13 +1308,13 @@ function upload_FotoDataDiri_pengguna() {
   $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
-  if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
     echo "<script>
       alert('Yang Anda upload bukan gambar!');
     </script>";
     return false;
   }
-  if( $ukuranFile > 1000000 ) {
+  if ($ukuranFile > 1000000) {
     echo "<script>
       alert('Gamber yang Anda upload terlalu besar!');
     </script>";
@@ -1296,98 +1331,103 @@ function upload_FotoDataDiri_pengguna() {
 //                           TAMBAHAN                              //
 ////////////////////////////////// //////////////////////////////////
 
-function transaksiValid($bulan,$tahun){
+function transaksiValid($bulan, $tahun)
+{
   global $conn;
   $sql = mysqli_query($conn, "
-      SELECT * FROM tbl_transaksi_pembayaran WHERE MONTH(jam_transaksi) = '".$bulan."' and YEAR(jam_transaksi) = '".$tahun."' and status = 'VALID'
+      SELECT * FROM tbl_transaksi_pembayaran WHERE MONTH(jam_transaksi) = '" . $bulan . "' and YEAR(jam_transaksi) = '" . $tahun . "' and status = 'VALID'
   ");
   $hasil = mysqli_num_rows($sql);
 
   if ($hasil == '') {
     $hasil = 0;
   }
-  return $hasil;    
+  return $hasil;
 }
-  
-function grafikValid($tahun){
-  $bulan1 = transaksiValid(1,$tahun);
-  $bulan2 = transaksiValid(2,$tahun);
-  $bulan3 = transaksiValid(3,$tahun);
-  $bulan4 = transaksiValid(4,$tahun);
-  $bulan5 = transaksiValid(5,$tahun);
-  $bulan6 = transaksiValid(6,$tahun);
-  $bulan7 = transaksiValid(7,$tahun);
-  $bulan8 = transaksiValid(8,$tahun);
-  $bulan9 = transaksiValid(9,$tahun);
-  $bulan10 = transaksiValid(10,$tahun);
-  $bulan11 = transaksiValid(11,$tahun);
-  $bulan12 = transaksiValid(12,$tahun);
 
-  $data = 
-  [
-    $bulan1,
-    $bulan2,
-    $bulan3,
-    $bulan4,
-    $bulan5,
-    $bulan6,
-    $bulan7,
-    $bulan8,
-    $bulan9,
-    $bulan10,
-    $bulan11,
-    $bulan12
-  ];
+function grafikValid($tahun)
+{
+  $bulan1 = transaksiValid(1, $tahun);
+  $bulan2 = transaksiValid(2, $tahun);
+  $bulan3 = transaksiValid(3, $tahun);
+  $bulan4 = transaksiValid(4, $tahun);
+  $bulan5 = transaksiValid(5, $tahun);
+  $bulan6 = transaksiValid(6, $tahun);
+  $bulan7 = transaksiValid(7, $tahun);
+  $bulan8 = transaksiValid(8, $tahun);
+  $bulan9 = transaksiValid(9, $tahun);
+  $bulan10 = transaksiValid(10, $tahun);
+  $bulan11 = transaksiValid(11, $tahun);
+  $bulan12 = transaksiValid(12, $tahun);
+
+  $data =
+    [
+      $bulan1,
+      $bulan2,
+      $bulan3,
+      $bulan4,
+      $bulan5,
+      $bulan6,
+      $bulan7,
+      $bulan8,
+      $bulan9,
+      $bulan10,
+      $bulan11,
+      $bulan12
+    ];
   return $data;
 }
 
-function transaksiGakValid($bulan,$tahun){
+function transaksiGakValid($bulan, $tahun)
+{
   global $conn;
-  $sql = mysqli_query($conn, "SELECT * FROM tbl_transaksi_pembayaran WHERE MONTH(jam_transaksi) = '".$bulan."' and YEAR(jam_transaksi) = '".$tahun."' and status = 'GAK VALID'
+  $sql = mysqli_query($conn, "SELECT * FROM tbl_transaksi_pembayaran WHERE MONTH(jam_transaksi) = '" . $bulan . "' and YEAR(jam_transaksi) = '" . $tahun . "' and status = 'GAK VALID'
   ");
   $hasil = mysqli_num_rows($sql);
 
   if ($hasil == '') {
     $hasil = 0;
   }
-  return $hasil;    
+  return $hasil;
 }
 
-function grafikGakValid($tahun){
-  $bulan1 = transaksiGakValid(1,$tahun);
-  $bulan2 = transaksiGakValid(2,$tahun);
-  $bulan3 = transaksiGakValid(3,$tahun);
-  $bulan4 = transaksiGakValid(4,$tahun);
-  $bulan5 = transaksiGakValid(5,$tahun);
-  $bulan6 = transaksiGakValid(6,$tahun);
-  $bulan7 = transaksiGakValid(7,$tahun);
-  $bulan8 = transaksiGakValid(8,$tahun);
-  $bulan9 = transaksiGakValid(9,$tahun);
-  $bulan10 = transaksiGakValid(10,$tahun);
-  $bulan11 = transaksiGakValid(11,$tahun);
-  $bulan12 = transaksiGakValid(12,$tahun);
+function grafikGakValid($tahun)
+{
+  $bulan1 = transaksiGakValid(1, $tahun);
+  $bulan2 = transaksiGakValid(2, $tahun);
+  $bulan3 = transaksiGakValid(3, $tahun);
+  $bulan4 = transaksiGakValid(4, $tahun);
+  $bulan5 = transaksiGakValid(5, $tahun);
+  $bulan6 = transaksiGakValid(6, $tahun);
+  $bulan7 = transaksiGakValid(7, $tahun);
+  $bulan8 = transaksiGakValid(8, $tahun);
+  $bulan9 = transaksiGakValid(9, $tahun);
+  $bulan10 = transaksiGakValid(10, $tahun);
+  $bulan11 = transaksiGakValid(11, $tahun);
+  $bulan12 = transaksiGakValid(12, $tahun);
 
-  $data = 
-  [
-    $bulan1,
-    $bulan2,
-    $bulan3,
-    $bulan4,
-    $bulan5,
-    $bulan6,
-    $bulan7,
-    $bulan8,
-    $bulan9,
-    $bulan10,
-    $bulan11,
-    $bulan12
-  ];
+  $data =
+    [
+      $bulan1,
+      $bulan2,
+      $bulan3,
+      $bulan4,
+      $bulan5,
+      $bulan6,
+      $bulan7,
+      $bulan8,
+      $bulan9,
+      $bulan10,
+      $bulan11,
+      $bulan12
+    ];
   return $data;
 }
 // GRAFIK RESERVASI
-function DataReservasi($bulan,$tahun) {
+function DataReservasi($bulan, $tahun)
+{
   global $conn;
-  $sql = mysqli_query($conn, "SELECT * FROM tbl_reservasi WHERE MONTH(jam_reservasi) = '".$bulan."' and YEAR(jam_reservasi) = '".$tahun."'
+  $sql = mysqli_query($conn, "SELECT * FROM tbl_reservasi WHERE MONTH(jam_reservasi) = '" . $bulan . "' and YEAR(jam_reservasi) = '" . $tahun . "'
   ");
 
   $hasil = mysqli_num_rows($sql);
@@ -1395,41 +1435,43 @@ function DataReservasi($bulan,$tahun) {
   if ($hasil == '') {
     $hasil = 0;
   }
-  return $hasil;  
+  return $hasil;
 }
-function grafikReservasi($tahun){
-  $bulan1 = DataReservasi(1,$tahun);
-  $bulan2 = DataReservasi(2,$tahun);
-  $bulan3 = DataReservasi(3,$tahun);
-  $bulan4 = DataReservasi(4,$tahun);
-  $bulan5 = DataReservasi(5,$tahun);
-  $bulan6 = DataReservasi(6,$tahun);
-  $bulan7 = DataReservasi(7,$tahun);
-  $bulan8 = DataReservasi(8,$tahun);
-  $bulan9 = DataReservasi(9,$tahun);
-  $bulan10 = DataReservasi(10,$tahun);
-  $bulan11 = DataReservasi(11,$tahun);
-  $bulan12 = DataReservasi(12,$tahun);
+function grafikReservasi($tahun)
+{
+  $bulan1 = DataReservasi(1, $tahun);
+  $bulan2 = DataReservasi(2, $tahun);
+  $bulan3 = DataReservasi(3, $tahun);
+  $bulan4 = DataReservasi(4, $tahun);
+  $bulan5 = DataReservasi(5, $tahun);
+  $bulan6 = DataReservasi(6, $tahun);
+  $bulan7 = DataReservasi(7, $tahun);
+  $bulan8 = DataReservasi(8, $tahun);
+  $bulan9 = DataReservasi(9, $tahun);
+  $bulan10 = DataReservasi(10, $tahun);
+  $bulan11 = DataReservasi(11, $tahun);
+  $bulan12 = DataReservasi(12, $tahun);
 
-  $data = 
-  [
-    $bulan1,
-    $bulan2,
-    $bulan3,
-    $bulan4,
-    $bulan5,
-    $bulan6,
-    $bulan7,
-    $bulan8,
-    $bulan9,
-    $bulan10,
-    $bulan11,
-    $bulan12
-  ];
+  $data =
+    [
+      $bulan1,
+      $bulan2,
+      $bulan3,
+      $bulan4,
+      $bulan5,
+      $bulan6,
+      $bulan7,
+      $bulan8,
+      $bulan9,
+      $bulan10,
+      $bulan11,
+      $bulan12
+    ];
   return $data;
 }
 
-function time_elapsed_string($datetime, $full = false) {
+function time_elapsed_string($datetime, $full = false)
+{
   $now = new DateTime;
   $ago = new DateTime($datetime);
   $diff = $now->diff($ago);
