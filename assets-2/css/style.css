@@ -1695,7 +1695,7 @@ header .form-inline {
     width: 50px;
     padding:12px 0;
     padding: 0.75rem 0;
-    margin: 0 !important !important;
+    margin: 0 !important;
     color: #fff;
     outline: 0;
     text-align: center;
@@ -4026,4 +4026,8 @@ table.lap {
 
 table.print_indv tr{
 	line-height: 30px !important;
+}
+.swal2-container:not(.swal2-top):not(.swal2-top-start):not(.swal2-top-end):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-start):not(.swal2-center-end):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-start):not(.swal2-bottom-end):not(.swal2-bottom-left):not(.swal2-bottom-right):not(.swal2-grow-fullscreen)>.swal2-modal {
+    margin: auto;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }

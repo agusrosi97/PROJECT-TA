@@ -7,9 +7,10 @@
   }
   require '../koneksi/function_global.php';
   // ambil data di URL
-  $id_tamuuu = $_GET["id"];
+  $id_tamuuu = $_GET['id'];
   // query data mahasiswa berdasarkan id
-  $data_tamu = query("SELECT * FROM tbl_tamu WHERE id_tamu = $id_tamuuu")[0];
+  $data_tamuku = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE md5(id_tamu) = '$id_tamuuu'");
+  $data_tamu = mysqli_fetch_assoc($data_tamuku);
 ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->

@@ -58,8 +58,8 @@ if (isset($_POST['inputReservasi'])) :
 	endif;
 endif;
 if (!empty($_SESSION["loggedin"])) :
-	$id = $_SESSION["loggedin"]["id_tamu"];
-	$cekTamu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE id_tamu = '$id'");
+	$id = md5($_SESSION["loggedin"]["id_tamu"]);
+	$cekTamu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE md5(id_tamu) = '$id'");
 	if (mysqli_num_rows($cekTamu) === 1) :
 		$rowT = mysqli_fetch_assoc($cekTamu);
 		$fotoT = $rowT["foto_tamu"];
@@ -77,7 +77,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="mobile-web-app-capable" content="yes">
-	<meta name="mobile-web-app-capable" content="yes"/>
+	<meta name="mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-title" content="Add to Home">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -100,7 +100,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<link rel="stylesheet" type="text/css" href="assets/css/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="assets-2/bootstrap-select-1.13.12/dist/css/bootstrap-select.min.css">
 	<link rel="manifest" href="manifest.webmanifest">
-	<link rel="stylesheet" type="text/css" href="assets/css/addtohomescreen.css">
+	<!-- <link rel="stylesheet" type="text/css" href="assets/css/addtohomescreen.css"> -->
 </head>
 
 <body>
@@ -148,7 +148,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 							<?php if ($fotoT === "") : ?><img src='assets/images/user.png' alt=''><?php else : ?><img src='assets/foto_tamu/<?= $fotoT; ?>' alt=''><?php endif; ?>
 						</div>
 						<div class='dropdown-menu dropdown-menu-right shadow' aria-labelledby='navbarDropdown'>
-							<a href='tamu/user_ubah.php?id=<?=$id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-cog'></span></i> Ubah akun</a>
+							<a href='tamu/user_ubah.php?id=<?= $id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-cog'></span></i> Ubah akun</a>
 							<a href='tamu/user_ubah_password.php?id=<?= $id ?>' class='dropdown-item'><span class="mr-2"><i class='fas fa-key'></i></span> Ganti password</a>
 							<a href='tamu/logout.php' class='dropdown-item text-danger'><span class="mr-2"><i class='fas fa-sign-out-alt'></i></span> Logout</a>
 						</div>
@@ -161,18 +161,18 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<!-- END nav -->
 	<!-- home -->
 	<div class="parallax-window hero-wrap ftco-degree-bg" data-parallax="scroll" data-image-src="assets/images/20180819_134434.jpg" id="home">
-	<div class="overlay"></div>
-	<div class="container-fluid">
-		<div class="row no-gutters slider-text justify-content-center align-items-center">
-			<div class="col-lg-12 col-md-12 ftco-animate d-flex align-items-center justify-content-center">
-				<div class="text text-center">
-					<h1 class="mb-4">WIDURI VILLA</h1>
-					<p style="font-size: 18px; text-shadow: 4px 3px 5px #000000ba">Jalan Raya Kerobokan Kelod - No 101 - Br. Taman - Kuta Utara - Badung - Bali - Indonesia</p>
-					<button class="btn btn-primary" data-toggle="modal" data-target="#form-ca">Reservasi Sekarang</button>
+		<div class="overlay"></div>
+		<div class="container-fluid">
+			<div class="row no-gutters slider-text justify-content-center align-items-center">
+				<div class="col-lg-12 col-md-12 ftco-animate d-flex align-items-center justify-content-center">
+					<div class="text text-center">
+						<h1 class="mb-4">WIDURI VILLA</h1>
+						<p style="font-size: 18px; text-shadow: 4px 3px 5px #000000ba">Jalan Raya Kerobokan Kelod - No 101 - Br. Taman - Kuta Utara - Badung - Bali - Indonesia</p>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#form-ca">Reservasi Sekarang</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 	<!-- /home -->
 	<!-- about -->
@@ -216,7 +216,7 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 			</div>
 			<div class="row d-flex justify-content-center">
 				<?php foreach ($infoKamar as $row) : ?>
-				
+
 					<div class="col-md-5">
 						<div class="property-wrap ftco-animate">
 							<span class="img rounded shadow-sm" style="background-image: url(assets/foto_tipe_kamar/<?= $row['foto_tipe_kamar'] ?>);"></span>
@@ -453,66 +453,65 @@ $infoKamar = query("SELECT * FROM tbl_tipe_kamar ORDER BY id_tipe_kamar");
 	<script type="text/javascript" src="assets/js/jquery.easing.min.js"></script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
 	<script type="text/javascript" src="assets/js/sweetalert2.min.js"></script>
-	<script type="text/javascript" src="assets/js/addtohomescreen.min.js"></script>
+	<!-- <script type="text/javascript" src="assets/js/addtohomescreen.min.js"></script> -->
 	<script>
-		function clikb() {
-			Swal.fire({
-				type: 'error',
-				title: 'Kamar tidak tersedia!',
-				showConfirmButton: false
-			}).then(function() {
-				window.location.href = 'tabel_reservasi.php';
-			})
-		};
-		$('#TM').datepicker({
-			minDate: 0,
-			dateFormat: 'dd-mm-yy',
-			changeMonth: true,
-			changeYear: true,
-		});
-		$('#TK').datepicker({
-			minDate: 0,
-			dateFormat: 'dd-mm-yy',
-			changeMonth: true,
-			changeYear: true,
-		});
-		$('#TM').datepicker().bind("change", function() {
-			var minValue = $(this).val();
-			minValue = $.datepicker.parseDate("dd-mm-yy", minValue);
-			$('#TK').datepicker("option", "minDate", minValue);
-			calculate();
-		});
-		$('#TK').datepicker().bind("change", function() {
-			var maxValue = $(this).val();
-			maxValue = $.datepicker.parseDate("dd-mm-yy", maxValue);
-			$('#TM').datepicker("option", "maxDate", maxValue);
-			calculate();
-		});
-
-		function calculate() {
-			var d1 = $('#TM').datepicker('getDate');
-			var d2 = $('#TK').datepicker('getDate');
-			var oneDay = 24 * 60 * 60 * 1000;
-			var diff = 0;
-			if (d1 && d2) {
-				diff = Math.round(Math.abs((d2.getTime() - d1.getTime()) / (oneDay)));
-			}
-			$('#jumlahHari').val(diff);
-		};
-
-		window.addEventListener('load', () => {
-			registerSW();
-		});
-		async function registerSW() {
+		$(document).ready(function() {
 			if ('serviceWorker' in navigator) {
-				try {
-					await navigator.serviceWorker.register('sw.js');
-				} catch (e) {
-					console.log(`SW registration failed`);
+				window.addEventListener('load', () => {
+					navigator
+						.serviceWorker
+						.register('sw.js')
+						.then(() => console.log("Ready."))
+						.catch(() => console.log("Err..."));
+				});
+			};
+
+			function clikb() {
+				Swal.fire({
+					type: 'error',
+					title: 'Kamar tidak tersedia!',
+					showConfirmButton: false
+				}).then(function() {
+					window.location.href = 'tabel_reservasi.php';
+				})
+			};
+			$('#TM').datepicker({
+				minDate: 0,
+				dateFormat: 'dd-mm-yy',
+				changeMonth: true,
+				changeYear: true,
+			});
+			$('#TK').datepicker({
+				minDate: 0,
+				dateFormat: 'dd-mm-yy',
+				changeMonth: true,
+				changeYear: true,
+			});
+			$('#TM').datepicker().bind("change", function() {
+				var minValue = $(this).val();
+				minValue = $.datepicker.parseDate("dd-mm-yy", minValue);
+				$('#TK').datepicker("option", "minDate", minValue);
+				calculate();
+			});
+			$('#TK').datepicker().bind("change", function() {
+				var maxValue = $(this).val();
+				maxValue = $.datepicker.parseDate("dd-mm-yy", maxValue);
+				$('#TM').datepicker("option", "maxDate", maxValue);
+				calculate();
+			});
+
+			function calculate() {
+				var d1 = $('#TM').datepicker('getDate');
+				var d2 = $('#TK').datepicker('getDate');
+				var oneDay = 24 * 60 * 60 * 1000;
+				var diff = 0;
+				if (d1 && d2) {
+					diff = Math.round(Math.abs((d2.getTime() - d1.getTime()) / (oneDay)));
 				}
-			}
-		}
-		addToHomescreen();
+				$('#jumlahHari').val(diff);
+			};
+
+		});
 	</script>
 </body>
 

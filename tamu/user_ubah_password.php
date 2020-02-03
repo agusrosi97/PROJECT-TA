@@ -8,7 +8,8 @@
   // ambil data di URL
   $id_tamuuu = $_GET["id"];
   // query data mahasiswa berdasarkan id
-  $data_tamu = query("SELECT * FROM tbl_tamu WHERE id_tamu = $id_tamuuu")[0];
+  $data_tamuKu = mysqli_query($conn, "SELECT * FROM tbl_tamu WHERE md5(id_tamu) = '$id_tamuuu'");
+  $data_tamu = mysqli_fetch_assoc($data_tamuKu);
 ?>
 <!DOCTYPE html>
 <html lang="en">

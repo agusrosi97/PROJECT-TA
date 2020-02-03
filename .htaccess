@@ -1,4 +1,7 @@
 RewriteEngine on
+Options -Indexes
+ErrorDocument 404 http://localhost/widuri_villa/error.php
+ErrorDocument 403 http://localhost/widuri_villa/accessForbidden.php
 ## remove .php
 RewriteCond %{THE_REQUEST} ^(GET|HEAD)\s([^.]+)\.php [NC]
 RewriteRule ^ %2 [R,NC]

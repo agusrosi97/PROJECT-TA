@@ -16,7 +16,7 @@ endif;
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="../../assets/images/logo-w.png">
   <link rel="apple-touch-icon" href="../../assets/images/logo-w.png">
-  <link rel="stylesheet" href="../../vendors-2/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../assets-2/bootstrap-4.4.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../../assets-2/fontawesome-free-5.10.2-web/css/all.css">
   <link rel="stylesheet" href="../../assets-2/css/style.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
@@ -68,7 +68,7 @@ endif;
   <script type="text/javascript" src="../../assets-2/js/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="../../assets-2/js/Popper.js"></script>
   <script type="text/javascript" src="../../assets/js/jquery.validate.min.js"></script>
-  <script type="text/javascript" src="../../assets-2/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../../assets-2/bootstrap-4.4.0/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../../assets/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="../../assets-2/fontawesome-free-5.10.2-web/js/all.js"></script>
   <script src="../../assets-2/js/main.js"></script>
@@ -101,7 +101,7 @@ endif;
           data: data,
           beforeSend: function() {
             $("#error").fadeOut();
-            $("#btn-login").html('Logged in ...');
+            $("#btn-login").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only"></span>');
           },
           success: function(response) {
             if (response == "iseng") {

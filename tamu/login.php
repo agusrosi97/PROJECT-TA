@@ -104,7 +104,7 @@ if (!empty($_SESSION['loggedin'])) {
           data: data,
           beforeSend: function() {
             $("#error").fadeOut();
-            $("#btn-login").html('Logged in ...');
+            $("#btn-login").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only"></span>');
           },
           success: function(response) {
             if (response == "iseng") {
@@ -122,7 +122,7 @@ if (!empty($_SESSION['loggedin'])) {
                 showConfirmButton: false,
                 timer: 2000
               }).then(function() {
-                javascript:history.go(-1);
+                javascript: history.go(-1);
               });
             } else if (response == "salah password") {
               Swal.fire({
